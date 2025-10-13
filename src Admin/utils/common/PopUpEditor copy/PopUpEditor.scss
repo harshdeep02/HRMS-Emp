@@ -1,0 +1,83 @@
+/* Define theme colors for easy customization */
+$primary-color: #23963B; // A nice purple color
+$primary-text-color: #ffffff;
+$dialog-header-bg: #f8f9fa;
+$dialog-border-color: #dee2e6;
+$border-radius: 8px;
+
+.editoe_box_blur{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: #000;
+}
+.popup-editor-dialog {
+  box-shadow: 0px 0px 10px 10px rgba(62, 62, 62, 0.101);
+  border-radius: 10px;
+  .p-dialog-header {
+    background: $dialog-header-bg;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid $dialog-border-color;
+    background: #F6EDFD;
+    .p-dialog-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+      color: #30005A;
+    }
+    
+    .p-dialog-header-icon {
+      &:hover {
+        background-color: #e9ecef;
+      }
+    }
+  }
+
+  .p-dialog-content {
+    padding: 0; // Remove default padding to let the editor fit perfectly
+    border: none;
+  }
+
+  .p-editor-container {
+    border: none; // Remove the editor's own border
+    border-radius: 0;
+
+    .p-editor-toolbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid $dialog-border-color;
+    }
+
+    .p-editor-content {
+      border: none;
+    }
+  }
+  
+  .p-dialog-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid $dialog-border-color;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .p-button-primary {
+      width: 117px;
+      background-color: $primary-color;
+      border: 1px solid $primary-color;
+      color: $primary-text-color;
+      border-radius: $border-radius;
+      padding: 0.75rem 1.25rem;
+      font-weight: 500;
+      transition: background-color 0.2s;
+      font-size: 14px;
+
+      &:hover, &:focus {
+        background-color: darken($primary-color, 10%);
+        border-color: darken($primary-color, 10%);
+      }
+    }
+  }
+}

@@ -1,0 +1,166 @@
+/* SCSS for new and updated features */
+
+.day {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    // This centers the add icon when the day cell is empty
+    .day-body-center {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .add-attendance-icon-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        // background-color: #f0eaff;
+        color: #9542D9;
+        cursor: pointer;
+        margin-left: -50px;
+        opacity: 0; // Hidden by default
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    // Show the icon on hover
+    &:hover .add-attendance-icon-center {
+        opacity: 1;
+    }
+}
+
+/* New Popover styles */
+.attendance-popover {
+    position: absolute; // Positioned relative to the page
+    z-index: 1000;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0px 15px 0.1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: end;
+    gap: 16px;
+    // width: 380px;
+    // top: 10px;
+
+   
+    .dept-page-action-btn {
+        background-color: #23963B;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-top: 8px;
+        font-size: 12px;
+        width: 140px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+        &:hover {
+            background-color: #218838;
+        }
+    }
+}
+.lableShow{
+    // display: flex;
+}
+
+.Manth_small_popup{
+
+    .dropdown-content{
+        border: 1px solid #e0e0e0;
+        min-width: 150px !important;
+    }
+    .small_label{
+        width: 120px;
+    }
+}
+
+.attendanceDetailMain .monthLoader{
+    height: 28px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #ccc;
+}
+
+.attendanceDetailMain #svg_submit_loading {
+    width: 38px;
+    height: 30px;
+    margin-top: -6px;
+}
+.attendanceDetailMain .yearLoader{
+    height: 28px;
+    width: 63px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #ccc;
+}
+
+.attendanceDetailMain .yearLoader #svg_submit_loading {
+    width: 38px;
+    height: 30px;
+    margin-top: -6px;
+}
+
+
+.attendanceDetailMain .status-badge.holiday {
+    color: #da2626;
+    padding: 4px 23px;
+}
+
+.attendanceDetailMain .day.holiday:hover .add-attendance-icon-center{
+    display: none;
+}
+
+.calendar.otherDetailPageSroll{
+        overflow-y: scroll !important;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    height: calc(100vh - 63px) !important;
+    scroll-behavior: smooth;
+}
+
+.calMain .form-group-date {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    position: relative;
+    align-items: center;
+}
+
+.calMain .Manth_small_popup .small_label {
+    width: 110px;
+}
+
+.calMain .form-group-date label {
+    font-size: 15px;
+    font-weight: 400;
+    color: #1C1C1C;
+}
+.calMain .attendance-popover {
+        max-width: 295px;
+}
+
+.calMain .attendance-popover{
+     border-left: 0;
+     border-radius: 8px;
+}
+
+.calMain .css-1dune0f-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 0.4375em;
+}

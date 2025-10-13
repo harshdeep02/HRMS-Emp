@@ -1,0 +1,35 @@
+.leaveTypeDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group label.redCol {
+    color: #DA4019;
+}
+.leaveTypeDetailsMain .mandat {
+     margin-left: 0;
+}
+
+.leaveTypeDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group textarea {
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: "Inter";
+}
+
+.leaveTypeDetailsMain input:disabled,
+.leaveTypeDetailsMain textarea:disabled{
+    background-color: #fff;
+}
+
+.leaveTypeDetailsMain .status-dropdown .dropdown-trigger {
+    padding: 9px 12px
+}
+
+.leaveTypeDetailsMain .status-dropdown .dropdown-trigger:hover {
+    border-color: #e0e0e0;
+}
+.leaveTypeDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-subtitle {
+    margin-top: 10px;
+       text-transform: capitalize;
+    font-weight: 400;
+}
+
+.leaveTypeDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-cover-section {
+    margin-bottom: 0
+};

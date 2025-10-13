@@ -1,0 +1,55 @@
+@keyframes pulse {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f5f5f5;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}
+
+.Status-badge-Skeleton {
+  width: 75px;
+  height: 22px;
+  border-radius: 14px;
+  background-color: #e0e0e0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 1.5s infinite;
+
+  .Skeleton-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin-right: 8px;
+    animation: pulse 1.5s infinite;
+  }
+
+  .Skeleton-text {
+    width: 60px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+// Optional: for better animation effect
+.Status-badge-skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 1.5s infinite;
+}
+

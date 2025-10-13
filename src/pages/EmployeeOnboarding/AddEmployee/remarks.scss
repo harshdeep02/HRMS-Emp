@@ -1,0 +1,124 @@
+.dept-page-table-section {
+	background-color: #fff;
+	// padding: 16px;
+	border: 1px solid #e5e7eb;
+	border-radius: 3px;
+	margin-bottom: 10px;
+    margin-top: -10px !important;
+	h3 {
+		font-weight: 500;
+		font-style: Medium;
+		font-size: 18px;
+		leading-trim: NONE;
+		line-height: 25px;
+		letter-spacing: -0.5px;
+		text-transform: capitalize;
+		color: #000000;
+		padding: 10px 30px;
+	}
+
+	.dept-page-table-wrapper {
+		display: flex;
+		flex-direction: column;
+		animation: fadeIn 0.4s ease-in-out;
+	}
+
+	.dept-page-table-row {
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid var(--border-color);
+		padding: 12px 30px;
+		transition: background 0.2s ease;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		&:hover {
+			background: #fafafa;
+		}
+
+		.dept-page-row-item {
+			flex: 1;
+			font-weight: 400;
+			font-size: 15px;
+			line-height: 100%;
+			letter-spacing: 0%;
+			text-transform: capitalize;
+			color: #141414;
+		}
+		.phone_end_ {
+			text-align: end;
+		}
+
+		.dept-page-row-profile {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			// flex: 1.5;
+		}
+
+		.dept-page-row-project {
+			flex: 2;
+		}
+
+		.dept-page-avatar {
+			width: 38px;
+			height: 38px;
+			border-radius: 50%;
+			object-fit: cover;
+		}
+		.user-names {
+			font-weight: 400;
+			font-size: 15px;
+			line-height: 100%;
+			letter-spacing: 0%;
+			text-transform: capitalize;
+			color: #141414;
+		}
+
+		.dept-page-status {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 4px 10px;
+			border-radius: 20px;
+			font-size: 13px;
+			font-weight: 500;
+			background-color: #f3f4f6; // light gray bg
+			color: #4b5563; // medium gray text
+			border: 1px solid #e5e7eb;
+
+			.dept-page-status-icon {
+				color: #6b7280; // gray icon
+			}
+		}
+	}
+
+	.dept-page-pagination {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 14px;
+		color: #6b7280;
+		padding: 15px 30px;
+		border-top: 1px solid var(--border-color);
+
+		.dept-page-pagination-controls {
+			display: flex;
+			gap: 8px;
+
+			.dept-page-pagination-icon {
+				cursor: pointer;
+				color: #676767;
+				padding: 4px;
+				border-radius: 4px;
+				transition: background 0.2s;
+
+				&:hover {
+					color: #2a2929;
+				}
+			}
+		}
+	}
+}

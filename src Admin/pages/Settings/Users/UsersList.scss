@@ -1,0 +1,144 @@
+.usersListMain .switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 26px;
+}
+.usersListMain .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.usersListMain .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border: 2px solid #79747E;
+}
+.usersListMain .slider.round {
+    border-radius: 34px;
+}
+
+
+.usersListMain .slider.round:before {
+    border-radius: 50%;
+}
+
+.usersListMain .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 5px;
+    bottom: 4.8px;
+    background-color: #79747E;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.address-container {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.usersListMain .switch input:checked + .slider:before {
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+    background: #fff;
+    bottom: 6.3px;
+        left: 2px;
+}
+
+.usersListMain input:checked + .slider {
+    background-color: #007aff;
+        border: none;
+}
+
+.usersListMain thead {
+    z-index: 2;
+}
+
+.usersListMain .top-header .header-left h1 {
+    font-size: 26px;
+    font-weight: 500;
+    color: #1C1C1C;
+}
+
+
+.usersListMain .dashboard-sticky-header {
+    padding: 14px 24px;
+    padding-left: 30px;
+}
+
+.usersListMain .top-header .header-left {
+    margin-left: 0;
+}
+.usersListMain .toolbar {
+     padding:0;
+}
+
+.usersListMain .custom-dropdown .dropdown-trigger {
+    padding: 9px 14px;
+}
+
+.usersListMain .top-header .header-right .add-employee-btn {
+    width: 48px;
+}
+
+.userListDet .name{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.userListDet .emailS{
+        font-size: 14px;
+    font-weight: 400 !important;
+    color: #979797 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+        max-width: 177px;
+}
+
+.usersListMain .emp-t-4 tbody td:nth-child(1) {
+    min-width: 280px;
+    max-width: 280px;
+    padding-left: 35px;
+}
+
+.usersListMain .role{
+    font-size: 15px;
+    font-weight: 500;
+    color: #191919;
+}
+
+.usersListMain .address-container p{
+    font-size: 15px;
+    font-weight: 400;
+    color: #191919;
+}
+
+
+.usersListMain .employee-table tbody .employee-row td .status-badge {
+width: 131px;
+font-size: 14px;
+
+}
+
+
+.usersListMain .sidebarS div {
+    display: none;
+}
+
+.usersListMain .sidebarS div:nth-child(1),
+.usersListMain .sidebarS div:nth-child(2){
+    display:block
+}

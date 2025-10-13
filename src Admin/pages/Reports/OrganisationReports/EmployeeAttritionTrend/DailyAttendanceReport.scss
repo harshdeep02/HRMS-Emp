@@ -1,0 +1,30 @@
+	.table-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .filters{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+		h2 {
+			font-weight: 500;
+			font-style: Medium;
+			font-size: 20px;
+			line-height: 160%;
+			letter-spacing: 0.15px;
+			text-transform: uppercase;
+			color: #32475cde;
+		}
+        .filter-item{
+            border: 1px solid var(--border-color);
+                border-radius: 6px;
+        }
+	}
+
+    .box-chart-container{
+        border: 1px solid var(--border-color);
+        padding: 20px;
+        border-radius: 8px;
+    }

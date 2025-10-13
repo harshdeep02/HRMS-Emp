@@ -1,0 +1,24 @@
+.detailHeadMain {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.detailheadUpper {
+    height: 173px;
+    width: 173px;
+    background: #F5F5F5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    margin-right: 30px;
+}
+
+.detailheadUpper svg {
+    height: 60px;
+    width: 60px;
+    color: #494949;
+}
+
+.detailheadUpper {}

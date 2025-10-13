@@ -1,0 +1,129 @@
+.checkDetCard {
+    height: 141px;
+    max-width: 254px;
+    background: #FFFFFF;
+    border-left: 1px solid #400F6F;
+    box-shadow: 0px 0px 14px #00000014;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.checkHeader {
+    font-size: 13px;
+    color: #2A2A2A;
+    font-weight: 500;
+    font-family: 'Inter';
+    line-height: -1%;
+    padding: 10px 0;
+    border-bottom: 1px solid #F2F2F2;
+    margin: 0 10px;
+}
+
+.checkBody {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    /* justify-content: space-between; */
+    gap: 26px;
+}
+
+.checkBody {}
+
+.checkTime {}
+
+.checkTime {
+    font-size: 17px;
+    font-weight: 400;
+    color: #45237F;
+    line-height: 17.73px;
+}
+
+.checkText {
+    font-size: 11px;
+    font-weight: 400;
+    color: #2A2A2A;
+    line-height: 11.08px;
+    padding-bottom: 4px;
+}
+
+.checkInTime {
+    padding-bottom: 14px;
+}
+
+.reportCalen .nav-arrow button{
+        border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.reportCalen .arrow_l_r.nav-arrow{
+    padding: 10px;
+    gap: 8px;
+    border-radius: 10px;
+    height: auto;
+    width: auto;
+    align-items:unset;
+letter-spacing: 0.5px;
+}
+
+.reportCalen .calendar-header-att {
+    justify-content: unset;
+}
+
+
+.reportCalen .calendar-header-att .nav-arrow:hover {
+    background-color: #fff;
+}
+
+.reportCalen .status-badge.present {
+    background-color: #EDF2FE66;
+    color: #4976F4;
+}
+
+.reportCalen .status-badge {
+    font-size: 13px;
+}
+
+.reportCalen .status-badge.absent .dot {
+    background-color: #989E03;
+}
+
+.reportCalen .status-badge.absent {
+    background-color: #EDF2FE66;
+    color: #989E03;
+}
+
+.attendanceValues .status-badge.holiday{
+color: #da2626;
+}
+.attendanceValues .status-badge.holiday .dot {
+    background-color: #da2626;
+
+}
+
+.reportCalen .status-badge.holiday {
+    background-color: #edf2fe66;
+   color: #da2626; 
+}
+
+
+.attendanceValues {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    gap: 18px;
+}
+
+.attendanceValues .status-badge {
+    background: #fff;
+    border: 1px solid #E7E7E7;
+    border-radius: 5px;
+    padding: 8px 14px;
+}
+
+.attendanceValues .status-badge.absent{
+      color: #989E03;  
+}.attendanceValues .status-badge.absent .dot{
+      background-color: #989E03;
+}

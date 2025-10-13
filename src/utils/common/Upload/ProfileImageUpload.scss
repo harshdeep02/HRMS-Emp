@@ -1,0 +1,141 @@
+// ProfileImageUpload.scss
+
+.profile-uploader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+border: 1px solid #E8E8E8;
+    border-radius: 8px;
+    background-color: #ffffff;
+    gap: 1.5rem;
+    width: 100%;
+    position: relative;
+
+    .preview-section {
+        flex-shrink: 0;
+
+        .progress-circle,
+        .image-preview {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+              
+              
+        }
+
+        .progress-circle {
+            background-color: #f0f0f0;
+            position: relative;
+            transition: background 0.3s ease;
+
+            .progress-text {
+                font-size: 1.2rem;
+                // font-weight: bold;
+                color: #ffffff;
+            }
+        }
+
+        .image-preview {
+            border: 2px dashed #d0d0d0;
+            overflow: hidden;
+            background-color: #f9f9f9;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+              .icon{
+                scale: 0.7;
+              }
+        }
+    }
+
+    .info-section {
+        flex-grow: 1;
+        text-align: left;
+        color: #808080;
+
+        h4 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            font-weight: 500;
+            color: #1C1C1C;
+        }
+
+        p {
+            margin: 0;
+            font-size: 12px;
+            color: #A448EE; // Purple text as in the image
+            opacity: 0.6;
+        }
+
+        .error-text {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+    }
+
+    .action-section {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .upload-btn,
+        .cancel-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .upload-btn {
+            background-color: #f0f0f0;
+            color: #333;
+
+            &:hover {
+                background-color: #e0e0e0;
+            }
+        }
+
+        .cancel-btn {
+            background-color: transparent;
+            color: #555;
+
+            &:hover {
+                background-color: #f5f5f5;
+            }
+        }
+
+        .icon-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: #888;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, color 0.2s;
+
+            &:hover {
+                background-color: #f0f0f0;
+                color: #333;
+            }
+        }
+    }
+}

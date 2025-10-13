@@ -1,0 +1,55 @@
+.userDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-cover-section {
+    padding: 0 10px 16px;
+        margin-bottom: 5px;
+}
+
+.userDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-edit-btn {
+    padding: 10px 11px;
+    border-radius: 7px;
+}
+
+.userDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-edit-btn:hover {
+    background-color: #e8e8e8;
+}
+
+.userDetailsMain .dept-page-edit-btn svg{
+    stroke-width: 1.3;
+}
+
+
+.userDetailsMain .status-dropdown .status-label.active {
+    color: #23963B;
+}
+
+// .userDetailsMain .status-dropdown .status-label {
+//     font-size: 16px;
+//     font-weight: 500;
+//     color: #23963B;
+// }
+
+.userDetailsMain .status-dropdown .dropdown-trigger .chevron-icon {
+    // color: #000;
+    // stroke-width: 3;
+}
+
+.userDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-subtitle {
+    font-size: 13px;
+    font-weight: 400;
+    // color:  #A448EE;
+    margin-top: 8px;
+}
+
+.userDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group label.redCol , .redCol{
+    color: #DA4019;
+}
+.mandat{
+        margin-left: -4px;
+}
+
+.userDetailsMain .action-buttons {
+    flex-direction: column;
+}
+
+.userDetailsMain input:disabled {
+    background-color: #fff;
+}

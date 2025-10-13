@@ -1,0 +1,503 @@
+.applicants-loader {
+	display: flex;
+	width: 100%;
+	gap: 13px;
+	padding: 20px 22px 20px 27px;
+}
+.mt {
+	margin-top: 2px;
+}
+
+/* Skeleton Effect */
+.skeleton {
+	background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s infinite;
+	border-radius: 6px;
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+/* Sidebar */
+.sidebarS {
+	width: 200px;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+
+	.title {
+		margin-top: 7px;
+		margin-bottom: 6px;
+		width: 45%;
+		height: 18px;
+	}
+	.option {
+		margin-bottom: 9px;
+		width: 70%;
+		height: 14px;
+	}
+	.option.incWid {
+		width: 82%;
+	}
+	.sub-title {
+		margin-top: 20px;
+		width: 50%;
+		height: 16px;
+	}
+	.stat {
+		width: 90%;
+		height: 25px;
+		border-radius: 10px;
+	}
+}
+.skeleton.fullWid {
+	width: 90%;
+	margin-bottom: 0;
+}
+.skeleton.inchight {
+	height: 18px;
+}
+
+/* Content */
+.contentS {
+	flex: 1;
+
+	&.list-view {
+		// margin-top: 41px;
+		display: flex;
+		flex-direction: column;
+		// gap: 12px;
+	}
+
+	&.grid-view {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 20px;
+		// width: 100vw;
+
+		.employee-cards {
+			padding: 20px;
+			border: 1px solid #eee;
+			border-radius: 12px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 12px;
+
+			.avatar-big {
+				width: 60px;
+				height: 60px;
+				border-radius: 50%;
+			}
+
+			.lineS {
+				height: 12px;
+				&.short {
+					width: 40%;
+				}
+				&.medium {
+					width: 60%;
+				}
+				&.long {
+					width: 80%;
+				}
+			}
+		}
+	}
+}
+.employee-cards {
+	display: grid;
+	grid-template-columns: 200px 200px 240px 1.5fr;
+	align-items: center;
+	gap: 59px;
+	padding: 17px 16px 17px 33px;
+	border: 1px solid #eee;
+	// border-radius: 10px;
+
+	.avatar {
+		margin-right: 8px;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+	}
+
+	.lineS {
+		height: 12px;
+		&.short {
+			width: 55%;
+		}
+		&.medium {
+			width: 80%;
+			height: 26px;
+		}
+	}
+
+	.badge {
+		height: 32px;
+		width: 125px;
+		border-radius: 20px;
+		margin-left: 13px;
+	}
+}
+.long {
+	width: 75%;
+	margin-left: 6px;
+}
+
+.empnth1 {
+min-width: 240px;
+			max-width: 240px;
+	display: flex;
+	align-items: center;
+}
+.empnth2{
+  min-width: 200px;
+			max-width: 200px;
+}
+.empnth3{
+     min-width: 250px;
+			max-width: 250px;
+}
+.empnth4{
+  min-width: 200px;
+			max-width: 200px;
+      padding-right: 35px;
+}
+.adSpace {
+	margin-top: 63px;
+}
+
+.applicants-loader .employee-table {
+	box-shadow: none;
+}
+
+.skeleton.mt.inchight {
+	margin-top: 15px;
+}
+.empListMain .newopt {
+	display: none;
+}
+.empListMain .d_bloack {
+	display: none;
+}
+
+// job list
+
+.job_list .newopt {
+	display: none;
+}
+
+.job_list .sidebarS .title {
+	height: 14px;
+}
+.job_list .sidebarS .option {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	width: 70%;
+	height: 13px;
+}
+.job_list .adSpace {
+	height: 17px;
+	border-radius: 10px;
+	margin-top: 74px;
+}
+
+.job_list .skeleton.fullWid {
+	width: 90%;
+	margin-bottom: 0;
+	margin-top: 5px;
+}
+
+// .job_list .sidebarS > div:nth-child(10),
+.job_list .sidebarS > div:nth-child(11) {
+	margin-top: 11px;
+	height: 19px;
+}
+.job_list .sidebarS > div:nth-child(13) {
+	margin-top: -2px;
+	height: 19px;
+	border-radius: 6px;
+}
+.job_list .sidebarS > div:nth-child(12) {
+	display: none;
+}
+
+.job_list .avatar {
+	display: none;
+}
+
+.job_list .employee-cards {
+	padding: 21px 16px 21px 33px;
+	gap: 61px;
+}
+
+.job_list .long {
+	width: 30%;
+}
+
+.job_list .lineS.medium {
+	width: 100%;
+	height: 32px;
+}
+
+.job_list .d_bloack {
+	display: none;
+}
+
+.job_list .employee-cards .badge {
+	margin-left: 11px;
+}
+
+//Applicaton list
+
+.app_List .sidebarS .title {
+	height: 14px;
+	margin-bottom: 15px;
+}
+
+.app_List .adSpace {
+	margin-top: 78px;
+	height: 18px;
+	border-radius: 6px;
+	margin-bottom: 4px;
+}
+.app_List aside > div:nth-child(10) {
+	margin-bottom: 2px;
+}
+.app_List aside > div:nth-child(9) {
+	display: none;
+}
+
+.app_List .skeleton.mt.inchight {
+	margin-top: 10px;
+}
+
+.app_List .d_bloack {
+	display: none;
+}
+
+.app_List .employee-cards .badge {
+	margin-left: 16px;
+}
+
+//department List main
+
+.depatmentListMain aside > div:nth-child(3),
+.depatmentListMain aside > div:nth-child(5) {
+	height: 31px;
+	width: 96%;
+}
+
+.depatmentListMain aside > div:nth-child(7),
+.depatmentListMain aside > div:nth-child(6),
+.depatmentListMain aside > div:nth-child(9) {
+	display: none;
+}
+
+.depatmentListMain .adSpace {
+	margin-top: 75px;
+	height: 15px;
+	margin-bottom: 5px;
+}
+.depatmentListMain aside > div:nth-child(10) {
+	margin-bottom: 5px;
+}
+.depatmentListMain aside > div:nth-child(10),
+.depatmentListMain aside > div:nth-child(11) {
+	height: 10px;
+}
+
+.depatmentListMain .skeleton.mt.inchight {
+	margin-top: 19px;
+	height: 15px;
+}
+
+.depatmentListMain .skeleton.inchight {
+	height: 15px;
+}
+
+.depatmentListMain .employee-cards .avatar {
+	width: 16px;
+	height: 16px;
+}
+
+.depatmentListMain .employee-cards {
+	padding: 21px 16px 21px 33px;
+}
+
+.depatmentListMain .employee-cards .lineS.medium {
+	display: none;
+}
+
+.depatmentListMain .employee-cards {
+	grid-template-columns: 1.16fr 1fr 1fr;
+}
+
+.depatmentListMain .d_bloack {
+	display: none;
+}
+.depatmentListMain aside > div:nth-child(5) {
+	height: 17px;
+}
+
+// BirthdayList
+
+.BirthdayListMain .newopt {
+	display: none;
+}
+
+.BirthdayListMain .skeleton.inchight {
+	height: 13px;
+	margin-bottom: 4px;
+}
+.BirthdayListMain aside > div:nth-child(10) {
+	margin-bottom: 6px;
+}
+
+.BirthdayListMain .skeleton.mt.inchight {
+	margin-top: 13px;
+	margin-bottom: 3px;
+}
+.BirthdayListMain .d_bloack {
+	display: none;
+}
+
+// designation List
+
+.designationListMain aside > div:nth-child(4),
+.designationListMain aside > div:nth-child(5),
+.designationListMain aside > div:nth-child(6),
+.designationListMain aside > div:nth-child(7),
+.designationListMain aside > div:nth-child(11) {
+	display: none;
+}
+
+.designationListMain .stat {
+	height: 14px;
+}
+
+.designationListMain .adSpace {
+	margin-top: 76px;
+	margin-bottom: 8px;
+}
+
+.designationListMain .fullWid {
+	height: 11px;
+}
+
+.designationListMain .skeleton.inchight {
+	margin-bottom: 4px;
+}
+
+.designationListMain .skeleton.mt.inchight {
+	margin-top: 18px;
+	height: 14px;
+	margin-bottom: 0;
+	margin-bottom: 0;
+}
+.designationListMain aside > div:nth-child(13) {
+	height: 14px;
+}
+
+.designationListMain .employee-cards {
+	grid-template-columns: 180px 186px 4fr;
+	gap: 20px;
+	padding: 24px 16px 24px 33px;
+}
+
+.designationListMain .employee-cards .avatar {
+	width: 16px;
+	height: 16px;
+}
+
+.designationListMain .employee-cards .badge {
+	display: none;
+}
+.designationListMain .employee-cards .lineS.medium {
+	width: 97%;
+}
+.designationListMain .d_bloack {
+	display: none;
+}
+
+// EmployeeHealthList
+
+.empHealthListMain aside > div:nth-child(5),
+.empHealthListMain aside > div:nth-child(6),
+.empHealthListMain aside > div:nth-child(7),
+.empHealthListMain aside > div:nth-child(11) {
+	display: none;
+}
+
+.empHealthListMain .sidebarS .title {
+	margin-top: 9px;
+	margin-bottom: 11px;
+	height: 15px;
+}
+
+.empHealthListMain .sidebarS .stat {
+	width: 90%;
+	height: 16px;
+	border-radius: 10px;
+}
+.empHealthListMain .adSpace {
+	margin-top: 76px;
+	margin-bottom: 8px;
+}
+
+.empHealthListMain .skeleton.fullWid {
+	height: 11px;
+}
+.empHealthListMain .skeleton.inchight {
+	margin-bottom: 9px;
+	height: 14px;
+}
+
+.empHealthListMain aside > div.skeleton.option.mt.fullWid.inchight {
+	margin-bottom: 5px;
+}
+
+.empHealthListMain .skeleton.mt.inchight {
+	margin-top: 10px;
+}
+
+.empHealthListMain aside > div:nth-child(9) {
+	margin-bottom: 7px;
+}
+
+.empHealthListMain .employee-cards .avatar {
+	display: none;
+}
+
+.empHealthListMain .employee-cards {
+	grid-template-columns: 200px 200px 235px 1.1fr 1fr;
+	gap: 5px;
+	padding: 21px 16px 21px 31px;
+}
+
+.empHealthListMain .employee-cards .lineS.medium {
+	width: 50%;
+	height: 13px;
+}
+.empHealthListMain .employee-cards .badge {
+	border-radius: 8px;
+}
+
+.empHealthListMain .badge.d_bloack {
+	display: block;
+	margin-left: -10px;
+	border-radius: 20px;
+	width: 168px;
+}
+
+.d_bloack {
+	display: none;
+}

@@ -1,0 +1,40 @@
+.ca_rd {
+	border: none !important;
+	.stats-title-row {
+		margin-bottom: 0 !important;
+	}
+	.competencies-title {
+		min-width: 180px;
+	}
+	.meritDes_title {
+		margin-left: 90px;
+	}
+}
+
+.performance_status_form {
+	display: flex;
+	align-items: center;
+	justify-content: space-between !important;
+	border-bottom: 1px dashed var(--border-color);
+	padding: 10px;
+	margin: 0 !important;
+	width: 625px;
+	.dropdown {
+		max-width: 260px;
+	}
+	.lable_ps {
+		width: 150px;
+		max-width: 150px;
+	}
+	.meritDes_ {
+		width: 170px;
+		margin-left: 15px;
+		font-size: 14px;
+	}
+}
+
+.content_3_row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}

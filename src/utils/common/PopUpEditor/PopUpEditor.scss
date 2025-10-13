@@ -1,0 +1,122 @@
+/* Define theme colors for easy customization */
+$primary-color: #4CAF50; // The distinct green for the 'Update' button
+$primary-text-color: #ffffff;
+$dialog-header-bg: #ffffff; // White background for the header
+$dialog-footer-bg: #EAF7ED; // Light green/tinted background for the footer
+$dialog-border-color: #dee2e6;
+$border-radius: 8px;
+
+/* --- Background/Blur Fix --- */
+
+/* Target the PrimeReact dialog mask (overlay) */
+.p-dialog-mask.p-component-overlay {
+    /* Apply a slight blur effect to the background content */
+    backdrop-filter: blur(3px); 
+    
+    /* Use a dark, semi-transparent background color (overlay) */
+    background-color: rgba(0, 0, 0, 0.4); 
+}
+
+/* --- Dialog and Editor Styles --- */
+
+.popup-editor-dialog {
+  // Overrides the default PrimeReact dialog style
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  border-radius: $border-radius;
+  
+  // Ensure the dialog itself has a solid background (not transparent)
+  .p-dialog {
+      background: #ffffff; 
+  }
+
+  .p-dialog-header {
+    background: $dialog-header-bg;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    padding: 1rem 1.5rem;
+    border-bottom: none;
+    
+    .p-dialog-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    
+    /* HACK: To make the close icon look like "Close" text */
+    .p-dialog-header-icon.p-dialog-header-close {
+      .pi-times:before {
+        content: "Close"; 
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #777;
+        margin-right: 0.5rem;
+      }
+      &:hover {
+        background: none;
+        color: #333;
+      }
+    }
+  }
+
+  .p-dialog-content {
+    padding: 0; 
+    border: none;
+  }
+
+  /* Style for the PrimeReact Editor component */
+  .p-editor-container {
+    border: none; 
+
+    .p-editor-toolbar {
+      background-color: #ffffff;
+      border-top: 1px solid $dialog-border-color;
+      border-left: 1px solid $dialog-border-color;
+      border-right: 1px solid $dialog-border-color;
+      border-bottom: 1px solid $dialog-border-color; 
+    }
+
+    .p-editor-content {
+      border-left: 1px solid $dialog-border-color; 
+      border-right: 1px solid $dialog-border-color;
+      padding: 1.5rem; 
+      line-height: 1.5;
+    }
+  }
+  
+  /* Style for the Dialog Footer (The light green bar) */
+  .p-dialog-footer {
+    padding: 1rem 1.5rem;
+    background-color: $dialog-footer-bg;
+    border-top: 1px solid $dialog-border-color;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+
+    /* Style for the 'Update' Button */
+    .p-button-primary {
+      width: 120px;
+      background-color: $primary-color;
+      border: 1px solid $primary-color;
+      color: $primary-text-color;
+      border-radius: $border-radius;
+      padding: 0.75rem 1.25rem;
+      font-weight: 500;
+      transition: background-color 0.2s;
+      font-size: 14px;
+      line-height: 1; 
+      height: 40px; 
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover, &:focus {
+        background-color: darken($primary-color, 8%);
+        border-color: darken($primary-color, 8%);
+      }
+    }
+  }
+}

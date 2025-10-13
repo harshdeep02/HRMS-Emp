@@ -1,0 +1,65 @@
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group .dept-page-icon-wrapper {
+    margin-right: -15px;
+}
+
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group {
+    gap: 30px;
+}
+
+.jobDetailsMain > div > div > div.dept-page-right-panel > div:nth-child(5) > div > div.dept-page-input-group:nth-child(7){
+    align-items: flex-start;
+}
+
+.jobDetailsMain .dept-page-input-group input:disabled,
+.jobDetailsMain .dept-page-input-group select:disabled,
+.jobDetailsMain .dept-page-input-group textarea:disabled{
+    background-color:#fff;
+}
+
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-cover-section {
+    padding: 0 16px;
+}
+
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-cover-section {
+    padding: 0 10px;
+    // padding-bottom: 20px;
+}
+
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel {
+    // padding: 20px 30px;
+}
+
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-edit-btn {
+    border-radius: 7px;
+    padding: 10px 11px;
+}
+
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-subtitle {
+    margin-top: 3px;
+}
+
+.dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group .dept-page-icon-wrapper {
+    display: flex
+}
+.jobDetailsMain > div > div > div.dept-page-right-panel > div:nth-child(5) > div > div:nth-child(3){
+    min-width: 140px;
+    max-width: 140px;
+}
+
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group textarea {
+padding: 12px 20px;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: #000000 !important;
+    height: 140px;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: "Inter";
+    width: 417px;
+    scrollbar-width: none;
+}
+.jobDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group label {
+    min-width: 147px;
+    max-width: 147px;
+}

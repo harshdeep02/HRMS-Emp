@@ -1,0 +1,12 @@
+.attendanceDetailMain .dept-page-main-heading span{
+    text-transform: capitalize;
+}
+
+.calenMain.otherDetailPageSroll{
+        overflow-y: scroll !important;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    // height: calc(100vh - 130px) !important;
+    scroll-behavior: smooth;
+}

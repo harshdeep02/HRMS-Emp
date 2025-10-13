@@ -1,0 +1,133 @@
+.LeaveDetailsMain .form_page_ .top-bar {
+	padding: 12px 16px 16px;
+	font-size: 24px;
+	font-weight: 400;
+	color: #000;
+}
+
+.LeaveDetailsMain .policy-title h2 {
+	font-size: 24px;
+	color: #1c1c1c;
+	font-weight: 500;
+}
+.navbar-container {
+	// margin-right: 10px;
+}
+
+.LeaveDetailsMain .policy-container .edit-policy-btn {
+	border: 1.5px solid #a448ee;
+	color: #1c1c1c;
+	font-size: 14px;
+	padding: 0.5rem 0.7rem;
+	font-family: "Inter";
+}
+
+.LeaveDetailsMain .policy-container .policy-header {
+	padding-bottom: 2rem;
+}
+
+.LeaveDetailsMain .employee-form {
+	grid-template-columns: 195px 1fr;
+	gap: 17px;
+}
+
+.LeaveDetailsMain .employee-form .employee_form_header {
+	width: 100%;
+}
+
+.LeaveDetailsMain .navbar-container {
+	padding: 0;
+}
+
+.LeaveDetailsMain .policy-body h3 {
+	font-size: 16px;
+	font-weight: 600;
+	color: #2a2a2a;
+	line-height: 1;
+}
+
+.LeaveDetailsMain .policy-body p {
+	color: #2a2a2a;
+	padding-bottom: 25px;
+}
+
+.workCalTextUpper {
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.5;
+	color: #000000;
+	padding-bottom: 6px;
+}
+
+.workCalTextBottom {
+	font-size: 16px;
+	font-weight: 400;
+	color: #676767;
+	max-width: 545px;
+	line-height: 1.5;
+	text-transform: capitalize;
+	padding-bottom: 25px;
+}
+
+.workCalTextMain {
+	border-bottom: 1px solid #e8e8e8;
+	margin-bottom: 35px;
+}
+
+.LeaveDetailsMain .navbar-container {
+    max-width: 195px;
+    min-width: 195px;
+}
+
+
+.settingLeaveDetailMain{
+    overflow-y: scroll !important;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    height: calc(100vh - 140px) !important;
+    scroll-behavior: smooth;
+}
+
+
+.LeaveDetailsMain button.status-badge {
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'INTER';
+    background: #EDF2FE66;
+}
+
+.LeaveDetailsMain .status-badge.work-day {
+    color: #4976F4;
+	font-size: 11.5px;
+}
+
+.LeaveDetailsMain .status-badge.work-day {}
+
+.LeaveDetailsMain .status-badge.work-day .dot {
+    background: #4976F4;
+}
+
+.LeaveDetailsMain .status-badge.holiday {
+    color: #DA4019;
+}
+
+.LeaveDetailsMain .status-badge.holiday .dot{
+    background-color: #DA4019;
+}
+
+.LeaveDetailsMain .calendar-header-att .header-controls h2 {
+    font-size: 20px;
+}
+
+.LeaveDetailsMain .status-dropdown_at {
+    right: 8px;
+}
+
+.policy-body h3 strong{
+	font-weight: 600;
+}
+
+.policy-container div.policy-body h3 {
+    font-weight: 400;
+}

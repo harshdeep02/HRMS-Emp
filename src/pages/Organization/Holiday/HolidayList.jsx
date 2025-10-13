@@ -1,0 +1,311 @@
+import { useState, useEffect, useRef, useCallback } from "react";
+import {  TrendingUp, X, SquareMenu } from "lucide-react";
+import "../EmployeeList/EmployeeList.scss"
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import SearchBox from "../../../utils/common/SearchBox.jsx";
+import LoadingDots from "../../../utils/common/LoadingDots/LoadingDots.jsx";
+import { holidayStatusOptions } from "../../../utils/Constant.js";
+import { getHolidayList } from "../../../Redux/Actions/holidayActions.js";
+import './HolidayList.scss'
+import ExportList from "../../../utils/common/Export/ExportList.jsx";
+import ListDataNotFound from "../../../utils/common/ListDataNotFound.jsx";
+import DatePicker from "../../../utils/common/DatePicker/DatePicker.jsx";
+import { formatDate, formatDate3 } from "../../../utils/common/DateTimeFormat.js";
+import EllipsisSpan from "../../../utils/EllipsisSpan.jsx";
+const INITIAL_VISIBLE_COUNT = 5;
+
+export const HolidayList = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    //Data from redux
+    const holidayData = useSelector((state) => state?.holidayList);
+    const holidayList = holidayData?.data?.result || [];
+    const totalHolidays = holidayData?.data?.count || 0;
+    const holidaysLoading = holidayData?.loading || false;
+    const metaData = holidayData?.data?.metadata || {}
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const searchBoxRef = useRef();
+    const [statusFilter, setStatusFilter] = useState("All");
+    const [dateFilter, setDateFilter] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+    const [view, setView] = useState('list');
+    const [showMoreLess, setShowMoreLess] = useState(false);
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef(null);
+
+
+    // Close menu on outside click
+    useEffect(() => {
+        const handler = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        return () => document.removeEventListener("mousedown", handler);
+    }, []);
+
+    const fetchHolidayList = useCallback(async () => {
+        try {
+            const fy = localStorage.getItem("FinancialYear");
+
+            const sendData = {
+                fy,
+                noofrec: visibleCount,
+                currentpage: currentPage,
+                ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
+                ...(searchTerm && { search: searchTerm }),
+                ...(dateFilter && { custom_date: formatDate3(new Date(dateFilter)) }),
+            };
+            const res = await dispatch(getHolidayList(sendData));
+            setShowMoreLess(false);
+        } catch (error) {
+            console.error("Error fetching holiday list:", error);
+            setShowMoreLess(false);
+        }
+    }, [dispatch, searchTerm, statusFilter, visibleCount, currentPage, dateFilter]);
+
+    useEffect(() => {
+        fetchHolidayList();
+    }, [searchTerm, statusFilter, visibleCount, currentPage, dateFilter]);
+
+    const resetFilters = () => {
+        setSearchTerm("");
+        setStatusFilter("All");
+        setShowMoreLess(false);
+        if (searchBoxRef.current) {
+            searchBoxRef.current.clearInput();
+        }
+        setDateFilter(null);
+        // Clear date input manually if needed
+        const dateInput = document.getElementById('date-filter-input');
+        if (dateInput) dateInput.value = '';
+    };
+
+    const handleDateFilter = (date) => {
+        setCurrentPage(1);
+        setDateFilter(date);
+        setVisibleCount(INITIAL_VISIBLE_COUNT)
+    };
+
+    const handleLoadMore = () => {
+        setVisibleCount(prev => prev + 6);
+        setShowMoreLess(true);
+    };
+
+    const handleShowLess = () => {
+        setVisibleCount(INITIAL_VISIBLE_COUNT);
+        setShowMoreLess(true);
+    };
+
+    const handleStatusFilter = (newFilter) => {
+        setStatusFilter(newFilter);
+        setVisibleCount(INITIAL_VISIBLE_COUNT); // reset count
+    };
+
+    const handleSearch = (query) => {
+        setSearchTerm(query);
+        setVisibleCount(INITIAL_VISIBLE_COUNT); // reset count
+    };
+
+    const exportHeaders = [
+        { label: 'Holiday Name', key: (item) => item?.holiday_name || 'N/A' },
+        { label: 'Start Date', key: (item) => formatDate(item?.from_date) || 'N/A' },
+        { label: 'End Date', key: (item) => formatDate(item?.to_date) || 'N/A' },
+        { label: 'Day', key: (item) => item?.duration || 'N/A' },
+        { label: 'Description', key: (item) => item?.description || 'N/A' },
+    ];
+
+    const handleImportRow = async (row) => {
+        const payload = {
+            holiday_name: row['Holiday Name'],
+            from_date: row['Start Date'],
+            to_date: row['End Date'],
+            duration: row['Day'],
+            description: row['Description'],
+        };
+        // return dispatch(createNewHoliday(payload));
+    };
+
+    const dummData = Array.from({ length: 7 }, (_, i) => ({
+        id: i,
+        name: "",
+        email: "",
+        mobile_no: " ",
+        department: "",
+        status: " "
+    }));
+
+    // ❗ 2 new loding
+    const ListData = (holidaysLoading && (!showMoreLess || holidayList?.length === 0)) ? dummData : holidayList;
+
+
+
+    return (
+        <div className="holidayListMain">
+            <div className="employee-dashboard-list job_list jobListMain">
+                <div className="dashboard-sticky-header">
+                    <header className="top-header">
+                        <div className="header-left">
+                            {/* <button className="header-icon-btn"><img src={userlistsvg} /></button> */}
+                            <div>
+                                <h1>All Holiday list
+                                    <span className="total-count"> <TrendingUp size={16} className="TrendingUp" />
+                                        {metaData?.all}</span>
+                                </h1>
+                                <p>See all holiday list below</p>
+                            </div>
+                        </div>
+                        <div className="header-right header_rightMain">
+                            <div className="toolbar">
+                                <SearchBox
+                                    onSearch={handleSearch}
+                                    placeholder="Search Holiday..."
+                                    ref={searchBoxRef}
+                                />
+                                <div className="toolbar-actions">
+                                    <DatePicker
+                                        label=""
+                                        onDateChange={handleDateFilter}
+                                        initialDate={dateFilter}
+                                    />
+                                </div>
+                            </div>
+                          <ExportList
+                            data={holidayList}
+                            headers={exportHeaders}
+                            filename="holidays.csv"
+                        />
+                        </div>
+                    </header>
+                </div>
+
+                <main className="dashboard-content">
+                    <>
+                        <aside className="filters-sidebar">
+                            <div>
+                                <ul>
+                                    {holidayStatusOptions?.map(status => {
+                                        const Icon = status?.icon || SquareMenu; // fallback icon
+                                        let count = 0;
+                                        if (status?.label === "All") {
+                                            count = metaData?.all ?? 0;
+                                        } else {
+                                            count = metaData?.[status?.label?.toLowerCase()?.replace(" ", "")] ?? 0;
+                                        }
+                                        return (
+                                            <li
+                                                key={status?.id}
+                                                className={statusFilter === status?.id ? "active" : ""}
+                                                onClick={() => handleStatusFilter(status?.id)}
+                                            >
+                                                <div className="status-label">
+                                                    <Icon size={16} strokeWidth={1.5} />
+                                                    <span>{status?.label}</span>
+                                                </div>
+                                                <span className="counts">({String(count).padStart(2, '0')})</span>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                                <div className="clearBTN">
+                                    {(statusFilter !== 'All' || dateFilter !== null) && (
+                                        <button className="clear-filters-btn" onClick={resetFilters}>
+                                            <span>
+                                                Clear filter
+                                            </span>
+                                            <X size={14} />
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </aside>
+
+                        {view === 'list' && (
+                            <div className="employee-table-wrapper">
+                                <table className="employee-table emp-t-5">
+                                    <thead>
+                                        <tr>
+                                            <th>Holiday name</th>
+                                            <th>Start date</th>
+                                            <th>End date</th>
+                                            <th>Day</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    {(holidaysLoading || holidayList?.length > 0) ? (
+                                        <tbody className={`${holidaysLoading && !showMoreLess ? 'LoadingList' : ''}`}>
+                                            {ListData?.map(item => {
+                                                return (
+                                                    <tr
+                                                        key={item?.id}
+                                                        className="employee-row"
+                                                        onClick={() => navigate(`/holiday-details/${item?.id}`)}
+                                                    >
+                                                        <td className="">
+                                                            <div className="department Semi_Bold loadingtd">{item?.holiday_name}</div>
+                                                        </td>
+                                                        <td className="">
+                                                            <div className="department loadingtd">{formatDate(item?.from_date)}</div>
+                                                        </td>
+                                                        <td className="">
+                                                            <div className="contact-info loadingtd">
+                                                                <div>{formatDate(item?.to_date)}</div>                                         </div>
+                                                        </td>
+                                                        <td className="">
+                                                            <div className="department loadingtd">{item?.duration}</div>
+                                                        </td>
+                                                        <td className="loadingtd td_2line " style={{ minWidth: '290px' }}>
+
+                                                            <div className="department ">
+                                                                <EllipsisSpan text={item?.description} wordsToShow={21} />
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    ) : (
+                                        <tbody className="table_not_found">
+                                            <tr>
+                                                <td colSpan={4} style={{ textAlign: 'center', paddingLeft: '160px' }}>
+                                                    {(!holidaysLoading && holidayList?.length === 0) && (
+                                                        <ListDataNotFound module="Holiday" handleReset={resetFilters} />
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    )}
+                                </table>
+                                {(!holidaysLoading || showMoreLess) &&
+
+                                    <div className="load-more-container">
+                                        {/* Show More button if not all jobs loaded */}
+                                        {(visibleCount < totalHolidays) && (
+                                            <button onClick={handleLoadMore} className="load-more-btn">
+                                                {(holidaysLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show More"}
+                                            </button>
+                                        )}
+                                        {/* Show Less button if all jobs are loaded */}
+                                        {(visibleCount >= totalHolidays && totalHolidays > INITIAL_VISIBLE_COUNT) && (
+                                            <button onClick={handleShowLess} className="load-more-btn">
+                                                {(holidaysLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show Less"}
+                                            </button>
+                                        )}
+                                    </div>
+                                }
+                            </div>
+                        )}
+                    </>
+                </main>
+
+            </div>
+        </div>
+    )
+}

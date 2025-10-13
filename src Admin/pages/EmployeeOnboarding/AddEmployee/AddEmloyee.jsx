@@ -1,0 +1,609 @@
+import { useState, useEffect, useRef } from 'react';
+import './AddEmloyee.scss';
+import BasicDetailsForm from './BasicDetailsForm';
+import ContactsForm from './ContactsForm.jsx';
+import ExperienceForm from './ExperienceForm.jsx';
+import EducationForm from './EducationForm.jsx';
+import DocumentsForm from './DocumentsForm.jsx';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getEmployeeDetails } from '../../../Redux/Actions/employeeActions.js';
+import dayjs from 'dayjs';
+import { handleFormError } from '../../../utils/helper.js';
+import { BookOpenText, BookUser, Briefcase, Calendar, Files, Folder, List, MapPinHouse, SquarePen, Ticket, Trophy } from 'lucide-react';
+import Tooltips from '../../../utils/common/Tooltip/Tooltips.jsx';
+import RemarksForm from './RemarksForm.jsx';
+import Loader from '../../../utils/common/Loader/Loader.jsx';
+import { getCityList, getStateList } from '../../../Redux/Actions/locationActions.js';
+import { getDepartmentList } from '../../../Redux/Actions/departmentActions.js';
+import { getDesignationList } from '../../../Redux/Actions/designationActions.js';
+import { getEmployeeList } from '../../../Redux/Actions/employeeActions.js';
+import { getShiftList } from '../../../Redux/Actions/shiftActions.js';
+import AttendanceCalendar from '../Attendance/AttendanceCalendar.jsx';
+import { EmpProject } from '../EmpProject/EmpProject.jsx';
+import { EmpPerformance } from '../Performance/EmpPerformance.jsx';
+import { EmpTickets } from '../EmpTickets/EmpTickets.jsx';
+import { LeaveSummary } from '../../Leave Tracker/Leave/LeaveSummary.jsx';
+import { getWorkLocList } from '../../../Redux/Actions/Settings/organizationActions.js';
+
+const AddEmployee = () => {
+
+    const { id } = useParams();
+    const location = useLocation()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const path = location.pathname
+    const [isEditMode, setIsEditMode] = useState(false);
+
+    const employeeDetails = useSelector((state) => state?.employeeDetails);
+    const employeeDetail = employeeDetails?.data?.result;
+    const userDetail = employeeDetails?.data?.user;
+    const employeeLoading = employeeDetails?.loading || false;
+
+    const formNames = ['Basic Information', 'Address', 'Experience', 'Education', 'Documents', 'Remarks'];
+    let navItems = [
+        { name: 'Basic Information', icon: BookUser },
+        { name: 'Address', icon: MapPinHouse },
+        { name: 'Experience', icon: Briefcase },
+        { name: 'Education', icon: BookOpenText },
+        { name: 'Documents', icon: Files },
+        { name: 'Remarks', icon: SquarePen },
+    ];
+
+    if (!isEditMode) {
+        navItems = [
+            ...navItems,
+            { name: 'Attendance', icon: List },
+            { name: 'Leaves', icon: Calendar },
+            { name: 'Performance', icon: Trophy },
+            { name: 'Projects', icon: Folder },
+            { name: 'Tickets', icon: Ticket },
+        ];
+    }
+
+    const [activeFormIndex, setActiveFormIndex] = useState(0);
+    const [filledForms, setFilledForms] = useState({
+        'Basic Information': false,
+        'Address': false,
+        'Experience': false,
+        'Education': false,
+        'Documents': false,
+        'Remarks': false,
+        'Attendance': false,
+        'Leaves': false,
+        'Performance': false,
+        'Projects': false,
+        'Tickets': false,
+    });
+
+    const [errors, setErrors] = useState({
+        basicDetails: {},
+        contactDetails: {},
+        educationDetails: {},
+        experienceDetails: {},
+        documentDetails: {},
+        remarksDetails: {},
+        AttendanceDetails: {},
+    });
+
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        display_name: '',
+        email: '',
+        mobile_no: '',
+        pan: '',
+        date_of_birth: '',
+        age: '',
+        marital: '',
+        gender: '',
+        joining_date: '',
+        designation_id: '',
+        password: '',
+        user_expiry_date: dayjs().format('DD-MM-YYYY'),
+        shift_id: '',
+        role: '',
+        department_id: '',
+        reporting_manager_id: '',
+        date_of_exit: '',
+        job_location_id: '',
+        work_location_id: '',
+        differently_abled_type: '',
+        is_metro: '',
+        employment_type: '',
+        employee_status: 1,
+        source_of_hire: '',
+        image: "", //
+        // experience: '',
+        contact_name: '',
+        emergency_contact_no: '',
+        personal_email_id: '',
+        employee_relation: '',
+        contacts: [
+            {
+                address_type: "Present",
+                street_1: '',
+                street_2: '',
+                zip_code: '',
+                city_id: '',
+                city_name: '',
+                state_id: '',
+                state_name: '',
+                country_id: '',
+                country_name: '',
+                personal_contact_no: '',
+                emergency_contact_no: '',
+                personal_email_id: '',
+                is_present_address: "1"
+            },
+            {
+                address_type: "Permanent",
+                street_1: '',
+                street_2: '',
+                zip_code: '',
+                city_id: '',
+                city_name: '',
+                state_id: '',
+                state_name: '',
+                country_id: '',
+                country_name: '',
+                personal_contact_no: '',
+                emergency_contact_no: '',
+                personal_email_id: '',
+                is_present_address: "0"
+            }
+        ],
+        experiences: [],
+        educations: [],
+        documents: [],
+        remarks: []
+    }
+    );
+
+    // Fetch data based on current state
+    const fetchDepartments = (search = "") => {
+        const sendData = { status: 1 };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getDepartmentList(sendData));
+    };
+
+    const fetchDesignation = (search = "") => {
+        const sendData = { status: 1 };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getDesignationList(sendData));
+    };
+
+    const fetchEmployee = (search = "") => {
+        const sendData = { employee_status: "1,5" };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getEmployeeList(sendData));
+    };
+
+    const fetchShift = (search = "") => {
+        const sendData = { status: 1 };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getShiftList(sendData));
+    };
+
+    const fetchWorkLocation = (search = "") => {
+        const sendData = { status: 1 };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getWorkLocList(sendData));
+    };
+
+    const fetchState = (search = "", id = "") => {
+        const sendData = {
+            country_id: id
+        };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getStateList(sendData));
+    };
+
+    const fetchCity = (search = "", id = "") => {
+        const sendData = {
+            state_id: id,
+        };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getCityList(sendData));
+    };
+
+    const handleSearch = (query, type, id = "") => {
+        if (type === "department_id") fetchDepartments(query);
+        if (type === "designation_id") fetchDesignation(query);
+        if (type === "employee") fetchEmployee(query);
+        if (type === "shift_id") fetchShift(query);
+        if (type === "work_location_id") fetchWorkLocation(query);
+    };
+
+    useEffect(() => {
+        if (path.includes("edit-employee") || path.includes("add-employee")) {
+            fetchDepartments();
+            fetchDesignation();
+            fetchEmployee();
+            fetchShift();
+            fetchWorkLocation();
+        }
+    }, [location.pathname]);
+
+    useEffect(() => {
+        if (id && employeeDetail?.user_id != id) {
+            dispatch(getEmployeeDetails({ id }));
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (id && employeeDetail) {
+            // Extract only the necessary fields from contacts
+            const filteredContacts = (employeeDetail?.contacts?.length > 0) ? employeeDetail?.contacts?.map((item) => ({
+                id: item?.id,
+                address_type: item?.address_type,
+                street_1: item?.street_1 ? item?.street_1 : '',
+                street_2: item?.street_2 ? item?.street_2 : '',
+                zip_code: item?.zip_code ? item?.zip_code : '',
+                city_id: item?.city ? item?.city?.id : '',
+                city_name: item?.city ? item?.city?.name : '',
+                state_id: item?.state ? item?.state?.id : '',
+                state_name: item?.state ? item?.state?.name : '',
+                country_id: item?.country ? item?.country?.id : '',
+                country_name: item?.country ? item?.country?.name : '',
+                personal_contact_no: item?.personal_contact_no ? item?.personal_contact_no : "",
+                emergency_contact_no: item?.emergency_contact_no ? item?.emergency_contact_no : "",
+                personal_email_id: item?.personal_email_id ? item?.personal_email_id : "",
+                is_present_address: item?.is_present_address
+            })) : [
+                {
+                    address_type: "Present",
+                    street_1: '',
+                    street_2: '',
+                    zip_code: '',
+                    city_id: '',
+                    city_name: '',
+                    state_id: '',
+                    state_name: '',
+                    country_id: '',
+                    country_name: '',
+                    personal_contact_no: '',
+                    emergency_contact_no: '',
+                    personal_email_id: '',
+                    is_present_address: "1"
+                },
+                {
+                    address_type: "Permanent",
+                    street_1: '',
+                    street_2: '',
+                    zip_code: '',
+                    city_id: '',
+                    city_name: '',
+                    state_id: '',
+                    state_name: '',
+                    country_id: '',
+                    country_name: '',
+                    personal_contact_no: '',
+                    emergency_contact_no: '',
+                    personal_email_id: '',
+                    is_present_address: "0"
+                }
+            ];
+
+            // Extract only the necessary fields from experiences
+            const filteredExperiences = (employeeDetail?.experiences?.length > 0) ? employeeDetail?.experiences?.map((item) => ({
+                id: item?.id,
+                company_name: item?.company_name ? item?.company_name : "",
+                industry: item?.industry ? item?.industry : "",
+                job_title: item?.job_title ? item?.job_title : "",
+                duration: item?.duration ? item?.duration : "",
+                from_date: item?.from_date ? item?.from_date : null,
+                to_date: item?.to_date ? item?.to_date : null,
+                description: item?.description ? item?.description : "",
+                experience_letter: JSON.parse(item?.experience_letter || null),
+            })) : [];
+
+            // Extract only the necessary fields from educations
+            const filteredEducations = (employeeDetail?.educations?.length > 0) ? employeeDetail?.educations?.map((item) => ({
+                id: item?.id,
+                institute_name: item?.institute_name ? item?.institute_name : "",
+                education_level: item?.education_level ? item?.education_level : "",
+                degree: item?.degree ? item?.degree : "",
+                specialization: item?.specialization ? item?.specialization : "",
+                certificate_attachment: JSON.parse(item?.certificate_attachment || null),
+                date_of_completion: item?.date_of_completion ? item?.date_of_completion : "",
+                from_date: item?.from_date,
+                to_date: item?.to_date
+            })) :
+                [];
+
+            // Extract only the necessary fields from documents
+            const filteredDocuments = (employeeDetail?.documents?.length > 0) ? employeeDetail?.documents?.map((item) => ({
+                id: item?.id,
+                document_type: item?.document_type ? item?.document_type : "",
+                document_no: item?.document_no ? item?.document_no : "",
+                expiry_date: item?.expiry_date ? item?.expiry_date : "",
+                issued_date: item?.issued_date ? item?.issued_date : "",
+                front_side_attachment: JSON.parse(item?.front_side_attachment || null),
+                back_side_attachment: JSON.parse(item?.back_side_attachment || null)
+            })) : [];
+
+            // Extract only the necessary fields from remarks
+            const filteredRemarks = (employeeDetail?.remarks?.length > 0) ? employeeDetail?.remarks?.map((item) => ({
+                id: item?.id,
+                remark_type: item?.remark_type ? item?.remark_type : "",
+                issued_date: item?.issued_date ? item?.issued_date : "",
+                description: item?.description ? item?.description : "",
+                remark_attachment: JSON.parse(item?.remark_attachment || null),
+            })) : [];
+
+            // const employeeImage =  JSON?.parse(employeeDetail?.image);
+            const employeeImage = employeeDetail?.image
+                ? (() => {
+                    try {
+                        return JSON?.parse(employeeDetail.image);
+                    } catch {
+                        return employeeDetail.image;
+                    }
+                })()
+                : "";
+
+            const work_location = employeeDetail?.work_location
+                ? {
+                    id: employeeDetail?.work_location?.id,
+                    label: `${employeeDetail?.work_location?.work_location_name} (${[
+                            employeeDetail?.work_location?.street_address1,
+                            employeeDetail?.work_location?.street_address2 || null,
+                            employeeDetail?.city || null,
+                            employeeDetail?.state,
+                            employeeDetail?.zip_code ? `-${employeeDetail.zip_code}` : null,
+                        ]
+                            .filter(Boolean) // removes null/undefined/empty
+                            .join(", ")
+                        })`,
+                }
+                : "";
+
+            setFormData((prev) => ({
+                ...prev,
+                first_name: employeeDetail?.first_name ? employeeDetail?.first_name : "",
+                last_name: employeeDetail?.last_name ? employeeDetail?.last_name : "",
+                display_name: employeeDetail?.display_name ? employeeDetail?.display_name : "",
+                // password: userDetail?.password,
+                // user_expiry_date: userDetail?.user_expiry_date,
+                email: employeeDetail?.email,
+                mobile_no: employeeDetail?.mobile_no ? employeeDetail?.mobile_no : "",
+                pan: employeeDetail?.pan ? employeeDetail?.pan : "",
+                date_of_birth: employeeDetail?.date_of_birth ? employeeDetail?.date_of_birth : "",
+                age: employeeDetail?.age ? employeeDetail?.age : "",
+                marital: employeeDetail?.marital ? employeeDetail?.marital : "",
+                gender: employeeDetail?.gender ? employeeDetail?.gender : "",
+                joining_date: employeeDetail?.joining_date ? employeeDetail?.joining_date : null,
+                designation_id: employeeDetail?.designation?.id ? employeeDetail?.designation?.id : "",
+                designation_name: employeeDetail?.designation?.designation_name ?? "",
+                shift_id: employeeDetail?.shift_id ? employeeDetail?.shift_id : "",
+                shift_name: employeeDetail?.shift?.shift_name ?? "",
+                job_location_id: employeeDetail?.job_location_id ? employeeDetail?.job_location_id : "",
+                work_location_id: employeeDetail?.work_location_id ? employeeDetail?.work_location_id : "",
+                work_location: work_location?.label,
+                role: employeeDetail?.role ? employeeDetail?.role : '',
+                department_id: employeeDetail?.department?.id ? employeeDetail?.department?.id : "",
+                department_name: employeeDetail?.department?.department_name ?? "",
+                reporting_manager_id: employeeDetail?.reporting_manager_id ? employeeDetail?.reporting_manager_id : "",
+                date_of_exit: employeeDetail?.date_of_exit ? employeeDetail?.date_of_exit : "",
+                employment_type: employeeDetail?.employment_type ? employeeDetail?.employment_type : "",
+                employee_status: employeeDetail?.employee_status ? employeeDetail?.employee_status : "",
+                source_of_hire: employeeDetail?.source_of_hire ? employeeDetail?.source_of_hire : "",
+                differently_abled_type: employeeDetail?.differently_abled_type ? employeeDetail?.differently_abled_type : "",
+                is_metro: employeeDetail?.is_metro ? employeeDetail?.is_metro : "",
+                contact_name: employeeDetail?.contact_name ? employeeDetail?.contact_name : "",
+                emergency_contact_no: employeeDetail?.emergency_contact_no ? employeeDetail?.emergency_contact_no : "",
+                personal_email_id: employeeDetail?.personal_email_id ? employeeDetail?.personal_email_id : "",
+                employee_relation: employeeDetail?.employee_relation ? employeeDetail?.employee_relation : "",
+                image: employeeImage,
+                // experience: employeeDetail?.experience,
+                contacts: filteredContacts,
+                experiences: filteredExperiences,
+                educations: filteredEducations,
+                documents: filteredDocuments,
+                remarks: filteredRemarks
+            }))
+        }
+    }, [employeeDetail]);
+
+    // Function to validate fields in the active tab
+    const validateTab = (tabName) => {
+        let newErrors = {};
+        const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/i;
+
+        for (let i = 0; i < requiredFields[tabName]?.length; i++) {
+            const field = requiredFields[tabName][i];
+            let hasError = !field.value || !field.value.toString().trim();
+
+            // If it's PAN and non-empty, validate format
+            if (
+                field.key === "pan" &&
+                field.value &&
+                !PAN_REGEX.test(field.value.toString().toUpperCase())
+            ) {
+                hasError = true;
+            }
+            newErrors[field.key] = hasError;
+        }
+
+        // Update errors state
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [tabName.replace(/\s(.)/g, (match) => match.toUpperCase()).replace(/\s/g, "").replace(/^./, str => str.toLowerCase())]: newErrors
+        }));
+
+        for (let i = 0; i < requiredFields[tabName].length; i++) {
+            const field = requiredFields[tabName][i];
+            const hasError = newErrors[field.key];
+            if (hasError) {
+                handleFormError(field.ref);
+                field.ref?.current?.focus();
+                return Object.values(newErrors).some((val) => val); // Stop execution
+            }
+        }
+        return Object.values(newErrors).some((val) => val);
+    };
+
+    const handleNext = () => {
+        window.scrollTo(0, 0);
+        const currentForm = formNames[activeFormIndex];
+        const hasErrors = validateTab(currentForm);
+
+        if (!hasErrors) {
+            setFilledForms((prevState) => ({
+                ...prevState,
+                [currentForm]: true,
+            }));
+            if (activeFormIndex < formNames.length - 1) {
+                setActiveFormIndex(activeFormIndex + 1);
+            }
+        }
+    };
+    const formRef = useRef(null);
+
+    useEffect(() => {
+        formRef.current?.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }, [activeFormIndex]);
+
+    const handlePrev = () => {
+        window.scrollTo(0, 0);
+        const currentForm = formNames[activeFormIndex];
+
+        setFilledForms((prevState) => ({
+            ...prevState,
+            [currentForm]: false,   // 🔹 Unfill when going back
+        }));
+
+        if (activeFormIndex > 0) {
+            setActiveFormIndex(activeFormIndex - 1);
+        }
+    };
+
+    // emplyee details
+    // const showDropDown = location.pathname.includes('employee-details') && !isEditMode;
+    useEffect(() => {
+        if (path.includes("edit-employee") || path.includes("add-employee")) {
+            setIsEditMode(true);
+        } else if (path.includes("employee-details")) {
+            setIsEditMode(false);
+        }
+    }, [path]);
+
+    const isEditPage = location.pathname.includes("edit-employee");
+
+    return (
+        <>
+            <button onClick={() => navigate(`${isEditPage ? `/employee-details/${id}` : '/employee-list'}`)} className="close_nav header_close">Close</button>
+            {employeeLoading ? (
+                <Loader />
+            ) : (
+                <div className='form_page_'>
+                    <div className="top-bar">
+                        <div className='left' style={{ marginLeft: '-17px' }}>
+                            <h2 >{path.includes("employee-details") ? "Employee Details" : path.includes("edit-employee") ? "Edit Employee Details" : "Add New Employee"}</h2>
+                            {/* <h2>{id ? "Edit Employee Details" : "Add new Employee Details"}</h2> */}
+                            {/* <p>Please fill out your employee details below.</p> */}
+                        </div>
+                        <Tooltips
+                            title="Close Form"
+                            placement="bottom"
+                            arrow={true}
+                        >
+                            {/* <Link to={id ? `/employee-details/${id}` : "/employee-list"} className="close_nav">
+                                <CircleX size={24} strokeWidth={1.25} />
+                            </Link> */}
+                        </Tooltips>
+                    </div>
+                    <div className="employee-form" ref={formRef}>
+                        <div className='employee_form_header'>
+                            <div className='header_emp'>
+                                <div className="navbar-container"> {/* Ek wrapper div add karein */}
+                                    <div className="navbar-items">
+                                        {navItems.map((item, index) => {
+                                            // Logic to determine if a tab should be clickable
+                                            const isFirstTab = index === 0;
+
+                                            // ✅ First tab always clickable
+                                            const isClickable = isFirstTab || Boolean(id);
+
+                                            return (
+                                                <span
+                                                    key={index}
+                                                    className={`${index === activeFormIndex ? 'active' : ''} ${filledForms[item.name] ? 'filled' : ''} ${!isClickable ? 'disabled' : ''}`}
+                                                    onClick={() => {
+                                                        if (isClickable) setActiveFormIndex(index);
+                                                    }}
+                                                >
+                                                    <item.icon size={20} strokeWidth={1.5} /> {/* Icon render karein */}
+                                                    <p>{item.name}</p> {/* Text render karein */}
+                                                </span>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                                {/* <Stepper
+                                    steps={steps}
+                                    activeIndex={activeFormIndex}
+                                    onStepClick={setActiveFormIndex}
+                                    filledForms={filledForms}
+                                /> */}
+                            </div>
+                        </div>
+
+                        <div className={` ${activeFormIndex === 0 ? 'BasicDetailsForm' : 'form-content'}`}>
+                            <div className={`  ${!isEditPage && isEditPage && activeFormIndex === 5 || activeFormIndex === 10 || activeFormIndex === 9 || activeFormIndex === 8 || activeFormIndex === 7 ? '' : 'form_box'}  ${!isEditMode && activeFormIndex === formNames?.length ? 'form_box_formNames' : ''}`}>
+                                <form onSubmit={(e) => e.preventDefault()}>
+
+                                    {activeFormIndex === 0 && <BasicDetailsForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} handleSearch={handleSearch} isEditPage={isEditPage} />}
+                                    {activeFormIndex === 1 && <ContactsForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} handleSearch={handleSearch} handleState={fetchState} handleCity={fetchCity} isEditPage={isEditPage} />}
+                                    {activeFormIndex === 2 && <ExperienceForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
+                                    {activeFormIndex === 3 && <EducationForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
+                                    {activeFormIndex === 4 && <DocumentsForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
+                                    {activeFormIndex === 5 && <RemarksForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
+                                    {activeFormIndex === 6 && <AttendanceCalendar />}
+                                    {activeFormIndex === 7 && <LeaveSummary emp_id={id} />}
+                                    {activeFormIndex === 8 && <EmpPerformance />}
+                                    {activeFormIndex === 9 && <EmpProject />}
+                                    {activeFormIndex === 10 && <EmpTickets />}
+                                    {/* {isEditMode &&
+                                        <div className='submit-button-container'>
+                                            <SubmitButton
+                                                loading={createUpdateEmployee?.loading}
+                                                activeFormIndex={activeFormIndex}
+                                                navigate={id ? `/employee-details/${id}` : "/employee-list"}
+                                                nextSubmit={handleNext}
+                                                prevSubmit={handlePrev}
+                                                showNext={true}
+                                                id={id}
+                                                totalSteps={formNames?.length}   // 🔹 Pass total steps dynamically
+                                            />
+                                        </div>
+                                    } */}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
+};
+
+export default AddEmployee;

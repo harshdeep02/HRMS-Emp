@@ -1,0 +1,130 @@
+.masterPopUpMain {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 999;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	border: 1px solid #e8e8e8;
+	width: 711px;
+	height: 402px;
+	border-radius: 16px;
+}
+
+.masterPopupHead {
+	padding: 24px 50px;
+}
+
+.masterPopHeadTxt1 {
+	font-size: 20px;
+	font-weight: 500;
+	color: #0f0f0f;
+}
+
+.masterPopHeadTxt2 {
+	padding-top: 4px;
+	font-size: 14px;
+	font-weight: 400;
+	color: #1c1c1c;
+}
+
+.masterPopRowLeft {
+	display: flex;
+	align-items: center;
+	width: 150px;
+	gap: 10px;
+}
+
+.degPopRow {
+}
+
+.masterPopRow {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.masterPopRowLeftIcon {
+	color: #a448ee;
+	display: flex;
+}
+
+.masterPopRowLeftText {
+	font-size: 15px;
+	font-weight: 400;
+	color: #1c1c1c;
+}
+
+.masterPopRowRight {
+	width: 447px;
+    cursor: not-allowed;
+}
+
+.masterPopRowRight > div {
+	width: 100%;
+	border: 1px solid #f1f1f1;
+	background: #d7d7d7;
+	outline: none;
+	padding: 10px 15px;
+	border-radius: 6px;
+	font-weight: 500;
+	font-size: 15px;
+	font-family: "Inter";
+}
+
+.masterPopupBody {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 0 50px;
+}
+
+.masterPopRowRight textarea {
+	resize: none;
+	height: 92px;
+	width: 100%;
+	border: 1px solid #f1f1f1;
+	outline: none;
+	padding: 10px 15px;
+	font-weight: 400;
+	font-size: 15px;
+	font-family: "Inter";
+	color: #000;
+	border-radius: 6px;
+}
+
+.masterPopupOverlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: 999;
+}
+
+.masterPopupFooter {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 68px 55px 24px 81px;
+}
+
+.masterpopupFooterCancelBtn {
+	cursor: pointer;
+	padding: 11px 55px;
+	border: 1px solid #e8e8e8;
+	font-size: 14px;
+	font-weight: 400;
+	color: #1c1c1c;
+	border-radius: 6px;
+}
+
+.masterpopupFooterAddBtn {
+	cursor: pointer;
+	padding: 11px 82px;
+	border: 1px solid #e8e8e8;
+	font-size: 14px;
+	font-weight: 500;
+	color: #fff;
+	background: #23963b;
+	border-radius: 6px;
+}

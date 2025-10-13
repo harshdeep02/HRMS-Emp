@@ -1,0 +1,80 @@
+.holidayDetailsMain .form-group-date {
+    // gap: 30px;
+    // border: 1px solid red;
+}
+
+.holidayDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group textarea {
+    height :130px;
+     font-size: 15px;
+    font-weight: 400;
+    color: #000000;
+    padding: 10px 22px;
+    line-height: 21px;
+    font-family: 'Inter';
+}
+
+.holidayDetailsMain .mandat {
+     margin-left: 0; 
+}
+
+.holidayDetailsMain .grupdate2 svg{
+    color: #A448EE;
+    stroke-width: 1.5;
+}
+
+.holidayDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-subtitle {
+    font-size: 13px;
+    color: #A448EE;
+    font-weight: 400;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+.holidayDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-cover-section {
+    margin-bottom: 0;
+}
+
+.holidayDetailsMain .title__show__d {
+    font-size: 16px;
+    font-weight: 500;
+    color: #141414;
+    padding: 0 10px;
+    line-height: 21px;
+    font-family: 'Inter';
+}
+
+.holidayDetailsMain > div.dept-page-container > div > div.dept-page-right-panel > div.dept-page-basic-info-section > div:nth-child(6){
+    align-items: flex-start;
+}
+
+.holidayDetailsMain > div.dept-page-container > div > div.dept-page-right-panel > div.dept-page-basic-info-section > div:nth-child(6) .dept-page-icon-wrapper,
+.holidayDetailsMain > div.dept-page-container > div > div.dept-page-right-panel > div.dept-page-basic-info-section > div:nth-child(6) label{
+    padding-top:10px ;
+}
+
+
+.holidayDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group {
+    margin-bottom: 14px;
+}
+.holidayDetailsMain .dept-page-input-group input:disabled,
+.holidayDetailsMain .dept-page-input-group textarea:disabled  {
+    background-color: #fff;
+}
+
+.holidayDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group label.redCol {
+    color: #DA4019;
+}
+
+.holidayDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-action-btn {
+    padding: 12px 68px;
+}
+
+.holidayDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-action-btn.resizeBtn {
+   padding: 12px 56px;
+}
+
+.holidayDetailsMain .disableBackground input,
+.holidayDetailsMain .disableBackground .popHoloday,  
+.holidayDetailsMain .disableBackground textarea{
+    background-color: #F5F5F5;
+}

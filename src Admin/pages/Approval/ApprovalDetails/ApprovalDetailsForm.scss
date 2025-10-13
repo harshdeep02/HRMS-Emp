@@ -1,0 +1,27 @@
+.approvedHeadWrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.approvalHeadRight {
+    display: flex;
+    gap: 16px;
+}
+
+.approvalHeadRight button.approvedBtn,  .approvalHeadRight button.declined {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border-radius: 50px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.performanceDetailMainHead .dropdown-trigger.status_dropdown{
+    cursor: default;
+}

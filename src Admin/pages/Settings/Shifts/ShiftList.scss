@@ -1,0 +1,27 @@
+.settingShiftListMain{
+    .headerUpper{
+        display: block;
+    .header-left{
+        display:block;
+         border-bottom: 1px solid #E8E8E8;
+    }
+    .headerTopH1{
+    display: block;
+    padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    .headerTextBottom{
+    padding-bottom: 36px;
+    }
+    }
+
+    .add-dp-org-btn {
+        height: auto;
+        width: auto;
+        padding: 10px 16px;
+}
+
+.decTabHeight{
+    max-height: calc(100vh - 340px);
+}
+}

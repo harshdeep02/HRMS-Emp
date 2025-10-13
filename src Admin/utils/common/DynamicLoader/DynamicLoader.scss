@@ -1,0 +1,568 @@
+.applicants-loader {
+	display: flex;
+	width: 100%;
+	gap: 13px;
+	padding: 20px 27px 20px 27px;
+	height: calc(100vh - 105px);
+}
+.one-actve {
+	padding: 0 !important;
+	height: 100% !important;
+}
+/* Sidebar */
+.sidebarS {
+	width: 200px;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+
+	.title {
+		margin: 7px 0 6px 0;
+		width: 45%;
+		height: 18px;
+	}
+
+	.option {
+		margin-bottom: 9px;
+		width: 70%;
+		height: 14px;
+
+		&.incWid {
+			width: 82%;
+		}
+
+		&.mt {
+			margin-top: 2px;
+		}
+
+		&.newopt {
+			display: block; // override per list type
+		}
+	}
+
+	.stat {
+		width: 90%;
+		height: 25px;
+		border-radius: 10px;
+
+		&.adSpace {
+			margin-top: 63px;
+		}
+	}
+}
+
+/* Skeleton Effect */
+.skeleton {
+	background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s infinite;
+	border-radius: 6px;
+
+	&.fullWid {
+		width: 90%;
+		margin-bottom: 0;
+	}
+
+	&.inchight {
+		height: 18px;
+	}
+
+	&.mt.inchight {
+		margin-top: 15px;
+	}
+
+	&.lineS {
+		height: 12px;
+
+		&.short {
+			width: 55%;
+		}
+
+		&.medium {
+			width: 70%;
+			// height: 26px;
+		}
+
+		&.long {
+			width: 100%;
+			margin-left: 6px;
+		}
+	}
+
+	&.avatar {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		margin-right: 8px;
+	}
+
+	&.avatar-big {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+	}
+
+	&.badge {
+		height: 32px;
+		width: 125px;
+		border-radius: 20px;
+
+		&.d_bloack {
+			display: none;
+		}
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+/* Content */
+.contentS {
+	flex: 1;
+
+	&.list-view {
+		display: flex;
+		flex-direction: column;
+
+		.employee-table-wrapper {
+			overflow: auto;
+			// border-radius: 3px;
+
+			// border-bottom: none;
+			// overflow-x: hidden;
+			// padding-bottom: 10px;
+			// scroll-behavior: smooth;
+
+			@media (max-width: 1430px) {
+				// max-height: 77vh;
+			}
+		}
+		.employee-table {
+			border-left: 1px solid var(--border-color);
+			border-right: 1px solid var(--border-color);
+			box-shadow: 2px 2px 7px 0px #0000000d;
+			width: 100%;
+			border-collapse: separate;
+			border-spacing: 0;
+			background-color: var(--bg-primary);
+			border-radius: 3px;
+			overflow: scroll;
+			th,
+			td {
+				padding: 10px 16px;
+				text-align: left;
+			}
+			th {
+				height: 50px;
+				border-top: 1px solid var(--border-color);
+				border-bottom: 1px solid var(--border-color);
+			}
+
+			tbody tr td {
+				vertical-align: middle;
+			}
+			td {
+				height: 76px;
+				border-bottom: 1px solid var(--border-color);
+			}
+			tbody {
+				overflow: scroll;
+			}
+
+			.employee-cards {
+				display: grid;
+				grid-template-columns: 200px 200px 240px 1.5fr;
+				align-items: center;
+				gap: 59px;
+				padding: 17px 16px 17px 33px;
+				border: 1px solid #eee;
+			}
+		}
+		// .emp-t-4 {
+		// 	tbody {
+		// 		td:nth-child(1) {
+		// 			min-width: 240px;
+		// 			max-width: 240px;
+		// 			padding-left: 35px;
+		// 		}
+		// 		td:nth-child(2) {
+		// 			min-width: 200px;
+		// 			max-width: 200px;
+		// 		}
+		// 		td:nth-child(3) {
+		// 			min-width: 250px;
+		// 			max-width: 250px;
+		// 		}
+		// 		td:nth-child(4) {
+		// 			min-width: 200px;
+		// 			max-width: 200px;
+		// 		}
+		// 		td:last-child {
+		// 			padding-right: 35px;
+		// 		}
+		// 	}
+		// 	thead {
+		// 		th:nth-child(1) {
+		// 			padding-left: 35px;
+		// 		}
+		// 		th:last-child {
+		// 			padding-right: 35px;
+		// 		}
+		// 	}
+		// }
+		// .emp-t-3 {
+		// 	tbody {
+		// 		td:nth-child(1) {
+		// 			min-width: 240px;
+		// 			max-width: 240px;
+		// 			padding-left: 35px;
+		// 		}
+		// 		td:nth-child(2) {
+		// 			min-width: 200px;
+		// 			max-width: 200px;
+		// 		}
+
+		// 		td:nth-child(3) {
+		// 			min-width: 200px;
+		// 			max-width: 200px;
+		// 			// padding-right: 35px;
+		// 			border: 1px sienna red !important;
+		// 		}
+		// 	}
+		// 	thead {
+		// 		th:nth-child(1) {
+		// 			padding-left: 35px;
+		// 		}
+		// 		th:last-child {
+		// 			padding-right: 35px;
+		// 		}
+		// 	}
+		// }
+		// .emp-a-4 {
+		// 	tbody {
+		// 		td:nth-child(1) {
+		// 			min-width: 240px;
+		// 			max-width: 240px;
+		// 			padding-left: 35px;
+		// 		}
+		// 		td:nth-child(2) {
+		// 			min-width: 200px;
+		// 			max-width: 200px;
+		// 		}
+		// 		td:nth-child(3) {
+		// 			min-width: 250px;
+		// 			max-width: 250px;
+		// 		}
+		// 		td:nth-child(4) {
+		// 			min-width: 200px;
+		// 			max-width: 200px;
+		// 		}
+		// 		td:last-child {
+		// 			border: 1px solid red !important;
+		// 			min-width: 150px;
+		// 			max-width: 150px;
+		// 			padding-right: 35px;
+		// 		}
+		// 	}
+		// 	thead {
+		// 		th:nth-child(1) {
+		// 			padding-left: 35px;
+		// 		}
+		// 		th:last-child {
+		// 			padding-right: 35px;
+		// 		}
+		// 	}
+		// }
+		// .emp-a-5 {
+		// 	tbody {
+		// 		td:nth-child(1) {
+		// 			min-width: 160px;
+		// 			max-width: 160px;
+		// 			padding-left: 15px;
+		// 			padding-right: 10px;
+		// 		}
+		// 		td:nth-child(2) {
+		// 			min-width: 150px;
+		// 			max-width: 150px;
+		// 			padding-right: 10px;
+		// 		}
+		// 		td:nth-child(3) {
+		// 			min-width: 150px;
+		// 			max-width: 150px;
+		// 			padding-right: 10px;
+		// 		}
+		// 		td:nth-child(4) {
+		// 			min-width: 150px;
+		// 			padding-right: 10px;
+		// 			max-width: 150px;
+		// 		}
+		// 		td:last-child {
+		// 			min-width: 100px;
+		// 			padding-left: 10px;
+		// 			padding-right: 15px;
+		// 			height: 32px;
+		// 		}
+		// 	}
+		// 	thead {
+		// 		tr {
+		// 			// width: 100% !important;
+		// 		}
+		// 		th:nth-child(1) {
+		// 			padding-left: 15px;
+		// 			padding-right: 10px;
+		// 		}
+		// 		th:last-child {
+		// 			padding-left: 10px;
+		// 			padding-right: 15px;
+		// 		}
+		// 	}
+		// }
+		// .emp-a-6 {
+		// 	tbody {
+		// 		td:nth-child(1) {
+		// 			min-width: 100px;
+		// 			max-width: 100px;
+		// 			padding-left: 30px;
+		// 		}
+		// 		td:nth-child(2) {
+		// 			min-width: 100px;
+		// 			max-width: 100px;
+		// 		}
+		// 		td:nth-child(3) {
+		// 			min-width: 100px;
+		// 			max-width: 100px;
+		// 		}
+		// 		td:nth-child(4) {
+		// 			min-width: 100px;
+		// 			max-width: 110px;
+		// 		}
+		// 		td:nth-child(5) {
+		// 			min-width: 100px;
+		// 			max-width: 100px;
+		// 		}
+		// 		td:last-child {
+		// 			padding-right: 30px;
+		// 			min-width: 100px;
+		// 			max-width: 100px;
+		// 		}
+		// 	}
+		// 	thead {
+		// 		th:nth-child(1) {
+		// 			padding-left: 30px;
+		// 		}
+		// 		th:last-child {
+		// 			padding-right: 30px;
+		// 		}
+		// 	}
+		// }
+		// .emp-a-6 {
+		// 	tbody {
+		// 		td:nth-child(1) {
+		// 			min-width: 180px;
+		// 			max-width: 180px;
+		// 			padding-left: 30px;
+		// 		}
+		// 		td:nth-child(2) {
+		// 			min-width: 150px;
+		// 			max-width: 150px;
+		// 		}
+		// 		td:nth-child(3) {
+		// 			min-width: 150px;
+		// 			max-width: 150px;
+		// 		}
+		// 		td:nth-child(4) {
+		// 			min-width: 150px;
+		// 			max-width: 150px;
+		// 		}
+		// 		td:nth-child(5) {
+		// 			min-width: 150px;
+		// 			max-width: 150px;
+		// 		}
+		// 		td:last-child {
+		// 			padding-right: 30px;
+		// 		}
+		// 	}
+		// 	thead {
+		// 		th:nth-child(1) {
+		// 			padding-left: 30px;
+		// 		}
+		// 		th:last-child {
+		// 			padding-right: 30px;
+		// 		}
+		// 	}
+		// }
+		.emp-a-4 {
+			tbody {
+				td:nth-child(1) {
+					min-width: 240px;
+					max-width: 240px;
+					padding-left: 35px;
+				}
+				td:nth-child(2) {
+					min-width: 200px;
+					max-width: 200px;
+				}
+				td:nth-child(3) {
+					min-width: 250px;
+					max-width: 250px;
+				}
+			
+				td:last-child {
+					// min-width: 150px;
+					// max-width: 150px;
+					padding-right: 35px;
+				}
+			}
+			thead {
+				th:nth-child(1) {
+					padding-left: 35px;
+				}
+				th:last-child {
+					padding-right: 35px;
+				}
+			}
+		}
+		// .emp-a-3 {
+		// 	tbody {
+		// 		td:nth-child(1) {
+		// 			min-width: 240px;
+		// 			max-width: 240px;
+		// 			padding-left: 35px;
+		// 		}
+		// 		td:nth-child(2) {
+		// 			min-width: 200px;
+		// 			max-width: 200px;
+		// 		}
+
+		// 		td:last-child {
+		// 			padding-right: 35px;
+		// 		}
+		// 	}
+		// 	thead {
+		// 		th:nth-child(1) {
+		// 			padding-left: 35px;
+		// 		}
+		// 		th:last-child {
+		// 			padding-right: 35px;
+		// 		}
+		// 	}
+		// }
+	}
+
+	&.grid-view {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+
+		.employee-cards {
+			padding: 20px;
+			border: 1px solid #eee;
+			border-radius: 12px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 12px;
+		}
+	}
+}
+
+/* Emp nth overrides */
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+}
+
+.lineS.long {
+	width: 75%; // ya jitna space chahiye
+	height: 12px;
+}
+
+.empnth1 {
+	min-width: 240px;
+	max-width: 240px;
+	display: flex;
+	align-items: center;
+}
+
+.departmentLoding{
+	
+}
+// .empnth2 {
+// 	min-width: 200px;
+// 	max-width: 200px;
+// }
+
+// .empnth3 {
+// 	min-width: 250px;
+// 	max-width: 250px;
+// }
+
+// .empnth4 {
+// 	min-width: 200px;
+// 	max-width: 200px;
+// 	padding-right: 35px;
+// }
+
+.jobListMain .avatar {
+	display: none;
+}
+.jobListMain .contentS.list-view .emp-t-4 tbody td:nth-child(1) {
+	min-width: 225px;
+	max-width: 225px;
+	padding-left: 35px;
+}
+
+.jobListMain .skeleton.lineS.short {
+	width: 70%;
+}
+
+.jobListMain .contentS.list-view .employee-table tbody td {
+	// padding: 31px 16px;
+}
+
+.jobListMain .sidebarS {
+	gap: 13px;
+}
+.jobListMain .option.newopt {
+	display: block;
+	display: none;
+}
+.jobListMain .sidebarS .stat.adSpace {
+	margin-top: 78px;
+	height: 17px;
+}
+.jobListMain .skeleton.inchight {
+	margin-bottom: 6px;
+	height: 12px;
+}
+.jobListMain aside > div:nth-child(10) {
+	margin-bottom: 9px;
+	height: 12px;
+}
+
+.jobListMain aside > div:nth-child(11) {
+	display: none;
+}
+
+// applicant list
+
+.app_List .applicants-loader > aside > div:nth-child(8),
+.app_List .applicants-loader > aside > div:nth-child(9),
+.app_List .applicants-loader > aside > div:nth-child(10),
+.app_List .applicants-loader > aside > div:nth-child(11),
+.app_List .applicants-loader > aside > div:nth-child(12),
+.app_List .applicants-loader > aside > div:nth-child(13) {
+	display: none;
+}
+.app_List .sidebarS {
+	gap: 13px;
+}

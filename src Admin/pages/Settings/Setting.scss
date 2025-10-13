@@ -1,0 +1,222 @@
+.settingHeaderMain {padding: 19px 20px;display: flex;flex-direction: column;gap: 32px;background: #F6F8F9;border: 1px solid #E9E9E9;border-radius: 12px;}
+
+.settingHeaderupper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.settingIcon {
+    display: flex;
+}
+
+.settingText {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.settingSection {
+    // padding: 16px 20px;
+    height: calc(100vh - 22px);
+      scrollbar-width: none;
+     overflow: auto; 
+      -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
+}
+
+.settingHeaderBottom {
+    display: flex;
+    align-items: center;
+    max-width: 840px;
+    gap: 9px;
+    background: #FFFFFF;
+    padding: 15px 20px;
+    border-radius: 9px;
+    border: 0.5px solid #D0D5DD;
+ 
+}
+
+.settingHeaderBottom svg {
+    color: #48494C;
+}
+
+.settingHeaderBottom input {
+    outline: none;
+    border: navajowhite;
+    color: #000;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: 'Inter';
+    width: 100%;
+}
+
+.settingCard {
+    display: flex;
+    align-items: center;
+    padding: 13px 11px;
+    border-radius: 12px;
+    border: 1px solid #E8E8E8;
+    gap: 15px;
+    width: 265px;
+    cursor: pointer;
+}
+
+.cardIcon {
+    display: flex;
+    background: #F5F6F699;
+    border-radius: 10px;
+    height: 130px;
+    width: 130px;
+}
+
+
+.cardIcon svg {
+    stroke-width: 1;
+}.settingHeaderBottom {
+    display: flex;
+    align-items: center;
+    max-width: 840px;
+    gap: 9px;
+    background: #FFFFFF;
+    padding: 15px 20px;
+    border-radius: 9px;
+    border: 0.5px solid #D0D5DD;
+}
+
+.settingHeaderBottom svg {
+    color: #48494C;
+}
+
+.settingHeaderBottom input {
+    outline: none;
+    border: navajowhite;
+    color: #000;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Inter';
+    width: 100%;
+}
+
+
+.settingCardSectionMain {
+    padding: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.settingCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 20px;
+    border-radius: 12px;
+    border: 1px solid #E8E8E8;
+    gap: 35px;
+   width: 260px;
+    height: 270px;
+    background: #F8F8F8;
+}
+
+.cardIcon {
+    display: flex;
+    background: #fff;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardText {
+       font-size: 20px;
+    font-weight: 400;
+    color: #0F0F0F;
+
+}
+
+.cardNextIcon {
+    display: flex;
+}
+
+.cardIcon svg {
+    stroke-width: 1;
+}
+
+.settingSection .dashboard-sticky-header {
+    padding: 16px 24px;
+}
+
+.settingSection .top-header .header-left {
+     margin-left: 0;
+}
+
+
+.settingSection .top-header .header-left h1 {
+    font-size: 26px;
+    color: #1C1C1C;
+    font-weight: 500;
+        letter-spacing: 0.8px;
+}
+
+.settingSection .top-header .header-left p {
+    padding: 5px 0;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.settingSection .toolbar .search-box .search-icon {
+    left: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+.settingSection .toolbar .search-box input {
+    font-size: 13px;
+    font-weight: 400;
+    font-family: 'INTER';
+    color: #000;
+        border: 1px solid #D0D5DD;
+}
+
+
+.settingCardBottomMain {
+    display: flex;
+    align-items: end;
+    gap: 35px;
+}
+
+.cardText2 {
+    font-size: 13px;
+    font-weight: 400;
+    color: #676767;
+    padding-top: 5px;
+    text-transform: capitalize;
+}
+
+
+.settingCard:hover {
+    background: #FAF5FD;
+}
+
+.settingCard:hover .cardText {
+    color: #A448EE;
+}
+
+.settingCard:hover .cardText2 {
+    color: #5A2883;
+}
+
+.settingCard:hover .cardIcon svg {
+    fill: #7433A9;
+}
+
+
+.settingSection .cardBodyWrapper .box_main_r {
+    width: 360px;
+    height: 74px;
+}
+
+.settingCardSectionMain {
+    gap: 0px;
+}

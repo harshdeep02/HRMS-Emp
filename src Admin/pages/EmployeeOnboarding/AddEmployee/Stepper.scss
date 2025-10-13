@@ -1,0 +1,96 @@
+.stepper-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.step-block {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  position: relative;
+  flex: 1;
+}
+
+.circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 4px solid #E8E8E8;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  z-index: 2;
+  transition: all 0.3s ease;
+  // background: #000;
+
+  &.completed {
+    border: 4px solid #E8E8E8 !important;
+    background-color: #589E67;
+    color: white;
+  }
+
+  &.active {
+    border-color: #589E67;
+  }
+}
+
+.title {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #2A2A2A;
+  text-align: center;
+  letter-spacing: -0.2px !important;
+  
+  &.active-title {
+    color:#2A2A2A;
+    font-weight: 500;
+  }
+}
+.line {
+  position: absolute;
+  top: 10px; // center align with circle
+  left: 50%;
+  transform: translateX(-40%);
+  width: 100%;
+  height: 7px;
+  background-color: transparent; /* Outer layer transparent */
+  border: 3px solid #E8E8E8; /* Outer grey border */
+  border-radius: 100px;
+  z-index: 1;
+  background: #D9D9D999;
+
+  /* Inner fill */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 100px;
+    background-color: #D9D9D999; /* Default fill grey */
+    width: 0%; /* Start empty, fill later */
+    transition: width 0.3s ease;
+
+  }
+
+  /* Completed step fill */
+  &.completed::before {
+    background-color: #4caf50;
+    width: 100%;
+  }
+
+  /* Active step (half fill) */
+  &.active::before {
+    background: linear-gradient(to right, #4caf50 50%, #D9D9D999 50%);
+    width: 100%;
+  }
+}

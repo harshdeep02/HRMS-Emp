@@ -1,0 +1,83 @@
+/* NavbarForm.scss */
+
+// Optional: Ek wrapper container taki navbar ki width control ki ja sake
+.navbar-container {
+	width: 100%; // Aap apne layout ke hisab se width set karein
+	// padding: 16px;
+	font-family: sans-serif; // Ek accha font-family use karein
+	padding-top: 0;
+	max-width: 230px;
+	min-width: 210px;
+	padding-left: 0;
+}
+
+.navbar-items {
+	display: flex;
+	flex-direction: column;
+	gap: 8px; // Items ke beech me vertical space
+
+	span {
+		display: flex; // Sabse zaroori: icon aur text ko ek line me laane ke liye
+		align-items: center; // Vertically center align karein
+		gap: 7px; // Icon aur text ke beech me space
+		padding: 11px 11px; // Andar se spacing
+		border-radius: 8px; // Rounded corners
+		cursor: pointer;
+		background-color: transparent;
+		color: #1c1c1c;
+		font-weight: 500;
+		font-size: 16px;
+		transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+		// Icon (SVG) ke liye specific styles
+		svg {
+			color: #000;
+			height: 16px;
+			width: 16px; // Default icon color
+		}
+
+		// Text ke liye (optional)
+		p {
+			margin: 0;
+			font-size: 15px;
+			font-weight: 400;
+			font-family: "Inter";
+			color: #1c1c1c;
+		}
+
+		// Active state: Jab item selected ho
+		&.active {
+			background: #f6edfd;
+			color: #1c1c1c;
+			border: 1.5px solid #e8e8e8; // Aapke code se liya gaya border
+
+			// Active state me icon ka color
+			svg {
+				color: #000;
+			}
+
+			p {
+				font-weight: 500;
+			}
+		}
+
+		// Hover state: Jab mouse item ke upar aaye (disabled na ho tab)
+		&:not(.disabled):hover {
+			// background-color: #f5f5f5; // Halki si highlight
+		}
+
+		// Filled state (optional, aapke logic ke hisab se)
+		&.filled {
+			border: 1px solid #e8e8e8;
+			// Isko aap apne hisab se style kar sakte hain, agar zaroorat ho
+			// Example: font-weight: 700;
+		}
+
+		// Disabled state: Jab item clickable na ho
+		&.disabled {
+			pointer-events: none;
+			// opacity: 0.5;
+			cursor: not-allowed;
+		}
+	}
+}

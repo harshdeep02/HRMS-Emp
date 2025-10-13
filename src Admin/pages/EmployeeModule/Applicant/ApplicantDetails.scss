@@ -1,0 +1,105 @@
+// --- Document List Item Styling ---
+
+// The main container for a single document row
+.list-item {
+	display: flex;
+	align-items: center;
+	width: 417px;
+	padding: 12px 8px;
+	border-bottom: 1px dashed #e0e1e6; // The separator line
+	transition: background-color 0.2s ease;
+
+	&:last-child {
+		border-bottom: none; // No line for the last item in a list
+	}
+
+	&:hover {
+		background-color: #fafafa; // Light background on hover
+	}
+
+	// 1. The icon on the far left
+	.item-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0; // Prevents the icon from shrinking
+		width: 44px;
+		height: 44px;
+		background-color: #f0f2f5;
+		border-radius: 8px;
+		margin-right: 16px; // Space between icon and text
+		cursor: pointer;
+
+		img {
+			width: 28px;
+			height: 28px;
+			object-fit: contain;
+		}
+	}
+
+	// 2. The text details in the middle
+	.item-details {
+		flex-grow: 1; // Allows this element to take all available space
+		text-align: left;
+
+		.item-main-title {
+			font-size: 15px;
+			font-weight: 500;
+			color: #2c3e50; // A soft black color
+		}
+
+		.item-sub-title {
+			font-size: 12px;
+			color: #7f8c8d; // A muted gray for the subtitle
+			margin-top: 2px;
+		}
+	}
+
+	// 3. The "View" button on the far right
+	.item-action.view_btn {
+		margin-left: 16px; // Space between text and button
+
+		button {
+			padding: 6px 18px;
+			font-size: 13px;
+			font-weight: 500;
+			color: #34495e;
+			background-color: #ffffff;
+			border: 1px solid #dcdfe4;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background-color: #f5f7fa;
+				border-color: #c0c4cc;
+			}
+		}
+	}
+}
+
+// Styling for the placeholder text when no document is uploaded
+.no-document-text {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 70px;
+	font-size: 14px;
+	color: #909399;
+	background-color: #fcfcfc;
+	border: 1px dashed #e0e1e6;
+	border-radius: 8px;
+}
+
+.dept_uplod {
+	gap: 10px;
+}
+
+.applicantDetailMain .dropdown-content {
+	min-width: 415px;
+}
+
+.applicantDetailMain .form-group-date {
+	// gap: 32px;
+}

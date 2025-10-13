@@ -1,0 +1,108 @@
+/* * =================================
+ * APP GLOBAL STYLES (Updated)
+ * =================================
+*/
+
+// Import Variables
+@use './variables' as *;
+
+// Basic Resets
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter',sans-serif;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    // overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+}
+
+// Main App Layout using CSS Grid
+.app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+    grid-template-rows: var(--header-height) 1fr;
+    grid-template-areas:
+        "sidebar header"
+        "sidebar main";
+    height: calc(100vh - 0px);
+    transition: grid-template-columns var(--transition-speed) ease;
+}
+
+.app-layout.sidebar-expanded {
+    grid-template-columns: var(--sidebar-width-expanded) 1fr;
+}
+
+
+
+
+
+
+
+
+
+// /* ==== Clean Gradient Scrollbar Without Arrows ==== */
+
+// /* Scrollbar width fix */
+// ::-webkit-scrollbar {
+//   width: 1px; 
+//   height: 0px; /* horizontal ke liye */
+// }
+
+// /* Remove top/bottom scroll buttons completely */
+// ::-webkit-scrollbar-button {
+//   display: none;
+//   width: 0;
+//   height: 0;
+// }
+
+// /* Remove track background */
+// ::-webkit-scrollbar-track {
+//   background: #F6EDFD;
+// }
+
+
+// /* Custom gradient thumb */
+// ::-webkit-scrollbar-thumb {
+// //   background: linear-gradient(to bottom, #A448EE, #E3C6FA);
+// //   border-radius: 20px;
+// }
+
+// /* Hover effect (optional) */
+// ::-webkit-scrollbar-thumb:hover {
+// //   background: linear-gradient(to bottom, #8b2edd, #dcb8f5);
+// }
+
+// /* Firefox support */
+// * {
+//   scrollbar-width: thin;
+//   scrollbar-color: #A448EE #F6EDFD;
+// }
+
+
+
+
+
+
+
+
+/* Global disable */
+html, body {
+  -webkit-user-select: none; /* Safari/iOS */
+  -ms-user-select: none;     /* old Edge/IE */
+  user-select: none;         /* Standard */
+  -webkit-touch-callout: none; /* iOS long-press menu off */
+}
+
+/* But allow selection where needed (inputs, code, etc.) */
+input, textarea, .selectable, .copy-ok {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}

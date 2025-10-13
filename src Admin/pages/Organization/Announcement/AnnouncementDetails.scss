@@ -1,0 +1,95 @@
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-edit-btn{
+    border-radius: 6px;
+    padding: 10px 11px;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel {
+    padding: 22px 30px;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-cover-section {
+    padding: 0 16px 16px;
+    margin-bottom: 0;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-edit-btn {
+    padding: 10px 11px;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-subtitle {
+    text-transform: capitalize;
+    font-size: 13px;
+    color:  #A448EE;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section h3 {
+    margin-bottom: 3px;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group .dept-page-icon-wrapper {
+    display: flex;
+    margin-right: 0;
+}
+
+.announcementDetailsMain input:disabled, .announcementDetailsMain textarea:disabled{
+    background: #fff;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group {
+    gap: 13px;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group label {
+    width: 125px;
+        min-width: 125px;
+
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group textarea {
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: #1c1c1c !important;
+    height: 130px;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: "Inter";
+    width: 417px;
+}
+
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group label.redCol {
+color:#DA4019;
+}
+
+.announcementDetailsMain .redCol span {
+    padding-left: 1px;
+}
+
+.announcementDetailsMain .dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-basic-info-section .dept-page-input-group .form-group-date label {
+    // min-width: 125px;
+}
+
+.announcementDetailsMain .form-group-date {
+    // gap: 44px;
+}
+
+.announcementDetailsMain .form-group-date label svg {
+    color: #676767;
+}
+
+.announcementDetailsMain .title__show__d {
+    padding: 0 10px;
+    color: #1c1c1c;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: "Inter";
+}
+
+.announcementDetailsMain .status-dropdown .status-label {
+    font-size: 16px;
+    font-weight: 600;
+    // color: #23963B;
+}

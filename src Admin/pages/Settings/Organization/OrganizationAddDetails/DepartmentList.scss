@@ -1,0 +1,17 @@
+
+.settingDepartmentListMain{
+    .sidebarS {
+    display: none;
+    }
+
+    .employee-table-wrapper {
+    max-height: calc(100vh - 163px);
+    }
+
+    .applicants-loader {
+     padding: 0;
+    }
+    .employee-table tbody .employee-row {
+        cursor: default;
+}
+}
