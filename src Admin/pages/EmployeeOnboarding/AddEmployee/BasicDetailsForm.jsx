@@ -296,10 +296,10 @@ const BasicDetailsForm = ({ isEditPage, setIsEditMode, isEditMode, formData, set
 
         dispatch(createNewEmployee(formDataToSubmit))
             .then((res) => {
-                if (res?.status === 200) {
+                if (res?.status) {
                     setTimeout(() => {
-                        navigate(`/employee-details/${res?.result?.user_id}`);
-                        dispatch(getEmployeeDetails({ id: res?.result?.user_id }));
+                        navigate(id ? `/employee-details/${res?.result?.user_id}` : `/employee-list`);
+                        if (id) dispatch(getEmployeeDetails({ id }));
                         setIsEditMode(false);
                     }, 1500);
                 }

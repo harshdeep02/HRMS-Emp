@@ -9,17 +9,10 @@ import SearchBox from '../../../../utils/common/SearchBox.jsx';
 import DynamicFilter from '../../../../utils/common/DynamicFilter.jsx';
 import { getProjectDepartmentDetails } from '../../../../Redux/Actions/departmentActions';
 import DynamicLoader from '../../../../utils/common/DynamicLoader/DynamicLoader.jsx';
-import { showMasterData } from '../../../../utils/helper.js';
+import { showMasterData, showMastersValue } from '../../../../utils/helper.js';
 import { ProjectStatusOptions } from '../../../../utils/Constant.js';
 import EllipsisSpan from '../../../../utils/EllipsisSpan.jsx';
-
-// const projectStatusConfig = {
-//     Completed: { label: 'Completed', icon: CheckCircle2, className: 'completed' },
-//     Pending: { label: 'Pending', icon: Clock4, className: 'pending' },
-//     'Partially completed': { label: 'Partially completed', icon: PauseCircle, className: 'partially-completed' },
-//     'In Progress': { label: 'In Progress', icon: PlayCircle, className: 'in-progress' },
-//     'Not Started': { label: 'Not Started', icon: XCircle, className: 'not-started' },
-// };
+import { CalendarArrowDown, CalendarArrowUp } from 'lucide-react';
 
 const ProjectSummary = () => {
 
@@ -35,9 +28,11 @@ const ProjectSummary = () => {
     const [priorityFilter, setPriorityFilter] = useState("All");
     const [view, setView] = useState('list');
     const priority_options = showMasterData("20");
+    const masterData = useSelector(state => state?.masterData?.data);
+    console.log(priority_options)
 
     // State for managing UI interactions
-    const INITIAL_VISIBLE_COUNT = 5;
+    const INITIAL_VISIBLE_COUNT = 8;
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("All");
@@ -117,9 +112,9 @@ const ProjectSummary = () => {
         setVisibleCount(INITIAL_VISIBLE_COUNT); // reset count
     };
 
-    const dummData = Array.from({ length: INITIAL_VISIBLE_COUNT }, (_, i) => ({}));
+    const dummyData = Array.from({ length: INITIAL_VISIBLE_COUNT }, (_, i) => ({}));
 
-    const ListData = (projectLoading && !isLoadingMore) ? dummData : projectList;
+    const ListData = (projectLoading && !isLoadingMore) ? dummyData : projectList;
 
 
     return (
@@ -155,11 +150,12 @@ const ProjectSummary = () => {
                         </div>
                     </div>
                 </div>
-                <table className="detail-table emp-t-4 project-history-table empProject">
+                <table className="detail-table emp-t-5 project-history-table empProject">
                     <thead>
                         <th>Project Name</th>
-                        <th>Project Leader</th>
-                        <th>Start Date</th>
+                        <th>CLIENT NAME</th>
+                        <th>PRIORITY</th>
+                        <th>START&END DATE</th>
                         <th className='status-badge'>Status</th>
                     </thead>
                     {(projectLoading || projectList?.length > 0) ? (
@@ -170,13 +166,19 @@ const ProjectSummary = () => {
                                 return (
                                     <tr key={item?.id} className="detail_tr_row employee-row">
                                         <td className=' '>
-                                            <div className='loadingtd'>
+                                            <div className='loadingtd purplle Bold'>
                                                 <EllipsisSpan text={item?.project_name} wordsToShow={10} />
                                             </div>
 
                                         </td>
-                                        <td className='loadingtd'>{[item?.project_leader?.first_name, item?.project_leader?.last_name].filter(Boolean).join(" ")}</td>
-                                        <td className='loadingtd'>{formatDate(item?.start_date)}</td>
+                                        <td className='loadingtd'>{item?.client?.client_name}</td>
+                                        <td className='loadingtd'>{showMastersValue(masterData, "20", item?.priority)}</td>
+                                          <td>
+                                                <div className="date-range ">
+                                                    <div className="date-item loadingtdTOP"><CalendarArrowUp size={14} /><span>{formatDate(item?.start_date)}</span></div>
+                                                    <div className="date-item loadingtdBOTTOM  purplle Bold"><CalendarArrowDown size={14} /><span>{formatDate(item?.end_date)}</span></div>
+                                                </div>
+                                            </td>
                                         <td className='loadingtd'>
                                             <div className={`status-badge ${statusClassName}`}>
                                                 {StatusIcon && <StatusIcon size={16} />}
@@ -191,7 +193,7 @@ const ProjectSummary = () => {
 
                         <tbody className="table_not_found">
                             <tr>
-                                <td colSpan={4} style={{ textAlign: 'center', paddingLeft: '150px' }}>
+                                <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
                                     {(!projectLoading && projectList?.length === 0) && (
                                         <ListDataNotFound module="Project Summary" handleReset={resetFilters} />
                                     )}

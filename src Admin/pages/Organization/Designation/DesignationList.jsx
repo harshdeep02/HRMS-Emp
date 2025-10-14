@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 // UPDATED: Added new icons
-import { MoreVertical, TrendingUp, UserPlus, Frame, SquareMenu, X } from "lucide-react";
+import { MoreVertical, TrendingUp, UserPlus, Frame, SquareMenu, X, XCircle } from "lucide-react";
 import "../../EmployeeOnboarding/EmployeeList/EmployeeList.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,16 +26,13 @@ const DesignationList = () => {
     const designationData = useSelector((state) => state?.designationList);
     const designationList = designationData?.data?.designation || [];
     const designationLoading = designationData?.loading || false;
-    // const designationLoading = true;
     const totalDesignations = designationData?.data?.count || 0;
     const metaData = designationData?.data?.metadata || {}
 
     const statusConfig = designationStatusOptions?.reduce((acc, status) => {
         if (!status?.id) return acc; // skip undefined values
-
         const label = status?.label || "All";
         const icon = status.icon || SquareMenu; // fallback to Users if no mapping exists
-
         acc[status?.id] = {
             label,
             icon,
@@ -83,7 +80,7 @@ const DesignationList = () => {
             const res = await dispatch(getDesignationList(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching designation list:", error);
+            console.error("Error fetching designation list", error);
             setShowMoreLess(false);
         }
     }, [searchTerm, statusFilter, departmentFilter, sortBy, visibleCount]);
@@ -113,8 +110,6 @@ const DesignationList = () => {
         setShowMoreLess(true);
     };
 
-
-
     const handleStatusFilter = (newFilter) => {
         setStatusFilter(newFilter);
         setVisibleCount(INITIAL_VISIBLE_COUNT); // reset count
@@ -139,6 +134,7 @@ const DesignationList = () => {
         { label: 'Designation', key: (item) => item?.designation_name || 'N/A' },
         { label: 'Department', key: (item) => item?.department?.department_name || 'N/A' },
         { label: 'Description', key: (item) => item?.description || 'N/A' },
+        { label: "Status", key: (item) => statusConfig[item?.status]?.label || "N/A" },
     ];
 
     const handleImportRow = async (row) => {
@@ -146,6 +142,7 @@ const DesignationList = () => {
             designation_name: row['Designation'],
             department_id: row['Department'], // expects department_id in import (you may need to map department name → id before dispatch)
             description: row['Description'],
+            status: row['Status'],
         };
 
         // return dispatch(createNewDesignation(payload));
@@ -153,16 +150,15 @@ const DesignationList = () => {
 
     // ❗ 1 new loding
     // ✅ Table ke hisaab se dummy loading rows
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         designation_name: "",
         department: { department_name: "" },
         description: "",
+        status: ""
     }));
 
-
-    const ListData = (designationLoading && (!showMoreLess || designationList?.length === 0)) ? dummData : designationList;
-
+    const ListData = (designationLoading && !showMoreLess) ? dummyData : designationList;
 
     return (
         <div className="employee-dashboard-list designationListMain">
@@ -254,13 +250,13 @@ const DesignationList = () => {
                                                 <Icon size={16} strokeWidth={1.5} />
                                                 <span>{status?.label}</span>
                                             </div>
-                                            <span className="counts">({String(count).padStart(2, '0')})</span>
+                                            <span className="counts">({String(count)?.padStart(2, '0')})</span>
                                         </li>
                                     );
                                 })}
                             </ul>
                             <div className="clearBTN">
-                                {(statusFilter !== 'All' || departmentFilter !== 'All') && (
+                                {(departmentFilter !== 'All') && (
                                     <button className="clear-filters-btn" onClick={resetFilters}>
                                         Clear filter
                                         <X size={14} />
@@ -276,13 +272,16 @@ const DesignationList = () => {
                                     <th>Designation</th>
                                     <th>Department</th>
                                     <th>Description</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             {/* // ❗ 3 new loding */}
                             {(designationLoading || designationList?.length > 0) ? (
                                 <>
-                                    <tbody className={`${designationLoading && !showMoreLess ? 'LoadingList' : ''}`}>                             {console.log(ListData)}
+                                    <tbody className={`${designationLoading && !showMoreLess ? 'LoadingList' : ''}`}>
                                         {ListData?.map(item => {
+                                            const StatusIcon = statusConfig[item?.status]?.icon || XCircle;
+                                            const statusClassName = statusConfig[item?.status]?.className;
                                             return (
                                                 <tr
                                                     key={item?.id}
@@ -296,8 +295,6 @@ const DesignationList = () => {
                                                             </div>
                                                             <div className="name Semi_Bold">{item?.designation_name}</div>
                                                         </div>
-
-
                                                     </td>
                                                     <td className="loadingtd">
                                                         <div className="department ">{item?.department?.department_name}</div>
@@ -305,6 +302,12 @@ const DesignationList = () => {
                                                     <td className="td loadingtd">
                                                         <div className="contact-info ">
                                                             <div><span>{item?.description}</span></div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="loadingtd">
+                                                        <div className={`status-badge  ${statusClassName}`}>
+                                                            <StatusIcon size={16} />
+                                                            <span>{statusConfig[item?.status]?.label}</span>
                                                         </div>
                                                     </td>
                                                 </tr>

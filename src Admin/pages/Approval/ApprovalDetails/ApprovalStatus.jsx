@@ -1,16 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import '../../Performance/PerformanceDetails/PerformanceDetails.scss';
 import { useSelector } from 'react-redux';
-
 
 export const ApprovalStatus = () => {
 
     const levelMapping = {
-        "intermediate": 33,
-        "advance": 67,
-        "expert": 95
+        1: 33,
+        2: 66,
+        3: 100
     };
     const getLevelValue = (level) => levelMapping[level] || 0;
     const [activeTab, setActiveTab] = useState('technical');
@@ -31,7 +29,10 @@ export const ApprovalStatus = () => {
     const selectedMonth = selectedDate.getMonth();
     const selectedYear = selectedDate.getFullYear();
 
-
+    const findlabelValue = (data, name) => {
+        const obj = data.find((item) => item.label === name)
+        return getLevelValue(obj?.achieved_value)
+    }
 
     useEffect(() => {
         if (performanceDetails) {
@@ -39,24 +40,25 @@ export const ApprovalStatus = () => {
             const organisation = JSON.parse(performanceDetails?.organisation)
             // Update technicalData based on apiData
             const updatedTechnicalData = [
-                { name: "Customer Experience", expected: 95, achieved: getLevelValue(technical?.[0]?.customer_experience) || 70 },
-                { name: "Marketing", expected: 95, achieved: getLevelValue(technical?.[0]?.marketing) || 80 },
-                { name: "Management", expected: 95, achieved: getLevelValue(technical?.[0]?.management) || 60 },
-                { name: "Administration", expected: 95, achieved: getLevelValue(technical?.[0]?.administration) || 90 },
-                { name: "Presentation", expected: 95, achieved: getLevelValue(technical?.[0]?.presentation) || 50 },
-                { name: "Production Quality", expected: 95, achieved: getLevelValue(technical?.[0]?.production_quality) || 60 },
-                { name: "Efficiency", expected: 95, achieved: getLevelValue(technical?.[0]?.efficiency) || 70 },
+                { name: "Customer Experience", expected: 100, achieved: findlabelValue(technical, "Customer Experience") },
+                { name: "Marketing", expected: 100, achieved: findlabelValue(technical, "Marketing") },
+                { name: "Management", expected: 100, achieved: findlabelValue(technical, "Management") },
+                { name: "Administration", expected: 100, achieved: findlabelValue(technical, "Administration") },
+                { name: "Presentation", expected: 100, achieved: findlabelValue(technical, "Presentation") },
+                { name: "Production Quality", expected: 100, achieved: findlabelValue(technical, "Production Quality") },
+                { name: "Efficiency", expected: 100, achieved: findlabelValue(technical, "Efficiency") },
             ];
+            console.log(organisation)
 
             // Update organizationalData based on apiData
             const updatedOrganizationalData = [
-                { name: "Ability to meet Deadlines", expected: 95, achieved: getLevelValue(organisation?.[0]?.ability_to_meet_deadline) || 70 },
-                { name: "Conflict Management", expected: 95, achieved: getLevelValue(organisation?.[0]?.conflict_management) || 70 },
-                { name: "Critical Thinking", expected: 95, achieved: getLevelValue(organisation?.[0]?.critical_thinking) || 60 },
-                { name: "Integrity", expected: 95, achieved: getLevelValue(organisation?.[0]?.integrity) || 40 },
-                { name: "Team Work", expected: 95, achieved: getLevelValue(organisation?.[0]?.team_work) || 70 },
-                { name: "Professionalism", expected: 95, achieved: getLevelValue(organisation?.[0]?.professionalism) || 50 },
-                { name: "Efficiency", expected: 95, achieved: getLevelValue(organisation?.[0]?.efficiency) || 80 },
+                { name: "Ability to meet Deadlines", expected: 100, achieved: findlabelValue(organisation, "Ability to meet Deadlines") },
+                { name: "Conflict Management", expected: 100, achieved: findlabelValue(organisation, "Conflict Management") },
+                { name: "Critical Thinking", expected: 100, achieved: findlabelValue(organisation, "Critical Thinking") },
+                { name: "Integrity", expected: 100, achieved: findlabelValue(organisation, "Integrity") },
+                { name: "Team Work", expected: 100, achieved: findlabelValue(organisation, "Team Work") },
+                { name: "Professionalism", expected: 100, achieved: findlabelValue(organisation, "Professionalism") },
+                { name: "Efficiency", expected: 100, achieved: findlabelValue(organisation, "Efficiency") },
             ];
 
             setPerformanceData({
@@ -89,8 +91,6 @@ export const ApprovalStatus = () => {
 
     return (
         <div className="performance-container">
-
-
             {/* --- Performance Stats Card --- */}
             <div className="ca_rd performance-stats-card">
 

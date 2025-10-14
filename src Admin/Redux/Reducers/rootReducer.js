@@ -180,6 +180,7 @@ import {
   travelDetailReducer,
   travelHistoryReducer,
   travelListReducer,
+  updateTravelStatusReducer,
 } from "./travelReducer";
 
 import {
@@ -390,6 +391,7 @@ const reducer = combineReducers({
   travelDetails: travelDetailReducer,
   travelDelete: deleteTravelReducer,
   travelHistory: travelHistoryReducer,
+  updateTravelStatus: updateTravelStatusReducer,
 
   //announcements
   createAnnouncement: createAnnouncementReducer,

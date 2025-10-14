@@ -8,11 +8,12 @@ import {
     Users,
     UserSearch,
     Paperclip,
+    AppWindowMac,
 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMemo, useRef, useState } from 'react';
 import { toast } from "react-toastify";
-import { handleFormError, showMasterData } from "../../../utils/helper.js";
+import { handleFormError } from "../../../utils/helper.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import SaveBtn from '../../../utils/common/SaveBtn.jsx';
 import SelectDropdown from '../../../utils/common/SelectDropdown/SelectDropdown.jsx';
@@ -24,23 +25,33 @@ import SelectDropdownMultiple from '../../../utils/common/SelectDropdownMultiple
 
 export const OrganizationFileForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 
-
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+    const [documentUpload, setDocumentUpload] = useState(false);
+
 
     //Data from redux
     const createFile = useSelector((state) => state?.createFile);
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data?.result;
 
+    const departmentData = useSelector((state) => state?.departmentList);
+    const departmentLists = departmentData?.data?.department || [];
+
+    const departmentOptions = useMemo(
+        () => departmentLists?.map(d => ({ id: d?.id, label: d?.department_name })),
+        [departmentLists]
+    );
+
     const file_name_ref = useRef(null);
     const notify_all_ref = useRef(null);
+    const departments_ref = useRef(null);
 
     const [errors, setErrors] = useState({
         file_name: false,
         notify_all: false,
+        departments: false,
     });
 
     const basicRequiredFields = [
@@ -56,27 +67,38 @@ export const OrganizationFileForm = ({ viewMode, formData, setFormData, handleSe
             required: true,
             ref: notify_all_ref,
         },
+        {
+            key: "departments",
+            label: "Please Select Department",
+            required: true,
+            ref: departments_ref 
+        },
+
     ];
 
 
-    const validateForm = () => {
-        for (let field of basicRequiredFields) {
-            const value = formData[field.key];
-            if (
-                field.required &&
-                (!value || (typeof value === "string" && !value.trim()))
-            ) {
+        const validateForm = () => {
+            for (let field of basicRequiredFields) {
+                const value = formData[field.key];
+
+                const isEmpty =
+                !value ||
+                (Array.isArray(value) && value.length === 0) || // ✅ handle arrays
+                (typeof value === "string" && !value.trim());
+
+                if (field.required && isEmpty) {
                 setErrors((prev) => ({ ...prev, [field.key]: field.label }));
                 toast.error(field.label);
                 handleFormError(field?.ref);
                 return false;
+                }
             }
-        }
         return true;
-    };
+        };
 
-    const handleEmployeesChange = (selectedEmployeeIds) => {
-        setFormData((prev) => ({ ...prev, employees: selectedEmployeeIds }));
+
+    const handleDepartmentChange = (selectedDepartmentsIds) => {
+        setFormData((prev) => ({ ...prev, departments: selectedDepartmentsIds }));
     };
 
 
@@ -128,7 +150,7 @@ export const OrganizationFileForm = ({ viewMode, formData, setFormData, handleSe
         }
         const dataToSubmit = {
             ...formData,
-            employees: JSON.stringify(formData?.employees),
+            departments: JSON.stringify(formData?.departments),
             file_type: "organization",
             notify_any_others: formData?.notify_any_others?.length > 0 ? JSON.stringify(formData?.notify_any_others) : "",
             attachment: formData?.attachment?.length > 0 ? JSON.stringify(formData?.attachment) : "",
@@ -152,8 +174,8 @@ export const OrganizationFileForm = ({ viewMode, formData, setFormData, handleSe
     const employeeOptions = useMemo(
         () =>
             employeeList?.map((e) => ({
-                id: e?.employee?.user_id,
-                label: [e?.employee?.first_name, e?.employee?.last_name]
+                id: e?.user_id,
+                label: [e?.first_name, e?.last_name]
                     .filter(Boolean)
                     .join(" "),
             })),
@@ -228,26 +250,25 @@ export const OrganizationFileForm = ({ viewMode, formData, setFormData, handleSe
                         />
                     </div>
                     <div className="dept-page-input-group">
-                        <div className="dept-page-icon-wrapper">
-                            <UserSearch size={20} strokeWidth={1.5} />
-                        </div>
-                        <label>
-                            Add Employee</label>
-                        <SelectDropdownMultiple
-                            placeholder="Select Employees"
-                            selectedValue={formData?.employees}
-                            options={employeeOptions}
-                            onSelect={handleEmployeesChange}
-                            searchPlaceholder="Select Employees"
-                            handleSearch={handleSearch}
-                            type="employees"
-                            loading={employeeData?.loading}
-                            showSearchBar={true}
-                            disabled={isDetailView}
-                            selectedName={formData?.employees}
-                            multiple={true}
-                        />
+                    <div className="dept-page-icon-wrapper">
+                        <AppWindowMac size={20} strokeWidth={1.5} />
                     </div>
+                    <label className={!isDetailView ? 'color_red' : ""}>Department{!isDetailView ? <span>*</span> : ''}</label>
+                    <SelectDropdownMultiple
+                        ref={departments_ref}
+                        placeholder="Select Department"
+                        selectedValue={formData?.departments}
+                        options={departmentOptions}
+                        onSelect={handleDepartmentChange}
+                        disabled={isDetailView}
+                        handleSearch={handleSearch}
+                        showSearchBar={true}
+                        type="departments"
+                        loading={departmentData?.loading}
+                        selectedName={formData?.departments}
+                         multiple={true}
+                    />
+                </div>
                     <div className="dept-page-input-group attachment_form">
                         <div className="dept-page-icon-wrapper">
                             <Proportions size={20} strokeWidth={1.5} />
@@ -271,6 +292,8 @@ export const OrganizationFileForm = ({ viewMode, formData, setFormData, handleSe
                             fieldName="attachment"
                             multiple={true}
                             isDetailView={isDetailView}
+                            setDocumentUpload={setDocumentUpload}
+
 
                         />
                     </div>
@@ -283,6 +306,7 @@ export const OrganizationFileForm = ({ viewMode, formData, setFormData, handleSe
                     viewMode={viewMode}
                     loading={createFile?.loading}
                     color="#fff"
+                    isDisabled={documentUpload}
                 />
             )}
         </>

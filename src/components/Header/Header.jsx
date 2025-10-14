@@ -6,22 +6,20 @@ import { menuItems } from '../Sidebar/Sidebar';
 import { BookCheck, ChevronRight, CircleX, FileChartColumnIncreasing, FilesIcon, Home, SquareCheck } from 'lucide-react';
 
 export const moreItems = [
-    {
-        id: 'files', label: 'Files', icon: FilesIcon, path: '/file-list', submenu: [
-            { label: 'Employee', path: '/employee-file-list', BreadL: 'Employee Files List', detail: '/employee-file-details', add: '/add-employee-file', BreadA: "Add New Employee File", edit: '/edit-employee-file' },
-            { label: 'Organisation', path: '/organisation-file-list', BreadL: 'Organisation Files list', detail: '/organisation-file-details', add: '/add-organisation-file', BreadA: "Add New Organisation File", edit: '/edit-organisation-file' },]
-    },
-    { id: 'performance', label: 'Performance', icon: BookCheck, path: '/performance-list', detail: '/performance-details', add: '/add-performance', edit: '/edit-performance', },
-    {
-        id: 'reports', label: 'Reports', icon: FileChartColumnIncreasing, path: '/report-list',
-        submenu: [
-            { label: 'My Reports', path: '/my-reports', BreadL: 'My Reports List', detail: '/my-reports-details', add: '/add-my-reports', BreadA: "Add New My Reports", edit: '/edit-my-reports' },
-            { label: 'Organisation Reports', path: '/organisation-reports', BreadL: 'Organisation ReportsList', detail: '/organisation-reports-details', add: '/add-organisation-reports', BreadA: "Add New Organisation Reports", edit: '/edit-organisation-reports' },
-        ]
-    },
-    { id: 'approval', label: 'Approval ', icon: SquareCheck ,submenu: [
-         {  label: 'Performance Approval ', path: '/approval-list', BreadL: 'Performance Approval List', detail: '/approval-details' },
-    ]}
+ {
+    id: 'reports',
+    label: 'My Reports',
+    icon: FileChartColumnIncreasing,
+    path: '/my-reports', // parent link
+    BreadL: 'My Reports',
+    // submenu: [
+    //   { main: 'My Reports', label: 'Leave Balance', path: '/my-reports', list: '/my-reports/leave-balance' },
+    //   { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
+    //   { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
+    //   { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/performance-review' },
+    //   { main: 'My Reports', label: 'Appraisal History', path: '/my-reports', list: '/my-reports/appraisal-history' },
+    // ]
+  } 
 ];
 
 export const menuItemsExtra = (id, Id, id2) => [
@@ -61,15 +59,6 @@ export const menuItemsReport = [
             { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
             { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/rerformance-review' },
             { main: 'My Reports', label: 'Appraisal History', path: '/my-reports', list: '/my-reports/appraisal-history' },
-            { main: 'Organisation Reports', label: 'Appraisal History', path: '/organisation-reports', list: '/organisation-reports/appraisal-history' },
-            { main: 'Organisation Reports', label: 'Performance Review', path: '/organisation-reports', list: '/organisation-reports/performance-review' },
-            { main: 'Organisation Reports', label: 'Leave Report', path: '/organisation-reports', list: '/organisation-reports/leave-report' },
-            { main: 'Organisation Reports', label: 'Leave Summary', path: '/organisation-reports', list: '/organisation-reports/leave-report/leave-summary' },
-            { main: 'Organisation Reports', label: 'Leave Tracker', path: '/organisation-reports', list: '/organisation-reports/leave-tracker-list', BreadL: 'Leave Tracker', detail: '/organisation-reports/leave-tracker-detail' },
-            { main: 'Organisation Reports', label: 'Employee Attrition Trend', path: '/organisation-reports', list: '/organisation-reports/employee-attrition-trend' },
-            { main: 'Organisation Reports', label: 'Dashboard', path: '/organisation-reports', list: '/organisation-reports/dashboard-reports' },
-            { main: 'Organisation Reports', label: 'Daily Attendance', path: '/organisation-reports', list: '/organisation-reports/daily-attendance' },
-            { main: 'Organisation Reports', label: 'Daily Attendance report', path: '/organisation-reports', list: '/organisation-reports/calender-present-absent' },
         ],
     },
 
@@ -94,7 +83,7 @@ const Header = () => {
 
     const id = historyStack[historyStack.length - 2]
     const id2 = historyStack[historyStack.length - 3]
-    console.log('id', id)
+    // console.log('id', id)
 
     const allMenuItems = [...menuItems, ...menuItemsExtra(id, Id, id2), ...moreItems, ...menuItemsReport];
 

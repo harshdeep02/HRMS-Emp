@@ -174,9 +174,9 @@ export const UsersList = () => {
 
     const handleCheckbox = (id) => {
         if (id) {
-            const user = userList.find(user => user.id === id);
+            const user = userList?.find(user => user.id === id);
             if (user) {
-                const isDisabled = parseInt(user?.employee?.is_disabled) === 1;
+                const isDisabled = parseInt(user?.is_disabled) === 1;
                 setConfirmPopupType(isDisabled ? "disable" : "enable");
                 setShowModal(true);
                 setEmployId(id);
@@ -198,7 +198,7 @@ export const UsersList = () => {
         },
         {
             label: "Role",
-            key: (emp) => emp?.employee?.role, // adjust based on your data
+            key: (emp) => row?.role_id === 1 ? "Employee" : row?.role_id === 2 ? "Admin" : "", // adjust based on your data
         },
         // {
         //     label: "Admin Login",
@@ -207,7 +207,7 @@ export const UsersList = () => {
         // },
         {
             label: "Login",
-            key: (emp) => statusConfig[emp?.employee?.is_disabled]?.label || "N/A",
+            key: (emp) => statusConfig[emp?.is_disabled]?.label || "N/A",
         },
     ];
 
@@ -224,8 +224,8 @@ export const UsersList = () => {
                         (key) => statusConfig[key]?.label === row?.Status
                     ) || "",
             },
-            role: {
-                name: row?.role || "Admin",
+            role_id: {
+                name: row?.role_id === 1 ? "Employee" : row?.role_id === 2 ? "Admin" : "",
             },
         };
     };
@@ -360,8 +360,8 @@ export const UsersList = () => {
                                     <tbody className={`${(userLoading && !showMoreLess) ? 'LoadingList' : ''}`}>
                                         {
                                             ListData?.map((emp, i) => {
-                                                const StatusIcon = statusConfig[emp?.employee?.is_disabled]?.icon || XCircle;
-                                                const statusClassName = statusConfig[emp?.employee?.is_disabled]?.className;
+                                                const StatusIcon = statusConfig[emp?.is_disabled]?.icon || XCircle;
+                                                const statusClassName = statusConfig[emp?.is_disabled]?.className;
                                                 return (
                                                     <tr
                                                         key={emp?.id}
@@ -380,7 +380,7 @@ export const UsersList = () => {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div className="role loadingtd">{emp?.employee?.role === 1 ? "Employee" : emp?.employee?.role === 2 ? "Admin" : ""}</div>
+                                                            <div className="role loadingtd">{emp?.role_id === 1 ? "Employee" : emp?.role_id === 2 ? "Admin" : ""}</div>
                                                         </td>
                                                         {/* <td className="loadingtd">
                                                             <div className="address-container">
@@ -390,7 +390,7 @@ export const UsersList = () => {
                                                         <td className="loadingtd">
                                                             <div style={{ width: "175px" }} className={`status-badge ${statusClassName}`}>
                                                                 <StatusIcon size={16} />
-                                                                <span>{statusConfig[emp?.employee?.is_disabled]?.label}</span>
+                                                                <span>{statusConfig[emp?.is_disabled]?.label}</span>
                                                                 {/* <span>{emp?.employee?.is_disabled === 0 ? "Login Disabled" : "Login Enabled"}</span> */}
                                                             </div>
                                                         </td>

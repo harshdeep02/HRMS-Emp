@@ -11,7 +11,11 @@ import Loader from '../../../utils/common/Loader/Loader.jsx';
 import EmployeTravelForm from './EmployeTravelForm.jsx';
 import TravelHistory from './TravelHistory.jsx'; // TravelHistory कंपोनेंट को इंपोर्ट करें
 import { getEmployeeList } from '../../../Redux/Actions/employeeActions.js';
-import { getTravelDetails } from '../../../Redux/Actions/travelActions.js';
+import { getTravelDetails, updateTravelStatus } from '../../../Redux/Actions/travelActions.js';
+import ConfirmPopup from '../../../utils/common/ConfirmPopup.jsx';
+import { travelStatusOptions } from '../../../utils/Constant.js';
+import StatusDropdown from '../../../utils/common/StatusDropdown/StatusDropdown.jsx';
+import { UserProfileImageUpload } from '../../../utils/common/UserProfileImageUpload/UserProfileImageUpload.jsx';
 
 const texts = {
     add: {
@@ -46,6 +50,9 @@ const EmployeTravelDetail = () => {
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data?.result || [];
 
+    const updateStatus = useSelector((state) => state?.updateTravelStatus);
+
+
     const [activeFormIndex, setActiveFormIndex] = useState(0);
     const [viewMode, setViewMode] = useState('detail');
     const [formData, setFormData] = useState({
@@ -76,15 +83,14 @@ const EmployeTravelDetail = () => {
     };
 
     const handleSearch = (query, type) => {
-        // if (type === "department_id") fetchDepartments(query);
         if (type === "user_id") fetchEmployees(query)
     };
 
     useEffect(() => {
         const path = location.pathname;
         if (path.includes('/add-new-travel') || path.includes('/edit-travel')) {
-            // if (departmentList?.length === 0) fetchDepartments();
-            if (employeeList?.length === 0) fetchEmployees();
+            // if (employeeList?.length === 0) 
+            fetchEmployees();
         }
     }, [location.pathname]);
 
@@ -100,7 +106,7 @@ const EmployeTravelDetail = () => {
     }, [location.pathname, id]);
 
     useEffect(() => {
-        if (id && travelDetail?.id != id) {
+        if (id ) {
             dispatch(getTravelDetails({ id }));
         }
     }, [id]);
@@ -110,8 +116,11 @@ const EmployeTravelDetail = () => {
             setFormData((prev) => ({
                 ...prev,
                 user_id: travelDetail?.user_id || "",
+                user_name: [travelDetail?.employee?.first_name, travelDetail?.employee?.last_name]
+                    .filter(Boolean)
+                    .join(" "),
                 user_image: travelDetail?.employee?.image ? JSON.parse(travelDetail?.employee?.image) : "",
-                department_id: travelDetail?.department_id || "",
+                department_id: travelDetail?.employee?.department_id || "",
                 purpose_of_visit: travelDetail?.purpose_of_visit || "",
                 place_of_visit: travelDetail?.place_of_visit || "",
                 expected_date_of_arrival: travelDetail?.expected_date_of_arrival || "",
@@ -128,69 +137,135 @@ const EmployeTravelDetail = () => {
         navigate(`/edit-travel/${id}`);
     };
 
+
+    const [showModal, setShowModal] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState("");
+
+    const handleUpdateStatus = () => {
+        const sendData = {
+            id: id,   // applicant ke liye job_id nahi applicant_id bhejna hai
+            status: selectedStatus,
+        };
+        dispatch(updateTravelStatus(sendData))
+            .then((res) => {
+                if (res?.success) {
+                    setShowModal(false);
+                    dispatch(getTravelDetails({ id }));
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        status: selectedStatus,
+                    }));
+                }
+            })
+            .catch((error) => {
+                setShowModal(false);
+                console.log("error-", error);
+            });
+    };
+
+    const handleStatus = (val) => {
+        if (viewMode === "add") {
+            setFormData((prevData) => ({
+                ...prevData,
+                status: val,
+            }));
+        }
+        else {
+            setShowModal(true);
+            setSelectedStatus(val);
+        }
+    };
+
     if (travelDetailLoading) {
         return <div className="loading-state"><Loader /></div>;
     }
 
     return (
-        <div className="dept-page-container">
-            <button onClick={() => navigate(`${viewMode == 'edit' ? `/travel-details/${id}` : '/travel-list'}`)} className="close_nav header_close">Close</button>
-            <h2 className="dept-page-main-heading">{texts[viewMode].header}</h2>
-            <div className="dept-page-content-wrapper">
-                {viewMode === 'add' ? (
-                    <div className="dept-page-left-panel">
-                        <h3 className="dept-page-mark-text">{texts[viewMode].mark}</h3>
-                        <p className="dept-page-info-text">{texts[viewMode].info}</p>
-                        <div className="dept-page-illustration-box">
-                            <img className=' ' src={bannerImg} alt="Illustration" />
-                        </div>
-                    </div>
-                ) : (
-                    <>
-                        <div className="navbar-container">
-                            <div className="navbar-items">
-                                {navItems?.map((item, index) => (
-                                    <span
-                                        key={index}
-                                        className={`${index === activeFormIndex ? 'active' : ''}`}
-                                        onClick={() => setActiveFormIndex(index)}
-                                    >
-                                        <item.icon size={20} strokeWidth={1.5} />
-                                        <p>{item?.name}</p>
-                                    </span>
-                                ))}
+        <>
+            <ConfirmPopup
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleUpdateStatus}
+                type="update"
+                module="Status"
+                loading={updateStatus?.loading}
+            />
+            <div className="dept-page-container">
+                <button onClick={() => navigate(`${viewMode == 'edit' ? `/travel-details/${id}` : '/travel-list'}`)} className="close_nav header_close">Close</button>
+                <h2 className="dept-page-main-heading">{texts[viewMode].header}</h2>
+                <div className="dept-page-content-wrapper">
+                    {viewMode === 'add' ? (
+                        <div className="dept-page-left-panel">
+                            <h3 className="dept-page-mark-text">{texts[viewMode].mark}</h3>
+                            <p className="dept-page-info-text">{texts[viewMode].info}</p>
+                            <div className="dept-page-illustration-box">
+                                <img className=' ' src={bannerImg} alt="Illustration" />
                             </div>
                         </div>
-                    </>
-                )}
+                    ) : (
+                        <>
+                            <div className="navbar-container">
+                                <div className="navbar-items">
+                                    {navItems?.map((item, index) => (
+                                        <span
+                                            key={index}
+                                            className={`${index === activeFormIndex ? 'active' : ''}`}
+                                            onClick={() => setActiveFormIndex(index)}
+                                        >
+                                            <item.icon size={20} strokeWidth={1.5} />
+                                            <p>{item?.name}</p>
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </>
+                    )}
 
-                {activeFormIndex === 0 && (
-                    <div className="dept-page-right-panel">
-                        {viewMode === 'detail' && (
-                            <div className="dept-page-cover-section ">
+                    {activeFormIndex === 0 && (
+                        <div className="dept-page-right-panel">
 
+                            <div className="dept-page-cover-section">
+                                <div className="profile_pic_head">
+                                    <UserProfileImageUpload
+                                        formData={formData}
+                                        setFormData={setFormData}
+                                        fieldName="user_image"
+                                        isEditMode={false}
+                                    />
+                                </div>
+                                <StatusDropdown
+                                    options={travelStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
+                                        value: item?.id,
+                                        label: item?.label,
+                                        icon: item?.icon,
+
+                                    }))}
+                                    defaultValue={formData?.status}
+                                    onChange={(val) => handleStatus(val)}
+                                    viewMode={viewMode !== "detail"}
+                                />
+                            </div>
+                            {viewMode === 'detail' && (
                                 <button className="dept-page-edit-btn" onClick={handleEditClick}>
                                     {/* /<PencilLine size={16} /> */}
                                     Edit
                                 </button>
-                            </div>
-                        )}
-                        <EmployeTravelForm
-                            viewMode={viewMode}
-                            formData={formData}
-                            setFormData={setFormData}
-                            handleSearch={handleSearch}
-                        />
-                    </div>
-                )}
+                            )}
+                            <EmployeTravelForm
+                                viewMode={viewMode}
+                                formData={formData}
+                                setFormData={setFormData}
+                                handleSearch={handleSearch}
+                            />
+                        </div>
+                    )}
 
-                {viewMode === 'detail' && activeFormIndex === 1 && (
-                    <div className="dept-page-table">
+                    {activeFormIndex == 1 &&
                         <TravelHistory />
-                    </div>
-                )}
+                    }
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

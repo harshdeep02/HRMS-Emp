@@ -33,6 +33,7 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+    const [documentUpload, setDocumentUpload] = useState(false);
 
 
     //Data from redux
@@ -54,8 +55,8 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
     const employeeOptions = useMemo(
         () =>
             employeeList?.map((e) => ({
-                id: e?.employee?.user_id,
-                label: [e?.employee?.first_name, e?.employee?.last_name]
+                id: e?.user_id,
+                label: [e?.first_name, e?.last_name]
                     .filter(Boolean)
                     .join(" "),
             })),
@@ -103,13 +104,13 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 
     const validateForm = () => {
         for (let field of basicRequiredFields) {
-            const value = formData[field.key];
+            const value = formData[field?.key];
             if (
-                field.required &&
+                field?.required &&
                 (!value || (typeof value === "string" && !value.trim()))
             ) {
-                setErrors((prev) => ({ ...prev, [field.key]: field.label }));
-                toast.error(field.label);
+                setErrors((prev) => ({ ...prev, [field?.key]: field?.label }));
+                toast.error(field?.label);
                 handleFormError(field?.ref);
                 return false;
             }
@@ -124,12 +125,12 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
             if (["gender", "covid_affected"].includes(name)) {
                 updates = { [name]: item?.label };
             } else if (name === "user_id") {
-                const selectedEmployee = employeeList?.find(emp => emp?.id === item?.id);
+                const selectedEmployee = employeeList?.find(emp => emp?.user_id === item?.id);
                 updates = {
                     [name]: item?.id,
-                    department_id: selectedEmployee?.employee?.department_id,
-                    user_image: selectedEmployee?.employee?.image
-                        ? JSON.parse(selectedEmployee?.employee?.image)
+                    department_id: selectedEmployee?.department_id,
+                    user_image: selectedEmployee?.image
+                        ? JSON.parse(selectedEmployee?.image)
                         : "",
                 };
             } else {
@@ -190,14 +191,14 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
             <div className={`dept-page-basic-info-section ${viewMode === "edit" ? "isEditPage" : ""}`}>
 
                 <h3>Basic Information</h3>
-                <p className="dept-page-subtitle">{viewMode !== "detail"? "Please Provide" :''} Employees Basic Details Below.</p>
+                <p className="dept-page-subtitle">{viewMode !== "detail" ? "Please Provide" : ''} Employees Basic Details Below.</p>
                 {/* <div className="form-grid-layout"> */}
                 <div className="dept-page-input-group">
                     {/* <div className="empConUp"> */}
                     <div className="dept-page-icon-wrapper">
                         <User size={20} strokeWidth={1.5} />
                     </div>
-                    <label>Employee</label>
+                    <label className={!isDetailView ? "color_red" : ""}>Employee{!isDetailView && <span>*</span>}</label>
                     {/* </div> */}
                     <SelectDropdown
                         ref={user_id_ref}
@@ -210,7 +211,7 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                         loading={employeeData?.loading}
                         showSearchBar={true}
                         disabled={isDetailView}
-                        selectedName={isDetailView ? [empHealthDetail?.employee?.first_name, empHealthDetail?.employee?.last_name].filter(Boolean).join(" ") : ""}
+                        selectedName={formData?.user ?? ""}
                     />
                 </div>
                 <div className="dept-page-input-group">
@@ -229,8 +230,8 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                         type="department_id"
                         loading={departmentData?.loading}
                         showSearchBar={false}
-                        disabled={true}
-                        selectedName={isDetailView ? empHealthDetail?.department?.department_name : ""}
+                        disabled={isDetailView}
+                        selectedName={formData?.department_name ?? ""}
                     />
                 </div>
                 <div className="dept-page-input-group">
@@ -404,7 +405,7 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                     <div className="dept-page-icon-wrapper"  >
                         <Calendar size={20} strokeWidth={1.25} />
                     </div>
-                    <label >Next Health Checkup Date</label>
+                    <label>Next Health Checkup Date</label>
                     <FormDatePicker
                         label="Next Health Checkup Date"
                         onDateChange={handleDateChange}
@@ -419,7 +420,7 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                     <div className="dept-page-icon-wrapper">
                         <ScanHeart size={20} strokeWidth={1.5} />
                     </div>
-                    <label className={!isDetailView && "redCol"}>Covid Affected{!isDetailView && <span>*</span>}</label>
+                    <label className={!isDetailView ? "color_red" : ""}>Covid Affected{!isDetailView && <span>*</span>}</label>
                     {/* </div> */}
                     <SelectDropdown
                         ref={covid_affected_ref}
@@ -436,7 +437,7 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                     <div className="dept-page-icon-wrapper">
                         <Syringe size={20} strokeWidth={1.5} />
                     </div>
-                    <label className={!isDetailView && "redCol"}>Covid vaccination status{!isDetailView && <span>*</span>}</label>
+                    <label className={!isDetailView ? "color_red" : ""}>Covid vaccination status{!isDetailView && <span>*</span>}</label>
                     {/* </div> */}
                     <SelectDropdown
                         ref={covid_status_ref}
@@ -462,12 +463,12 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                 </div>
                 <div className="dept-page-input-group attachment_form dept _uplod document-container">
                     {/* <div className="empConUp"> */}
-                        <div className="dept-page-icon-wrapper">
-                            <ContactRound size={20} strokeWidth={1.5} />
-                        </div>
-                        <label className="">
+                    <div className="dept-page-icon-wrapper">
+                        <ContactRound size={20} strokeWidth={1.5} />
+                    </div>
+                    <label className="">
                         Vaccination Certificate
-                        </label>
+                    </label>
                     {/* </div> */}
                     <UploadFile
                         formData={formData}
@@ -475,6 +476,7 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                         fieldName="attachment"
                         multiple={false}
                         isDetailView={isDetailView}
+                        setDocumentUpload={setDocumentUpload}
                     />
                 </div>
                 {/* </div> */}
@@ -486,6 +488,7 @@ const EmpHealthForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                     viewMode={viewMode}
                     loading={createUpdateEmpHealth?.loading}
                     color="#fff"
+                    isDisabled={documentUpload}
                 />
             )}
         </>

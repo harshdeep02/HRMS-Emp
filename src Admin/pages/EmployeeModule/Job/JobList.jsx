@@ -328,7 +328,7 @@ const JobList = () => {
                                                     >
                                                         <td className="">
                                                             {/* <div className="loadingImg"></div> */}
-                                                            <div className="department loadingtd  Semi_Bold">{item?.job_title}</div>
+                                                            <div className="department loadingtd Semi_Bold">{item?.job_title}</div>
                                                         </td>
                                                         <td className="">
                                                             <div className="department loadingtd ">{item?.no_of_position}</div>

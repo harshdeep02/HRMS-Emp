@@ -75,6 +75,8 @@ const PerformanceList = () => {
                 fy,
                 noofrec: visibleCount,
                 currentpage: currentPage,
+                is_send_for_approval: 0,
+                not_status: 4,
                 ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
                 ...(searchTerm && { search: searchTerm }),
                 ...(dateFilter && { custom_date: formatDate3(new Date(dateFilter)) }),
@@ -253,6 +255,7 @@ const PerformanceList = () => {
                         <div>
                             <ul>
                                 {performanceStatusOptions?.map(status => {
+                                    if(status?.label === "Approval Pending")return
                                     const Icon = status?.icon || SquareMenu; // fallback icon
                                     let count = 0;
                                     if (status?.label === "All") {

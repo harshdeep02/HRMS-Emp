@@ -24,6 +24,8 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+    const [documentUpload, setDocumentUpload] = useState(false);
+
 
     //Data from redux
     const createTicket = useSelector((state) => state?.createTicket);
@@ -158,8 +160,8 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
     const employeeOptions = useMemo(
         () =>
             employeeList?.map((e) => ({
-                id: e?.employee?.user_id,
-                label: [e?.employee?.first_name, e?.employee?.last_name]
+                id: e?.user_id,
+                label: [e?.first_name, e?.last_name]
                     .filter(Boolean)
                     .join(" "),
             })),
@@ -190,7 +192,7 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                             loading={employeeData?.loading}
                             showSearchBar={true}
                             disabled={isDetailView}
-                            selectedName={formData?.user}
+                            selectedName={formData?.user ?? ""}
                         />
                     </div>
                     <div className="dept-page-input-group">
@@ -210,7 +212,7 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                             loading={employeeData?.loading}
                             showSearchBar={true}
                             disabled={isDetailView}
-                            selectedName={formData?.requested_to}
+                            selectedName={formData?.requested_to ?? ""}
                         />
 
                     </div>
@@ -253,6 +255,7 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                             initialDate={formData?.date}
                             type="date"
                             disabled={isDetailView}
+                            restrict={true}
                         />
                     </div>
                     <div className="dept-page-input-group">
@@ -278,6 +281,8 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                             fieldName="attachment"
                             multiple={false}
                             isDetailView={isDetailView}
+                            setDocumentUpload={setDocumentUpload}
+
                         />
                     </div>
                 </div>
@@ -289,6 +294,7 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                     viewMode={viewMode}
                     loading={createTicket?.loading}
                     color="#fff"
+                    isDisabled={documentUpload}
                 />
             )}
         </>

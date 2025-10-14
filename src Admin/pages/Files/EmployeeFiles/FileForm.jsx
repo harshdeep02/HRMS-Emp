@@ -32,12 +32,16 @@ export const FileForm = ({ viewMode, formData, setFormData, handleSearch }) => {
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data?.result;
 
+    const [documentUpload, setDocumentUpload] = useState(false);
+
     const file_name_ref = useRef(null);
     const notify_all_ref = useRef(null);
+    const employees_ref = useRef(null);
 
     const [errors, setErrors] = useState({
         file_name: false,
         notify_all: false,
+        employees:false
     });
 
     const basicRequiredFields = [
@@ -53,24 +57,33 @@ export const FileForm = ({ viewMode, formData, setFormData, handleSearch }) => {
             required: true,
             ref: notify_all_ref,
         },
+        {
+            key: "employees",
+            label: "Please Select Employees",
+            required: true,
+            ref: employees_ref,
+        },
     ];
 
 
-    const validateForm = () => {
+     const validateForm = () => {
         for (let field of basicRequiredFields) {
             const value = formData[field.key];
-            if (
-                field.required &&
-                (!value || (typeof value === "string" && !value.trim()))
-            ) {
-                setErrors((prev) => ({ ...prev, [field.key]: field.label }));
-                toast.error(field.label);
-                handleFormError(field?.ref);
-                return false;
+
+            const isEmpty =
+            !value ||
+            (Array.isArray(value) && value.length === 0) || // ✅ handle arrays
+            (typeof value === "string" && !value.trim());
+
+            if (field.required && isEmpty) {
+            setErrors((prev) => ({ ...prev, [field.key]: field.label }));
+            toast.error(field.label);
+            handleFormError(field?.ref);
+            return false;
             }
         }
         return true;
-    };
+        };
     const handleEmployeesChange = (selectedEmployeeIds) => {
         setFormData((prev) => ({ ...prev, employees: selectedEmployeeIds }));
     };
@@ -148,8 +161,8 @@ export const FileForm = ({ viewMode, formData, setFormData, handleSearch }) => {
     const employeeOptions = useMemo(
         () =>
             employeeList?.map((e) => ({
-                id: e?.employee?.user_id,
-                label: [e?.employee?.first_name, e?.employee?.last_name]
+                id: e?.user_id,
+                label: [e?.first_name, e?.last_name]
                     .filter(Boolean)
                     .join(" "),
             })),
@@ -232,9 +245,10 @@ export const FileForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                         <div className="dept-page-icon-wrapper">
                             <Users size={20} strokeWidth={1.5} />
                         </div>
-                        <label>
-                            Add Employee</label>
+                        <label className={!isDetailView ? "color_red" : ""}>
+                            Add Employee{!isDetailView ? <span>*</span> : ''}</label>
                         <SelectDropdownMultiple
+                            ref={employees_ref}
                             placeholder="Select Employees"
                             selectedValue={formData?.employees}
                             options={employeeOptions}
@@ -272,6 +286,8 @@ export const FileForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                             fieldName="attachment"
                             multiple={true}
                             isDetailView={isDetailView}
+                            setDocumentUpload={setDocumentUpload}
+
 
                         />
                     </div>
@@ -284,6 +300,7 @@ export const FileForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                     viewMode={viewMode}
                     loading={createFile?.loading}
                     color="#fff"
+                    isDisabled={documentUpload}
                 />
             )}
         </>

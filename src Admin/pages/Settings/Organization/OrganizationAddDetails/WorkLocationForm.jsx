@@ -37,9 +37,15 @@ export const WorkLocationForm = ({ viewMode, formData, setFormData, fetchCity, f
     );
 
     const work_location_name_ref = useRef(null);
+    const state_id_ref = useRef(null);
+    const city_id_ref = useRef(null);
+    const zip_code_ref = useRef(null);
 
     const [errors, setErrors] = useState({
         work_location_name: false,
+        state_id: false,
+        city_id: false,
+        zip_code: false,
     });
 
     const basicRequiredFields = [
@@ -48,7 +54,23 @@ export const WorkLocationForm = ({ viewMode, formData, setFormData, fetchCity, f
             label: "Please fill work location name",
             required: true,
             ref: work_location_name_ref,
-        }
+        },
+        {
+            key: "state_id",
+            label: "Please fill State name",
+            required: true,
+            ref: state_id_ref,
+        }, {
+            key: "city_id",
+            label: "Please fill City name",
+            required: true,
+            ref: city_id_ref,
+        }, {
+            key: "zip_code",
+            label: "Please fill Pin Code",
+            required: true,
+            ref: zip_code_ref,
+        },
     ];
 
     const handleChange = (e) => {
@@ -175,8 +197,9 @@ export const WorkLocationForm = ({ viewMode, formData, setFormData, fetchCity, f
                 </div>
                 <div className="dept-page-input-group">
                     <div className="dept-page-icon-wrapper"><MapPin size={20} /></div>
-                    <label>State</label>
+                    <label className={viewMode !== "detail" ? "color_red" : ""}>State{viewMode !== "detail" && <b className="color_red">*</b>}</label>
                     <SelectDropdown
+                        ref={state_id_ref}
                         selectedValue={formData?.state_id}
                         options={stateOptions}
                         onSelect={(name, value) => handleSelect(name, value)}
@@ -190,8 +213,9 @@ export const WorkLocationForm = ({ viewMode, formData, setFormData, fetchCity, f
                 </div>
                 <div className="dept-page-input-group">
                     <div className="dept-page-icon-wrapper"><Crosshair size={20} /></div>
-                    <label>City</label>
+                    <label className={viewMode !== "detail" ? "color_red" : ""}>City{viewMode !== "detail" && <b className="color_red">*</b>}</label>
                     <SelectDropdown
+                        ref={city_id_ref}
                         selectedValue={formData?.city_id}
                         options={cityOptions}
                         onSelect={(name, value) => handleSelect(name, value)}
@@ -208,10 +232,11 @@ export const WorkLocationForm = ({ viewMode, formData, setFormData, fetchCity, f
                     <div className="dept-page-icon-wrapper">
                         <MapPinned size={20} />
                     </div>
-                    <label>
-                        Pin Code
+                    <label className={viewMode !== "detail" ? "color_red" : ""}>
+                        Pin Code{viewMode !== "detail" && <b className="color_red">*</b>}
                     </label>
                     <input
+                        ref={zip_code_ref}
                         type="text"
                         name="zip_code"
                         value={formData?.zip_code}

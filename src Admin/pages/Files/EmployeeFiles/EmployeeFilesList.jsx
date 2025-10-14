@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 // UPDATED: Added new icons
-import { MoreVertical, TrendingUp, UserPlus, Frame, X, SquareMenu, XCircle } from "lucide-react";
+import { MoreVertical, TrendingUp, UserPlus, X, SquareMenu, XCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewDepartment } from "../../../Redux/Actions/departmentActions.js";
 import SearchBox from "../../../utils/common/SearchBox.jsx";
 import Tooltips from "../../../utils/common/Tooltip/Tooltips.jsx";
 import LoadingDots from "../../../utils/common/LoadingDots/LoadingDots.jsx";
-import DynamicLoader from "../../../utils/common/DynamicLoader/DynamicLoader.jsx";
 import ImportList from "../../../utils/common/Import/ImportList.jsx";
 import { employeeFilesStatusOptions } from "../../../utils/Constant.js";
 import ListDataNotFound from "../../../utils/common/ListDataNotFound.jsx";
@@ -23,25 +21,24 @@ export const EmployeeFilesList = () => {
     const dispatch = useDispatch();
 
     // Redux
-
     const fileData = useSelector((state) => state?.fileList);
     const filesList = fileData?.data?.myfile || [];
-    console.log(filesList)
     const totalFiles = fileData?.data?.count || 0;
     const metaData = fileData?.data?.metadata || {};
     const fileListLoading = fileData?.loading || false;
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data?.result;
+
     const fetchEmployee = () => {
         dispatch(getEmployeeList());
     };
 
     useEffect(() => {
         if (!employeeList) fetchEmployee();
-
     }, []);
+
     const findEmployees = (employees) => {
-        return employees?.map((emp) => employeeList?.find((user) => user.id === emp))
+        return employees?.map((emp) => employeeList?.find((user) => user?.user_id === emp))
 
     }
     const [searchTerm, setSearchTerm] = useState("");
@@ -86,6 +83,7 @@ export const EmployeeFilesList = () => {
                 fy,
                 noofrec: visibleCount,
                 currentpage: currentPage,
+                file_type: "employee",
                 ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
                 ...(searchTerm && { search: searchTerm }),
                 ...(dateFilter && { custom_date: formatDate3(new Date(dateFilter)) }),
@@ -114,11 +112,13 @@ export const EmployeeFilesList = () => {
         const dateInput = document.getElementById('date-filter-input');
         if (dateInput) dateInput.value = '';
     };
+
     const handleDateFilter = (date) => {
         setCurrentPage(1);
         setDateFilter(date);
         setVisibleCount(INITIAL_VISIBLE_COUNT)
     };
+
     const handleLoadMore = () => {
         setVisibleCount(prev => prev + 6);
         setShowMoreLess(true);
@@ -139,11 +139,10 @@ export const EmployeeFilesList = () => {
         setVisibleCount(INITIAL_VISIBLE_COUNT);
     };
 
-
     const handleImportRow = async (row) => {
-
     };
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         file_name: "",
         email: "",
@@ -152,7 +151,7 @@ export const EmployeeFilesList = () => {
         status: " "
     }));
 
-    const ListData = (fileListLoading && (!showMoreLess || filesList?.length === 0)) ? dummData : filesList;
+    const ListData = (fileListLoading && (!showMoreLess || filesList?.length === 0)) ? dummyData : filesList;
 
     return (
         <div className="employeeFilesListMain">
@@ -234,14 +233,14 @@ export const EmployeeFilesList = () => {
                                                     <Icon size={16} strokeWidth={1.5} />
                                                     <span>{status?.label}</span>
                                                 </div>
-                                                <span className="counts">({String(count).padStart(2, '0')})</span>
+                                                <span className="counts">({String(count)?.padStart(2, '0')})</span>
                                             </li>
                                         );
                                     })}
 
                                 </ul>
                                 <div className="clearBTN">
-                                    {(statusFilter !== 'All' || dateFilter !== null) && (
+                                    {(dateFilter !== null) && (
                                         <button className="clear-filters-btn" onClick={resetFilters}>
                                             <span>Clear filter</span>
                                             <X size={14} />
@@ -263,11 +262,12 @@ export const EmployeeFilesList = () => {
                                 </thead>
                                 {(fileListLoading || filesList?.length > 0) ? (
                                     <tbody className={`${fileListLoading && !showMoreLess ? 'LoadingList' : ''}`}>
+                                        
                                         {ListData?.map(item => {
                                             const StatusIcon = statusConfig[item?.status]?.icon || XCircle;
                                             const statusClassName = statusConfig[item?.status]?.className;
                                             const paersedEmployee = item?.employees?.length > 0 ? JSON.parse(item?.employees) : []
-                                            const findedEmployees = findEmployees(paersedEmployee)?.map((e) => [e?.first_name, e?.last_name].filter(Boolean).join(" "))
+                                            const findedEmployees = findEmployees(paersedEmployee)?.map((e) => [e?.first_name, e?.last_name].filter(Boolean).join(" "));
                                             return (
                                                 <tr
                                                     key={item?.id}
@@ -276,7 +276,7 @@ export const EmployeeFilesList = () => {
                                                 >
                                                     <td style={{ width: '101px' }} className=""><div className="department loadingtd Semi_Bold">{item?.file_name}</div></td>
                                                     <td className="loadingtd"><div className="department samll_td_3">{item?.deadline}</div></td>
-                                                    <td className="loadingtd"><div className="department">{findedEmployees?.map((emp) => <span>{emp} </span>)}</div></td>
+                                                    <td className="loadingtd"><div className="department">{findedEmployees?.map((emp, i) => <span>{`${emp}${i<findedEmployees?.length-1 ? ",":''}`} </span>)}</div></td>
                                                     <td className="loadingtd">
                                                         <div className={`status-badge ${statusClassName}`}>
                                                             <StatusIcon size={16} />
@@ -292,7 +292,7 @@ export const EmployeeFilesList = () => {
                                         <tr>
                                             <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
                                                 {(!fileListLoading && filesList?.length === 0) && (
-                                                    <ListDataNotFound module="applicants" handleReset={resetFilters} />
+                                                    <ListDataNotFound module="files" handleReset={resetFilters} />
                                                 )}
                                             </td>
                                         </tr>

@@ -4,7 +4,8 @@ import {
     Home, Briefcase, Calendar, ChevronRight, Files as FilesIcon,
     ChevronDown, IdCardLanyard, Building2, CalendarMinus,
     PanelRight, BookCheck, FileChartColumnIncreasing,
-    Bell, CircleQuestionMark, Settings, LogOut, Plus, Check
+    Bell, CircleQuestionMark, Settings, LogOut, Plus, Check,
+    Ticket
 } from 'lucide-react';
 import './Sidebar.scss';
 import logo from '../../assets/logo_hrms.svg';
@@ -35,28 +36,26 @@ export const menuItems = [
     },
     {
         id: 'leave', label: 'Leave Tracker', icon: CalendarMinus, path: '/leave-list', BreadL: 'All Leave list', detail: '/leave-details', add: '/add-new-leave',BreadA: "Add New Leave",
-        //  submenu: [
-        //     { label: 'Leave', path: '/leave-list', BreadL: 'All Leave list', detail: '/leave-details', add: '/add-new-leave', BreadA: "Add New Leave", edit: '/edit-leave-details' },
-        //     { label: 'Leave Type', path: '/leave-type-list', BreadL: 'All Leave Type list', detail: '/leave-type-details', add: '/add-leave-type', BreadA: "Add New Leave Type", edit: '/edit-leave-type-details' },
-        //     { label: 'Travel', path: '/travel-list', BreadL: 'All Travel list', detail: '/travel-details', add: '/add-new-travel', BreadA: "Add New Travel", edit: '/edit-travel' },
-        // ]
     },
     {
-        id: 'attendance', label: 'Attendance', icon: Calendar, path: '/attendance-list', submenu: [
-            { label: 'Shift', path: '/shift-list', BreadL: 'All Shift list', detail: '/shift-details', add: '/add-shift', BreadA: "Add New Shift", edit: '/edit-shift' },
-            { label: 'Assign Shift', path: '/assign-shift-list', BreadL: 'All Assign Shift list', add: '/assign-shift', BreadA: "Add New Assign Shift" },
-            { label: 'Attendance', path: '/attendance-list', BreadL: 'All Attendance list', detail: '/attendance-details', add: '/add-attendance', BreadA: "Add New Attendance", edit: '/edit-attendance' },
-        ]
+        id: 'ticket', label: 'Ticket', icon: Ticket, path: '/ticket-list', BreadL: 'All Ticket list', detail: '/ticket-details', add: '/add-ticket',BreadA: "Add New Ticket",
     },
-    {
-        id: 'work', label: 'Work', icon: Briefcase, path: '/ticket-list', submenu: [
-            { label: 'Ticket', path: '/ticket-list', BreadL: 'All Ticket list', detail: '/ticket-details', add: '/add-ticket', BreadA: "Add New Ticket", edit: '/edit-ticket' },
-            { label: 'Trainer', path: '/trainer-list', BreadL: 'All Trainer list', detail: '/trainer-details', add: '/add-trainer', BreadA: "Add New Trainer", edit: '/edit-trainer' },
-            { label: 'Training', path: '/training-list', BreadL: 'All Training list', detail: '/training-details', add: '/add-training', BreadA: "Add New Training", edit: '/edit-training' },
-            { label: 'Project', path: '/project-list', BreadL: 'All Project list', detail: '/project-details', add: '/add-project', BreadA: "Add New Project", edit: '/edit-project' },
-            { label: 'Client', path: '/client-list', BreadL: 'All Client list', detail: '/client-details', add: '/add-client', BreadA: "Add New Client", edit: '/edit-client' },
-        ]
-    },
+    // {
+    //     id: 'attendance', label: 'Attendance', icon: Calendar, path: '/attendance-list', submenu: [
+    //         { label: 'Shift', path: '/shift-list', BreadL: 'All Shift list', detail: '/shift-details', add: '/add-shift', BreadA: "Add New Shift", edit: '/edit-shift' },
+    //         { label: 'Assign Shift', path: '/assign-shift-list', BreadL: 'All Assign Shift list', add: '/assign-shift', BreadA: "Add New Assign Shift" },
+    //         { label: 'Attendance', path: '/attendance-list', BreadL: 'All Attendance list', detail: '/attendance-details', add: '/add-attendance', BreadA: "Add New Attendance", edit: '/edit-attendance' },
+    //     ]
+    // },
+    // {
+    //     id: 'work', label: 'Work', icon: Briefcase, path: '/ticket-list', submenu: [
+    //         { label: 'Ticket', path: '/ticket-list', BreadL: 'All Ticket list', detail: '/ticket-details', add: '/add-ticket', BreadA: "Add New Ticket", edit: '/edit-ticket' },
+    //         { label: 'Trainer', path: '/trainer-list', BreadL: 'All Trainer list', detail: '/trainer-details', add: '/add-trainer', BreadA: "Add New Trainer", edit: '/edit-trainer' },
+    //         { label: 'Training', path: '/training-list', BreadL: 'All Training list', detail: '/training-details', add: '/add-training', BreadA: "Add New Training", edit: '/edit-training' },
+    //         { label: 'Project', path: '/project-list', BreadL: 'All Project list', detail: '/project-details', add: '/add-project', BreadA: "Add New Project", edit: '/edit-project' },
+    //         { label: 'Client', path: '/client-list', BreadL: 'All Client list', detail: '/client-details', add: '/add-client', BreadA: "Add New Client", edit: '/edit-client' },
+    //     ]
+    // },
 ];
 
 const Sidebar = ({ isExpanded, setIsExpanded }) => {

@@ -127,7 +127,7 @@ const ShiftList = () => {
         { label: 'START TIME', key: (shift) => shift?.start_time || 'N/A' },
         { label: 'END TIME', key: (shift) => shift?.end_time || 'N/A' },
         { label: 'EXTRA HOURS', key: (shift) => shift?.extra_hours || 'N/A' },
-        { label: 'BREAK TIME', key: (shift) => shift?.break_time || 'N/A' },
+        { label: 'BREAK TIME(IN MIN)', key: (shift) => shift?.break_time || 'N/A' },
         { label: 'STATUS', key: (shift) => statusConfig[shift?.status]?.label || 'N/A' }
     ];
 
@@ -144,7 +144,7 @@ const ShiftList = () => {
         // return dispatch(createNewDepartment(payload));
     };
 
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         name: "",
         email: "",
@@ -154,7 +154,7 @@ const ShiftList = () => {
     }));
 
     // ❗ 2 new loding
-    const ListData = (shiftLoading && (!showMoreLess || shiftList?.length === 0)) ? dummData : shiftList;
+    const ListData = (shiftLoading && !showMoreLess) ? dummyData : shiftList;
 
 
     return (
@@ -246,11 +246,11 @@ const ShiftList = () => {
                                 })}
                             </ul>
                             <div className="clearBTN">
-                                {statusFilter !== 'All' && (
+                                {/* { (
                                     <button className="clear-filters-btn" onClick={resetFilters}>
                                         <span>Clear filter</span><X size={14} />
                                     </button>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </aside>
@@ -265,7 +265,7 @@ const ShiftList = () => {
                                             <th>START TIME</th>
                                             <th>END TIME</th>
                                             <th>EXTRA HOURS</th>
-                                            <th>BREAK TIME</th>
+                                            <th>BREAK TIME(IN MIN)</th>
                                             <th>STATUS</th>
                                         </tr>
                                     </thead>
@@ -310,7 +310,7 @@ const ShiftList = () => {
                                         // ❗ 4 new loding
                                         <tbody className="table_not_found">
                                             <tr>
-                                                <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
+                                                <td colSpan={6} style={{ textAlign: 'center', padding: '20px' }}>
                                                     {(!shiftLoading && shiftList?.length === 0) && (
                                                         <ListDataNotFound module="shift" handleReset={resetFilters} />
                                                     )}

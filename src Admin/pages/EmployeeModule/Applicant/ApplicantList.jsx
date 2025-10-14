@@ -143,7 +143,6 @@ const ApplicantList = () => {
         })()
         : defaultImage;
 
-
     const exportHeaders = [
         { label: "Name", key: (applicant) => [applicant?.first_name, applicant?.last_name].filter(Boolean).join(" ") || "N/A" },
         { label: "Job Title", key: (applicant) => applicant?.job_opening?.job_title || "N/A" },
@@ -279,7 +278,7 @@ const ApplicantList = () => {
                             })}
                         </ul>
                         <div className="clearBTN">
-                            {(statusFilter !== 'All' || jobRoleFilter !== 'All') &&
+                            {(jobRoleFilter !== 'All') &&
                                 ((!applicantLoading) &&
                                     <button className="clear-filters-btn" onClick={resetFilters}>
                                         <span>Clear filter</span><X size={14} />

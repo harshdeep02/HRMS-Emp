@@ -25,9 +25,6 @@ const DepartmentForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 	const depHeadData = useSelector((state) => state?.employeeList);
 	const depHeadList = depHeadData?.data?.result || [];
 
-	const departmentDetails = useSelector((state) => state?.departmentDetails);
-	const departmentDetail = departmentDetails?.data?.department;
-
 	const parentDepData = useSelector((state) => state?.departmentList);
 	const parentDepLists = parentDepData?.data?.department || [];
 
@@ -40,8 +37,8 @@ const DepartmentForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 	const headOptions = useMemo(
 		() =>
 			depHeadList?.map((e) => ({
-				id: e?.employee?.user_id,
-				label: [e?.employee?.first_name, e?.employee?.last_name]
+				id: e?.user_id,
+				label: [e?.first_name, e?.last_name]
 					.filter(Boolean)
 					.join(" "),
 			})),
@@ -195,18 +192,14 @@ const DepartmentForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 							options={departmentOptions}
 							// placeholder="Select Department"
 							onSelect={handleSelect}
-							searchPlaceholder="Search department"
+							searchPlaceholder="Search Department"
 							handleSearch={handleSearch}
 							type="parent_department"
 							loading={parentDepData?.loading}
 							showSearchBar={true}
 							isEditMode={viewMode == "edit"}
 							disabled={viewMode === "detail"}
-							selectedName={
-								viewMode === "detail"
-									? departmentDetail?.parent_department?.department_name
-									: ""
-							}
+							selectedName={formData?.parent_department_name ?? ""}
 						/>
 					</div>
 					<div className="dept-page-input-group">
@@ -229,16 +222,7 @@ const DepartmentForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 							loading={depHeadData?.loading}
 							showSearchBar={true}
 							disabled={viewMode === "detail"}
-							selectedName={
-								viewMode === "detail"
-									? [
-										departmentDetail?.department_head?.first_name,
-										departmentDetail?.department_head?.last_name,
-									]
-										.filter(Boolean)
-										.join(" ")
-									: ""
-							}
+							selectedName={formData?.department_head_name ?? ""}
 						/>
 					</div>
 				</div>

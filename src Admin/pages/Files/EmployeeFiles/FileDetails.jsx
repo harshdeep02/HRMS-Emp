@@ -40,7 +40,7 @@ export const FileDetails = () => {
     });
 
     const fetchEmployee = (search = "") => {
-        const sendData = {};
+        const sendData = { employee_status: 1 };
         if (search) {
             sendData["search"] = search;
         }
@@ -50,7 +50,7 @@ export const FileDetails = () => {
     useEffect(() => {
         const path = location.pathname;
         if (path.includes('/add-employee-file') || path.includes('/edit-organisation-file')) {
-            if (!employeeList) fetchEmployee();
+            fetchEmployee();
         }
     }, [location]);
 

@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import './PerformanceDetails.scss';
 import { useSelector } from 'react-redux';
 
@@ -22,8 +21,6 @@ export const PerformanceStatus = () => {
 
     const performanceDetailsData = useSelector((state) => state?.performanceDetails);
     const performanceDetails = performanceDetailsData?.data?.result;
-    // console.log(performanceDetails)
-    console.log('performanceDetails',performanceDetails)
 
     // --- State for the custom date dropdown ---
     const [selectedDate, setSelectedDate] = useState(new Date('2025-07-01')); // Set initial to July 2025
@@ -33,11 +30,10 @@ export const PerformanceStatus = () => {
     const selectedMonth = selectedDate.getMonth();
     const selectedYear = selectedDate.getFullYear();
 
-    const findlabelValue = (data, name)=>{
-       const obj=  data.find((item)=>item.label === name)
-       return getLevelValue(obj?.achieved_value)
+    const findlabelValue = (data, name) => {
+        const obj = data.find((item) => item.label === name)
+        return getLevelValue(obj?.achieved_value)
     }
-
 
     useEffect(() => {
         if (performanceDetails) {
@@ -46,11 +42,11 @@ export const PerformanceStatus = () => {
             // Update technicalData based on apiData
             const updatedTechnicalData = [
                 { name: "Customer Experience", expected: 100, achieved: findlabelValue(technical, "Customer Experience") },
-                { name: "Marketing", expected: 100, achieved: findlabelValue(technical, "Marketing")},
-                { name: "Management", expected: 100, achieved: findlabelValue(technical, "Management")},
-                { name: "Administration", expected: 100, achieved: findlabelValue(technical, "Administration")},
+                { name: "Marketing", expected: 100, achieved: findlabelValue(technical, "Marketing") },
+                { name: "Management", expected: 100, achieved: findlabelValue(technical, "Management") },
+                { name: "Administration", expected: 100, achieved: findlabelValue(technical, "Administration") },
                 { name: "Presentation", expected: 100, achieved: findlabelValue(technical, "Presentation") },
-                { name: "Production Quality", expected: 100, achieved: findlabelValue(technical, "Production Quality")},
+                { name: "Production Quality", expected: 100, achieved: findlabelValue(technical, "Production Quality") },
                 { name: "Efficiency", expected: 100, achieved: findlabelValue(technical, "Efficiency") },
             ];
             console.log(organisation)
@@ -59,8 +55,8 @@ export const PerformanceStatus = () => {
             const updatedOrganizationalData = [
                 { name: "Ability to meet Deadlines", expected: 100, achieved: findlabelValue(organisation, "Ability to meet Deadlines") },
                 { name: "Conflict Management", expected: 100, achieved: findlabelValue(organisation, "Conflict Management") },
-                { name: "Critical Thinking", expected: 100, achieved: findlabelValue(organisation,  "Critical Thinking") },
-                { name: "Integrity", expected: 100, achieved: findlabelValue(organisation, "Integrity")},
+                { name: "Critical Thinking", expected: 100, achieved: findlabelValue(organisation, "Critical Thinking") },
+                { name: "Integrity", expected: 100, achieved: findlabelValue(organisation, "Integrity") },
                 { name: "Team Work", expected: 100, achieved: findlabelValue(organisation, "Team Work") },
                 { name: "Professionalism", expected: 100, achieved: findlabelValue(organisation, "Professionalism") },
                 { name: "Efficiency", expected: 100, achieved: findlabelValue(organisation, "Efficiency") },

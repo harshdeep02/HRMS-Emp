@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import {
-    Pencil
-} from 'lucide-react';
 import bannerImg from '../../../assets/Bookyourcampaign.svg';
 import '../../Settings/Users/UserDetails.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../../utils/common/Loader/Loader';
-import { BiSolidCalendarStar } from 'react-icons/bi';
 import '../../Attendance/Holiday/HolidayDetails.scss'
-import { getLeaveTypeDetails } from '../../../Redux/Actions/leaveMasterActions';
+import { getLeaveTypeDetails, updateLeaveTypeStatus } from '../../../Redux/Actions/leaveMasterActions';
 import './LeaveTypeDetails.scss'
 import StatusDropdown from '../../../utils/common/StatusDropdown/StatusDropdown';
 import LeaveTypeForm from './LeaveTypeForm';
 import { leavesTypesStatusOptions } from '../../../utils/Constant';
+import ConfirmPopup from '../../../utils/common/ConfirmPopup';
 
 
 export const LeaveTypeDetails = () => {
@@ -27,6 +24,7 @@ export const LeaveTypeDetails = () => {
     const leaveTypeDetails = useSelector((state) => state?.leaveTypeDetails);
     const leaveTypeDetail = leaveTypeDetails?.data?.result;
     const leaveTypeDetailsLoading = leaveTypeDetails?.loading;
+    const updateStatus = useSelector((state) => state?.updateLeaveTypeStatus);
 
     // State to manage the form data and UI mode
     const [viewMode, setViewMode] = useState('');
@@ -41,7 +39,6 @@ export const LeaveTypeDetails = () => {
     // Hook to determine the current view mode from the URL
     useEffect(() => {
         if (location.pathname.includes("add-leave-type")) {
-            // setFormData(emptyUser);
             setViewMode('add')
         }
         else if (location.pathname.includes("edit-leave-type-details")) {
@@ -79,13 +76,43 @@ export const LeaveTypeDetails = () => {
         navigate(`/edit-leave-type-details/${id}`)
         setViewMode("edit");
     };
+    const [showModal, setShowModal] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState("");
 
-    const handleStatus = (val) => {
-        setFormData(prevData => ({
-            ...prevData,
-            status: val,
-        }));
-    }
+    const handleUpdateStatus = () => {
+        const sendData = {
+            id: id,   // applicant ke liye job_id nahi applicant_id bhejna hai
+            status: selectedStatus,
+        };
+        dispatch(updateLeaveTypeStatus(sendData))
+            .then((res) => {
+                if (res?.success) {
+                    setShowModal(false);
+                    dispatch(getLeaveTypeDetails({ id }));
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        status: selectedStatus,
+                    }));
+                }
+            })
+            .catch((error) => {
+                setShowModal(false);
+                console.log("error-", error);
+            });
+    };
+
+    const handleStatus = (val) => {       
+        if (viewMode === "add") {
+            setFormData((prevData) => ({
+                ...prevData,
+                status: val,
+            }));
+        }
+        else {
+            setShowModal(true);
+            setSelectedStatus(val);
+        }
+    };
 
     const renderHeader = () => {
         switch (viewMode) {
@@ -94,6 +121,7 @@ export const LeaveTypeDetails = () => {
             case 'detail': default: return 'Leave Type Details';
         }
     };
+
     const renderMark = () => {
         switch (viewMode) {
             case 'add': return 'Fill The Information';
@@ -110,62 +138,70 @@ export const LeaveTypeDetails = () => {
         }
     };
 
-    const editExist = viewMode === 'edit' ? true : false
-
     if (leaveTypeDetailsLoading) {
         return <div className="loading-state"> <Loader /> </div>;
     }
     return (
-        <div className="leaveTypeDetailsMain">
-            <button onClick={() => navigate(`${viewMode == 'edit' ? `/leave-type-details/${id}` : '/leave-type-list'}`)} className="close_nav header_close">Close</button>
-            <div className="dept-page-container">
-                <h2 className="dept-page-main-heading">{renderHeader()}</h2>
-                <div className="dept-page-content-wrapper">
-                    <div className="dept-page-left-panel">
-                        <h3 className="dept-page-mark-text">{renderMark()}</h3>
-                        <p className="dept-page-info-text">{renderHeaderInfo()}</p>
-                        <div className="dept-page-illustration-box">
-                            <img className=' ' src={bannerImg} alt="Illustration" />
-                        </div>
-                    </div>
-                    <div className="dept-page-right-panel">
-                        <div className="dept-page-cover-section">
-                            <div className="dept-page-basic-info-section dept-page-basic-info-section_2">
-                                <h3>Basic Information</h3>
-                                <p className="dept-page-subtitle">{viewMode !== "detail" ? "Please Provide" : ''} Leave Type Basic Details Below</p>
+        <>
+            <ConfirmPopup
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleUpdateStatus}
+                type="update"
+                module="Status"
+                loading={updateStatus?.loading}
+            />
+            <div className="leaveTypeDetailsMain">
+                <button onClick={() => navigate(`${viewMode == 'edit' ? `/leave-type-details/${id}` : '/leave-type-list'}`)} className="close_nav header_close">Close</button>
+                <div className="dept-page-container">
+                    <h2 className="dept-page-main-heading">{renderHeader()}</h2>
+                    <div className="dept-page-content-wrapper">
+                        <div className="dept-page-left-panel">
+                            <h3 className="dept-page-mark-text">{renderMark()}</h3>
+                            <p className="dept-page-info-text">{renderHeaderInfo()}</p>
+                            <div className="dept-page-illustration-box">
+                                <img className=' ' src={bannerImg} alt="Illustration" />
                             </div>
-                            {/* {viewMode !== "detail" ? */}
-                            <StatusDropdown
-                                options={leavesTypesStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
-                                    value: item?.id,
-                                    label: item?.label,
-                                    icon: item?.icon,
-                                }))}
-                                defaultValue={formData?.status}
-                                onChange={(val) => handleStatus(val)}
-                                viewMode={viewMode !== "detail"}
-                            />
-                            {/* :
+                        </div>
+                        <div className="dept-page-right-panel">
+                            <div className="dept-page-cover-section">
+                                <div className="dept-page-basic-info-section dept-page-basic-info-section_2">
+                                    <h3>Basic Information</h3>
+                                    <p className="dept-page-subtitle">{viewMode !== "detail" ? "Please Provide" : ''} Leave Type Basic Details Below</p>
+                                </div>
+                                {/* {viewMode !== "detail" ? */}
+                                <StatusDropdown
+                                    options={leavesTypesStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
+                                        value: item?.id,
+                                        label: item?.label,
+                                        icon: item?.icon,
+                                    }))}
+                                    defaultValue={formData?.status}
+                                    onChange={(val) => handleStatus(val)}
+                                    viewMode={viewMode !== "detail"}
+                                />
+                                {/* :
                                 <div className="status-dropdown">
                                     <div className={`status-label dropdown-trigger`}>
                                         {leavesTypesStatusOptions?.filter((item) => item.id == formData?.status)?.[0]?.label}
                                     </div>
                                 </div>
                             } */}
+                            </div>
+                            {viewMode === 'detail' && (
+                                <button className="dept-page-edit-btn" onClick={handleEditClick}>
+                                    Edit
+                                </button>
+                            )}
+                            <LeaveTypeForm
+                                viewMode={viewMode}
+                                formData={formData}
+                                setFormData={setFormData}
+                            />
                         </div>
-                        {viewMode === 'detail' && (
-                            <button className="dept-page-edit-btn" onClick={handleEditClick}>
-                                Edit
-                            </button>
-                        )}
-                        <LeaveTypeForm
-                            viewMode={viewMode}
-                            formData={formData}
-                            setFormData={setFormData}
-                        />
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }

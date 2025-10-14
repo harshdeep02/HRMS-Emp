@@ -54,6 +54,7 @@ const DepartmentDetail = () => {
 	const departmentDetails = useSelector((state) => state?.departmentDetails);
 	const departmentDetail = departmentDetails?.data?.department;
 	const departmentLoading = departmentDetails?.loading || false;
+	const updateStatus = useSelector((state) => state?.updateDeptStatus);
 
 	const depHeadData = useSelector((state) => state?.employeeList);
 	const depHeadList = depHeadData?.data?.result || [];
@@ -75,7 +76,7 @@ const DepartmentDetail = () => {
 
 	const fetchDepHead = (search = "") => {
 		//employee_status: "1,5"
-		const sendData = { employee_status: "1,5" };
+		const sendData = { employee_status: 1 };
 		if (search) {
 			sendData["search"] = search;
 		}
@@ -133,12 +134,14 @@ const DepartmentDetail = () => {
 				department_name: departmentDetail?.department_name
 					? departmentDetail?.department_name
 					: "",
-				department_head: departmentDetail?.department_head?.id
+				department_head: departmentDetail?.departmentDetail?.id
 					? departmentDetail?.department_head?.id
 					: "",
+				department_head_name: departmentDetail?.department_head ? [departmentDetail?.department_head?.first_name, departmentDetail?.department_head?.last_name]?.filter(Boolean)?.join(" ") : "",
 				parent_department: departmentDetail?.parent_department?.id
 					? departmentDetail?.parent_department?.id
 					: "",
+				parent_department_name: departmentDetail?.parent_department ? departmentDetail?.parent_department?.department_name : "",
 				status: departmentDetail?.status || 1,
 			}));
 		}
@@ -285,7 +288,7 @@ const DepartmentDetail = () => {
 							/>
 						</div>
 					)}
-					{viewMode === "detail" && (
+					{/* {viewMode === "detail" && ( */}
 						<>
 							<div className="dept_page_table">
 								{/* Employees Summary Section */}
@@ -294,7 +297,7 @@ const DepartmentDetail = () => {
 								{activeFormIndex == 2 && <ProjectSummary />}
 							</div>
 						</>
-					)}
+					{/* )} */}
 				</div>
 			</div>
 		</>

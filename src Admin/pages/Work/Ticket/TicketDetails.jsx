@@ -45,7 +45,7 @@ export const TicketDetails = () => {
     });
 
     const fetchEmployee = (search = "") => {
-        const sendData = {};
+        const sendData = {employee_status: 1};
         if (search) {
             sendData["search"] = search;
         }
@@ -55,7 +55,8 @@ export const TicketDetails = () => {
     useEffect(() => {
         const path = location.pathname;
         if (path.includes('/add-ticket') || path.includes('/edit-ticket')) {
-            if (employeeList?.length === 0) fetchEmployee("");
+            // if (employeeList?.length === 0) 
+            fetchEmployee("");
         }
     }, [location]);
 

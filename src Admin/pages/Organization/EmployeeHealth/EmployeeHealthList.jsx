@@ -29,7 +29,6 @@ const EmployeeHealthList = () => {
     const empHealthList = empHealthData?.data?.result || [];
     const totalEmpHealths = empHealthData?.data?.count || 0;
     const empHealthLoading = empHealthData?.loading || false;
-    // const empHealthLoading = true;
     const metaData = empHealthData?.data?.metadata || {};
 
     const statusConfig = empHealthStatusOptions?.reduce((acc, status) => {
@@ -85,7 +84,7 @@ const EmployeeHealthList = () => {
             const res = await dispatch(getEmpHealthList(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching empHealth list:", error);
+            console.error("Error fetching empHealth list", error);
             setShowMoreLess(false);
         }
     }, [searchTerm, statusFilter, departmentFilter, sortBy, visibleCount]);
@@ -100,7 +99,9 @@ const EmployeeHealthList = () => {
         setDepartmentFilter("All");
         setSortBy("recent");
         setShowMoreLess(false);
-        searchBoxRef.current?.clearInput(); // 👈 clear input field
+        if (searchBoxRef.current) {
+            searchBoxRef.current.clearInput();
+        } // 👈 clear input field
     };
 
     const handleLoadMore = () => {
@@ -112,7 +113,6 @@ const EmployeeHealthList = () => {
         setVisibleCount(INITIAL_VISIBLE_COUNT);
         setShowMoreLess(true);
     };
-
 
     const handleStatusFilter = (newFilter) => {
         setStatusFilter(newFilter);
@@ -173,7 +173,7 @@ const EmployeeHealthList = () => {
         // return dispatch(createNewEmployeeHealth(payload));
     };
 
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         employee: {
             id: i,
             first_name: "",
@@ -185,8 +185,7 @@ const EmployeeHealthList = () => {
         }
     }));
 
-
-    const ListData = (empHealthLoading && (!showMoreLess || empHealthList?.length === 0)) ? dummData : empHealthList;
+    const ListData = (empHealthLoading && !showMoreLess) ? dummyData : empHealthList;
 
     return (
         <div className="employeeHealthListMain">
@@ -280,13 +279,13 @@ const EmployeeHealthList = () => {
                                                     <Icon size={16} strokeWidth={1.5} />
                                                     <span>{status?.label}</span>
                                                 </div>
-                                                <span className="count">({String(count).padStart(2, '0')})</span>
+                                                <span className="count">({String(count)?.padStart(2, '0')})</span>
                                             </li>
                                         );
                                     })}
                                 </ul>
                                 <div className="clearBTN">
-                                    {(statusFilter !== 'All' || departmentFilter !== 'All') && (
+                                    {(departmentFilter !== 'All') && (
                                         <button className="clear-filters-btn" onClick={resetFilters}>
                                             <span>
                                                 Clear filter
@@ -317,7 +316,6 @@ const EmployeeHealthList = () => {
                                                 {ListData?.map(item => {
                                                     const StatusIcon = statusConfig[item?.status]?.icon || XCircle;
                                                     const statusClassName = statusConfig[item?.status]?.className;
-
                                                     return (
                                                         <tr
                                                             key={item?.id}
@@ -364,20 +362,22 @@ const EmployeeHealthList = () => {
                                         </tbody>
                                     )}
                                 </table>
-                                <div className="load-more-container">
-                                    {/* Show More button if not all jobs loaded */}
-                                    {(visibleCount < totalEmpHealths) && (
-                                        <button onClick={handleLoadMore} className="load-more-btn">
-                                            {(empHealthLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show More"}
-                                        </button>
-                                    )}
-                                    {/* Show Less button if all jobs are loaded */}
-                                    {(visibleCount >= totalEmpHealths && totalEmpHealths > INITIAL_VISIBLE_COUNT) && (
-                                        <button onClick={handleShowLess} className="load-more-btn">
-                                            {(empHealthLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show Less"}
-                                        </button>
-                                    )}
-                                </div>
+                                {(!empHealthLoading || showMoreLess) &&
+                                    <div className="load-more-container">
+                                        {/* Show More button if not all jobs loaded */}
+                                        {(visibleCount < totalEmpHealths) && (
+                                            <button onClick={handleLoadMore} className="load-more-btn">
+                                                {(empHealthLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show More"}
+                                            </button>
+                                        )}
+                                        {/* Show Less button if all jobs are loaded */}
+                                        {(visibleCount >= totalEmpHealths && totalEmpHealths > INITIAL_VISIBLE_COUNT) && (
+                                            <button onClick={handleShowLess} className="load-more-btn">
+                                                {(empHealthLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show Less"}
+                                            </button>
+                                        )}
+                                    </div>
+                                }
                             </div>
                         )}
                     </>

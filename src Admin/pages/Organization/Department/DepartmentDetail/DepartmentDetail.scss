@@ -491,3 +491,10 @@ $bg-color: #ffffff;
 .status-dropdown .dropdown-trigger:hover {
 	border-color: #e0e0e0;
 }
+
+.dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-action-btn:disabled:hover {
+    background-color: #23963b;
+}
+.dept-page-container .dept-page-content-wrapper .dept-page-right-panel .dept-page-action-btn:disabled {
+    cursor: not-allowed;
+}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import './EmpPerformance.scss';
@@ -8,40 +8,43 @@ import { useParams } from 'react-router-dom';
 import ListDataNotFound from '../../../utils/common/ListDataNotFound';
 import Loader from '../../../utils/common/Loader/Loader';
 
-// --- DATA OBJECT ---
-// const performanceData = {
-//     Technical: [
-//         { name: 'Customer Experience', expected: 90, achieved: 75 },
-//         { name: 'Marketing', expected: 80, achieved: 50 },
-//         { name: 'Management', expected: 85, achieved: 70 },
-//         { name: 'Administration', expected: 90, achieved: 60 },
-//         { name: 'Presentation', expected: 75, achieved: 65 },
-//         { name: 'Production Quality', expected: 95, achieved: 60 },
-//         { name: 'Efficiency', expected: 88, achieved: 45 },
-//     ],
-//     Organizational: [
-//         { name: 'Team Collaboration', expected: 95, achieved: 85 },
-//         { name: 'Communication', expected: 90, achieved: 70 },
-//         { name: 'Problem Solving', expected: 80, achieved: 75 },
-//         { name: 'Leadership', expected: 75, achieved: 60 },
-//         { name: 'Adaptability', expected: 90, achieved: 80 },
-//         { name: 'Punctuality', expected: 100, achieved: 95 },
-//     ],
-// };
-
 export const EmpPerformance = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
 
     const performanceDetailsData = useSelector((state) => state?.performanceDetails);
     const performanceDetails = performanceDetailsData?.data?.result;
-    const performanceloading = performanceDetailsData?.data?.loading;
-    useEffect(() => {
-        if (id && performanceDetails?.id != id) {
-            dispatch(getPerformanceDetails({ user_id: id}));
-        }
-    }, [id]);
+    const performanceLoading = performanceDetailsData?.loading;
 
+        
+    // --- State for the custom date dropdown ---
+    const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const selectedMonth = selectedDate.getMonth();
+    const selectedYear = selectedDate.getFullYear();
+    const pickerRef = useRef(null);
+    const currDate = new Date();
+    const [getYear, setGetYear] = useState({ month: currDate.getMonth() + 1, year: currDate.getFullYear() })
+
+    const setYearData = useCallback((data) => {
+        setGetYear({ month: data.month, year: data.year });
+    }, []);
+
+
+        const fetchPerformance = useCallback(() => {    
+            const sendData = {
+                user_id: id, // Selected Employee  user_id
+                 month: getYear.month,
+                year: getYear.year
+            }
+            if (id && performanceDetails?.id != id) {
+            dispatch(getPerformanceDetails(sendData));
+            }
+        }, [id, getYear]);
+    
+        useEffect(() => {
+            fetchPerformance();
+        }, [fetchPerformance]);
 
     const levelMapping = {
         1: 33,
@@ -58,16 +61,6 @@ export const EmpPerformance = () => {
     });
     const currentData = performanceData[activeTab];
 
-    // const currentData = performanceData[activeTab];
-
-    // console.log('performanceloading', performanceloading)
-    // --- State for the custom date dropdown ---
-    const [selectedDate, setSelectedDate] = useState(new Date('2025-07-01')); // Set initial to July 2025
-    const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
-    const pickerRef = useRef(null);
-
-    const selectedMonth = selectedDate.getMonth();
-    const selectedYear = selectedDate.getFullYear();
 
     const findlabelValue = (data, name) => {
         const obj = data.find((item) => item.label === name)
@@ -119,16 +112,29 @@ export const EmpPerformance = () => {
     }, []);
 
     // --- Handlers for date navigation ---
-    const handlePrevMonth = () => {
-        setSelectedDate(current => new Date(current.getFullYear(), current.getMonth() - 1, 1));
+
+     const handlePreviousMonth = async () => {
+        setSelectedDate(new Date(selectedYear, selectedMonth - 1, 1))
+        setYearData({ month: selectedMonth, year: selectedYear })
+        //  const res = getAttendenceSummery(dataToSubmit) 
+
+    };
+    const handleNextMonth = async () => {
+
+        setSelectedDate(new Date(selectedYear, selectedMonth + 1, 1))
+        setYearData({ month: selectedMonth + 2, year: selectedYear })
     };
 
-    const handleNextMonth = () => {
-        setSelectedDate(current => new Date(current.getFullYear(), current.getMonth() + 1, 1));
-    };
+    const handleSelectedMonth = (e) => {
+    setSelectedDate(new Date(selectedYear, parseInt(e.target.value), 1))
+    setYearData({ month: parseInt(e.target.value) + 1, year: selectedYear })
+    }
+    const handleSelectedYear = (e) => {
+        setSelectedDate(new Date(parseInt(e.target.value), selectedMonth, 1))
+        setYearData({ month: selectedMonth + 1, year: parseInt(e.target.value) })
+    }
 
-
-    if (performanceloading) {
+    if (performanceLoading) {
         return <div className="loading-state"><Loader /></div>;
     }
 
@@ -137,7 +143,7 @@ export const EmpPerformance = () => {
             {/* --- Performance Summary Card --- */}
             <div className="card_headers">
                 <h2>Performance Summary</h2>
-                <div className=' performance-summary-card'>
+                <div className='performance-summary-card'>
                     <div className="summary-item">
                         <label>Review Period :</label>
                         <span>Q1 2024</span>
@@ -152,7 +158,7 @@ export const EmpPerformance = () => {
                     </div>
                     <div className="summary-item rating">
                         <label>Overall Rating</label>
-                        <span className="rating-text">Excellent</span>
+                        <span className="rating-text">{performanceDetails?.overall_rating}</span>
                     </div>
                 </div>
             </div>
@@ -163,30 +169,38 @@ export const EmpPerformance = () => {
                     <h2> Performance Stats</h2>
 
                     {/* --- UPDATED NAVIGATION CONTROLS --- */}
-                    <div className="nav-controls" ref={pickerRef}>
-                        <button className="arrow-btn" onClick={handlePrevMonth}><ChevronLeft size={20} /></button>
-                        <button className="arrow-btn" onClick={handleNextMonth}><ChevronRight size={20} /></button>
-
-                        <div className="date-select-wrapper">
-                            <button className="date-select-btn" onClick={() => setShowMonthYearPicker(prev => !prev)}>
-                                <span>{selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
-                                <ChevronDown size={16} />
-                            </button>
-
+                    <div className="calendar-header-att perfromanceCal">
+                        <div className="month-year-container" ref={pickerRef}>
+                            <div className="heade_right">
+                                <div className="arrow_l_r">
+                                    <button className="nav-arrow" onClick={handlePreviousMonth}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        
+                                    </button>
+                                    <button className="nav-arrow" onClick={handleNextMonth}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLincap="round" strokeLinejoin="round" /></svg>
+                                    </button>
+                                </div>
+                                <div className="month-year-selector" onClick={() => setShowMonthYearPicker(!showMonthYearPicker)}>
+                                    <span>{selectedDate.toLocaleString("default", { month: "long" })} {selectedYear}</span>
+                                    <ChevronDown size={20} />
+                                </div>
+                            </div>
                             {showMonthYearPicker && (
                                 <div className="month-year-picker-dropdown">
-                                    <select value={selectedMonth} onChange={(e) => setSelectedDate(new Date(selectedYear, parseInt(e.target.value), 1))}>
+                                    <select value={selectedMonth} onChange={(e) => handleSelectedMonth(e)}>
                                         {Array.from({ length: 12 }).map((_, i) => <option key={i} value={i}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>)}
                                     </select>
-                                    <select value={selectedYear} onChange={(e) => setSelectedDate(new Date(parseInt(e.target.value), selectedMonth, 1))}>
-                                        {Array.from({ length: 5 }).map((_, i) => <option key={2023 + i} value={2023 + i}>{2023 + i}</option>)}
+                                    <select value={selectedYear} onChange={(e) => handleSelectedYear(e)}>
+                                        {Array.from({ length: 10 }).map((_, i) => <option key={2022 + i} value={2022 + i}>{2022 + i}</option>)}
                                     </select>
+                                    {/* } */}
                                 </div>
                             )}
-                        </div>
-                    </div>
+                            </div>
+                            </div>
                 </div>
-                {!performanceloading && currentData?.length === 0 ? (
+                {!performanceLoading && currentData?.length === 0 ? (
                     <ListDataNotFound module="employees" />
                 ) : (
                     <>
@@ -213,9 +227,9 @@ export const EmpPerformance = () => {
 
                             <div className="competency-list">
 
-                                {currentData.map((item, index) => (
+                                {currentData?.map((item, index) => (
                                     <div className="competency-row" key={index}>
-                                        <span className="competency-name">{item.name}</span>
+                                        <span className="competency-name">{item?.name}</span>
                                         <div className="chart-container">
                                             <ResponsiveContainer width="100%" height={38}>
                                                 <BarChart
@@ -226,7 +240,6 @@ export const EmpPerformance = () => {
                                                     <XAxis type="number" domain={[0, 100]} hide />
                                                     <YAxis type="category" dataKey="name" hide />
                                                     <Bar dataKey="expected" fill="var(--expected-color)" barSize={10} radius={[5, 5, 5, 5]} />
-
                                                     <Bar dataKey="achieved" fill="var(--achieved-color)" m barSize={10} radius={[5, 5, 5, 5]} />
                                                 </BarChart>
                                             </ResponsiveContainer>

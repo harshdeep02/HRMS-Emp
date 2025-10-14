@@ -5,11 +5,9 @@ import './DepartmentDetail.scss';
 import LoadingDots from '../../../../utils/common/LoadingDots/LoadingDots';
 import ListDataNotFound from '../../../../utils/common/ListDataNotFound';
 import SearchBox from '../../../../utils/common/SearchBox.jsx';
-import { Phone } from 'lucide-react';
+import { Mail, Phone, XCircle } from 'lucide-react';
 import defaultUserImage from '../../../../assets/default-user.png';
 import { getEmpDepartmentDetails } from '../../../../Redux/Actions/departmentActions';
-import SortFilter from '../../../../utils/common/SortFilter.jsx';
-import DynamicLoader from '../../../../utils/common/DynamicLoader/DynamicLoader.jsx';
 import { employeeStatusOptions } from '../../../../utils/Constant.js';
 import DynamicFilter from '../../../../utils/common/DynamicFilter.jsx';
 
@@ -21,10 +19,10 @@ const EmployeeSummary = () => {
     const employeeData = useSelector((state) => state?.empDepartmentDetails);
     const employeeList = employeeData?.data?.employees || [];
     const totalEmployees = employeeData?.data?.count || 0;
-    const employeeLoading = employeeData?.loading;
+    const employeeLoading =  employeeData?.loading;
 
     // State for managing the number of visible employees, search, and sort
-    const INITIAL_VISIBLE_COUNT = 4;
+    const INITIAL_VISIBLE_COUNT = 8;
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
     const [searchTerm, setSearchTerm] = useState("");
     const searchBoxRef = useRef();
@@ -59,7 +57,7 @@ const EmployeeSummary = () => {
             await dispatch(getEmpDepartmentDetails(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching employee list:", error);
+            console.error("Error fetching employees:", error);
             setShowMoreLess(false);
         }
     }, [dispatch, searchTerm, sortBy, visibleCount, currentPage, statusFilter]);
@@ -92,7 +90,7 @@ const EmployeeSummary = () => {
     const resetFilters = () => {
         setSearchTerm("");
         setSortBy("recent");
-        setStatusFilter("All")
+        setStatusFilter("All");
         setShowMoreLess(false);
         if (searchBoxRef.current) {
             searchBoxRef.current.clearInput();
@@ -108,6 +106,7 @@ const EmployeeSummary = () => {
             }
         })()
         : defaultUserImage;
+
     const dummData = Array.from({ length: INITIAL_VISIBLE_COUNT }, (_, i) => ({
 
     }));
@@ -138,16 +137,17 @@ const EmployeeSummary = () => {
                     </div>
                 </div>
 
-                <table className="detail-table emp-t-4 project-history-table empProject">
+                <table className="detail-table emp-t-5 project-history-table empProject">
                     <thead>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>Mobile</th>
+                        <th>Contacts</th>
+                        <th>Status</th>
                     </thead>
                     {(employeeLoading || employeeList?.length > 0) ? (
-
                         <tbody className={`${employeeLoading && !showMoreLess ? 'LoadingList' : ''}`}>
                             {ListData?.map((employee) => {
+                                const StatusIcon = statusConfig[employee?.employee_status]?.icon || XCircle;
+                                const statusClassName = statusConfig[employee?.employee_status]?.className;
                                 return (
                                     <tr key={employee?.id} className="detail_tr_row employee-row">
                                         <td className="td">
@@ -159,26 +159,27 @@ const EmployeeSummary = () => {
                                                         className="avatar"
                                                     />
                                                 </div>
-                                                <span className='loadingtdsmall '>
+                                                <span className='loadingtdsmall  purplle Bold'>
                                                     {[employee?.first_name, employee?.last_name]
                                                         .filter(Boolean)
                                                         .join(" ")}
                                                 </span>
                                             </div>
                                         </td>
-                                        <td className='loadingtd'>{employee?.email}</td>
-                                        <td className='loadingtd'>
-                                            {
-                                                employee?.mobile_no ?
-
-                                                    <div>
-                                                        <Phone size={14} /> {employee?.mobile_no}
+                                         <td className="td">
+                                                    <div className="contact-info ">
+                                                        <div className="loadingtdTOP blackPhone"><Mail size={14} /> <span>{employee?.email}</span></div>
+                                                        <div className="loadingtdBOTTOM "><Phone size={14} />
+                                                            <span className="purplle Semi_Bold">{employee?.mobile_no}</span></div>
                                                     </div>
-                                                    :
-                                                    <>-</>
-                                            }
-                                        </td>
+                                                </td>
 
+                                        <td className="loadingtd ">
+                                            <div className={`status-badge ${statusClassName}`}>
+                                                <StatusIcon size={16} />
+                                                <span>{statusConfig[employee?.employee_status]?.label}</span>
+                                            </div>
+                                        </td>
                                     </tr>
                                 );
                             })}
@@ -187,11 +188,10 @@ const EmployeeSummary = () => {
 
                         <tbody className="table_not_found">
                             <tr>
-                                <td colSpan={4} style={{ textAlign: 'center', paddingLeft: '150px' }}>
+                                <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
                                     {(!employeeLoading && employeeList?.length === 0) && (
                                         <ListDataNotFound module="Employees" handleReset={resetFilters} />
                                     )}
-
                                 </td>
                             </tr>
                         </tbody>

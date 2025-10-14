@@ -235,6 +235,7 @@ const AssignShiftForm = ({ viewMode, formData, setFormData, handleSearch, handle
                             onDateChange={handleDateChange}
                             placeholder="Select a date"
                             disabled={isDetailView}
+                            restrict={true}
                         />
                     </div>
 

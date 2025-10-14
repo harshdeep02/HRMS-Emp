@@ -104,7 +104,7 @@ const Policy = () => {
     useEffect(() => {
         if (id && organizationDeail) {
             setPolicyContent(organizationDeail?.policy)
-            // setPolicyContent(dummData)   
+            // setPolicyContent(dummData)
         }
     }, [organizationDeail]);
     // Function to handle saving the content from the editor

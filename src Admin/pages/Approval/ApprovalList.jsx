@@ -1,22 +1,20 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { List, MoreVertical, X, XCircle, CheckCircle2, UserPlus, CircleDot, TrendingUp } from "lucide-react";
+import { List, MoreVertical, X, XCircle, TrendingUp } from "lucide-react";
 import Tooltips from "../../utils/common/Tooltip/Tooltips.jsx";
 import SearchBox from "../../utils/common/SearchBox.jsx";
 import ListDataNotFound from "../../utils/common/ListDataNotFound.jsx";
 import defaultImage from "../../assets/default-user.png";
 import ImportList from "../../utils/common/Import/ImportList.jsx";
-import ExportList from "../../utils/common/Export/ExportList.jsx";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "../../utils/common/DatePicker/DatePicker.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { performanceStatusOptions } from "../../utils/Constant.js";
 import { formatDate, formatDate3 } from "../../utils/common/DateTimeFormat.js";
 import { getPerformanceList } from "../../Redux/Actions/performanceActions.js";
-import DynamicLoader from "../../utils/common/DynamicLoader/DynamicLoader.jsx";
 import LoadingDots from "../../utils/common/LoadingDots/LoadingDots.jsx";
 
 export const ApprovalList = () => {
- 
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -72,6 +70,7 @@ export const ApprovalList = () => {
                 noofrec: visibleCount,
                 currentpage: currentPage,
                 is_send_for_approval: 1,
+                not_status: 2,
                 ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
                 ...(searchTerm && { search: searchTerm }),
                 ...(dateFilter && { custom_date: formatDate3(new Date(dateFilter)) }),
@@ -249,6 +248,7 @@ export const ApprovalList = () => {
                         <div>
                             <ul>
                                 {performanceStatusOptions?.map(status => {
+                                    if(status?.label === "Pending")return
                                     const Icon = status?.icon || SquareMenu; // fallback icon
                                     let count = 0;
                                     if (status?.label === "All") {
@@ -305,16 +305,16 @@ export const ApprovalList = () => {
                                                     onClick={() => navigate(`/approval-details/${item?.id}`)}
                                                 >
                                                     <td className="td " >
-                                                       
-                                                                <div className="info_img ">
-                                                                                                                                    <div className="loadingImg">
 
-                                                                    <img src={employeeImage(item?.employee?.image)} alt={item?.employee?.first_name || item?.employee?.last_name || "-"} className="avatar" />
-                                                                       </div>
-                                                                    <div className="name Semi_Bold loadingtdsmall ">{[item?.employee?.first_name, item?.employee?.last_name].filter(Boolean).join(" ")}</div>
-                                                                </div>
-                                                        
-                                                        
+                                                        <div className="info_img ">
+                                                            <div className="loadingImg">
+
+                                                                <img src={employeeImage(item?.employee?.image)} alt={item?.employee?.first_name || item?.employee?.last_name || "-"} className="avatar" />
+                                                            </div>
+                                                            <div className="name Semi_Bold loadingtdsmall ">{[item?.employee?.first_name, item?.employee?.last_name].filter(Boolean).join(" ")}</div>
+                                                        </div>
+
+
 
                                                     </td>
                                                     <td className="">
@@ -326,7 +326,7 @@ export const ApprovalList = () => {
                                                     <td className="" >
                                                         <div className="date loadingtd">{formatDate(item?.appraisal_date)}</div>
                                                     </td>
-                                                    <td className="loadingtd">
+                                                    <td className="loadingtd" style={{ minWidth: "180px", maxWidth: "180px" }}>
                                                         <div className={`status-badge ${statusClassName}`}>
                                                             <StatusIcon size={16} />
                                                             <span>{statusConfig[item?.status]?.label}</span>

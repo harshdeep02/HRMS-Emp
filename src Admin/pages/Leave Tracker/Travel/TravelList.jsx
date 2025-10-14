@@ -53,7 +53,7 @@ export const TravelList = () => {
             const res = await dispatch(getTravelList(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching job list:", error);
+            console.error("Error fetching travel list:", error);
             setShowMoreLess(false);
         }
     }, [searchTerm, statusFilter, visibleCount, dateFilter]);
@@ -91,10 +91,6 @@ export const TravelList = () => {
         setVisibleCount(INITIAL_VISIBLE_COUNT);
     };
 
-    const clearStatusFilter = () => {
-        setStatusFilter("All");
-    };
-
     const handleStatusFilter = (newFilter) => {
         setStatusFilter(newFilter);
         setVisibleCount(INITIAL_VISIBLE_COUNT);
@@ -115,7 +111,7 @@ export const TravelList = () => {
         })()
         : defaultImage;
 
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         first_name: "",
         last_name: "",
@@ -127,7 +123,7 @@ export const TravelList = () => {
     }));
 
 
-    const ListData = (travelLoading && (!showMoreLess || travelLists?.length === 0)) ? dummData : travelLists;
+    const ListData = (travelLoading && (!showMoreLess || travelLists?.length === 0)) ? dummyData : travelLists;
 
     return (
         <div className="travelListMain">
@@ -198,8 +194,8 @@ export const TravelList = () => {
                                 })}
                             </ul>
                             <div className="clearBTN">
-                                {(statusFilter !== 'All' || dateFilter !== null) && (
-                                    <button className="clear-filters-btn" onClick={clearStatusFilter}>
+                                {(dateFilter !== null) && (
+                                    <button className="clear-filters-btn" onClick={resetFilters}>
                                         <span>Clear filter</span><X size={14} />
                                     </button>
                                 )}
@@ -238,7 +234,7 @@ export const TravelList = () => {
 
 
                                                 </td>
-                                                <td className="loadingtd"><div className="department">{item?.department?.department_name}</div></td>
+                                                <td className="loadingtd"><div className="department">{item?.employee?.department?.department_name}</div></td>
                                                 <td className="loadingtd"><div className="department">{item?.place_of_visit}</div></td>
                                                 <td>
                                                     <div className="contact-info">
@@ -256,7 +252,7 @@ export const TravelList = () => {
                                 ) : (
                                     <tbody className="table_not_found">
                                         <tr>
-                                            <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
+                                            <td colSpan={5} style={{ textAlign: 'center', padding: '20px' }}>
                                                 {(!travelLoading && travelLists?.length === 0) && (
                                                     <ListDataNotFound module="Travel" handleReset={resetFilters} />
                                                 )}

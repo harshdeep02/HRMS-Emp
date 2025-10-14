@@ -27,7 +27,7 @@ export const login = (params) => async (dispatch) => {
             localStorage.setItem('AccessToken', response.data.access_token);
             localStorage.setItem('UserData', response.data.user);
             localStorage.setItem('isLoggedIn', true);
-            localStorage.setItem('LoggedInORG', response?.data?.result?.organisation && JSON.stringify(response?.data?.result?.organisation));
+            localStorage.setItem('loggedInORG', response?.data?.result?.organisation && JSON.stringify(response?.data?.result?.organisation));
 
             await setUserData(response.data.user);
             return response?.data

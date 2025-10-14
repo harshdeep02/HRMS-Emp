@@ -116,7 +116,7 @@ export const fetchShiftMasterDetails = async (queryParams) => {
     }
 }
 
-export const updateShiftMasterStatus = async (data) => {
+export const updateStatus = async (data) => {
     try {
         const token = localStorage.getItem('AccessToken');
         let config = {

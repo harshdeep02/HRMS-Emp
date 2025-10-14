@@ -128,10 +128,10 @@ const TravelHistory = () => {
 
                 <table className="detail-table emp-t-5 project-table empProject">
                     <thead>
-                        <th>Place of Visit</th>
+                        <th>Destination</th>
                         <th>Departure Date</th>
                         <th>Arrival Date</th>
-                        <th>Purpose</th>
+                        <th>DESCRIPTION</th>
                         <th>Status</th>
                     </thead>
                     {(travelLoading || travelList?.length > 0) ? (
@@ -141,10 +141,10 @@ const TravelHistory = () => {
                                 const statusClassName = statusConfig[item?.status]?.className;
                                 return (
                                     <tr key={item?.id} className="employee-row detail_tr_row">
-                                        <td className=''><div className=" loadingtd">{item?.place_of_visit}</div></td>
+                                        <td className=''><div className=" loadingtd purplle Bold">{item?.place_of_visit}</div></td>
                                         <td className='loadingtd'><div className="">{formatDate(item?.expected_date_of_departure)}</div></td>
                                         <td className='loadingtd'><div className="">{formatDate(item?.expected_date_of_arrival)}</div></td>
-                                        <td className='loadingtd'><div className="">{item?.purpose_of_visit}</div></td>
+                                        <td className='loadingtd'><div className="">{item?.description}</div></td>
                                         <td className='loadingtd'>
                                             <div className={`status-badge ${statusClassName}`}>
                                                 {StatusIcon && <StatusIcon size={16} />}

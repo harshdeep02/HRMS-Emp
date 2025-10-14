@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Tooltips from "../../../utils/common/Tooltip/Tooltips.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import SearchBox from "../../../utils/common/SearchBox.jsx";
-import DynamicLoader from "../../../utils/common/DynamicLoader/DynamicLoader.jsx";
 import LoadingDots from "../../../utils/common/LoadingDots/LoadingDots.jsx";
 import { holidayStatusOptions } from "../../../utils/Constant.js";
 import { getHolidayList } from "../../../Redux/Actions/holidayActions.js";
@@ -172,7 +171,7 @@ export const HolidayList = () => {
         return Math.max(1, daysDifference);
     }
 
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         name: "",
         email: "",
@@ -182,9 +181,7 @@ export const HolidayList = () => {
     }));
 
     // ❗ 2 new loding
-    const ListData = (holidaysLoading && (!showMoreLess || holidayList?.length === 0)) ? dummData : holidayList;
-
-
+    const ListData = (holidaysLoading && !showMoreLess) ? dummyData : holidayList;
 
     return (
         <div className="holidayListMain">
@@ -281,7 +278,7 @@ export const HolidayList = () => {
                                     })}
                                 </ul>
                                 <div className="clearBTN">
-                                    {(statusFilter !== 'All' || dateFilter !== null) && (
+                                    {(dateFilter !== null) && (
                                         <button className="clear-filters-btn" onClick={resetFilters}>
                                             <span>
                                                 Clear filter
@@ -328,7 +325,6 @@ export const HolidayList = () => {
                                                             <div className="department loadingtd">{item?.duration}</div>
                                                         </td>
                                                         <td className="loadingtd td_2line " style={{ minWidth: '290px' }}>
-
                                                             <div className="department ">
                                                                 <EllipsisSpan text={item?.description} wordsToShow={21} />
                                                             </div>
@@ -341,7 +337,7 @@ export const HolidayList = () => {
                                     ) : (
                                         <tbody className="table_not_found">
                                             <tr>
-                                                <td colSpan={4} style={{ textAlign: 'center', paddingLeft: '160px' }}>
+                                                <td colSpan={5} style={{ textAlign: 'center', padding: '20px' }}>
                                                     {(!holidaysLoading && holidayList?.length === 0) && (
                                                         <ListDataNotFound module="Holiday" handleReset={resetFilters} />
                                                     )}
@@ -352,7 +348,6 @@ export const HolidayList = () => {
                                 </table>
                                 {/* {!holidaysLoading && holidayList?.length === 0 && */}
                                 {(!holidaysLoading || showMoreLess) &&
-
                                     <div className="load-more-container">
                                         {/* Show More button if not all jobs loaded */}
                                         {(visibleCount < totalHolidays) && (

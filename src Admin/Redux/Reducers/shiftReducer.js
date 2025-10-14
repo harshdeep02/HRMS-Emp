@@ -78,7 +78,6 @@ export const asssignshiftDetailReducer = (state = initialState, action) => {
 }
 
 
-
 export const updateShiftStatusReducer = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_SHIFT_STATUS_REQUEST:

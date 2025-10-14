@@ -128,7 +128,7 @@ export const LeaveTypeList = () => {
         };
         return dispatch(createNewLeaveType(payload));
     };
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         first_name: "",
         last_name: "",
@@ -140,7 +140,7 @@ export const LeaveTypeList = () => {
     }));
 
 
-    const ListData = (leaveTypeLoading && (!showMoreLess || leaveMasterList?.length === 0)) ? dummData : leaveMasterList;
+    const ListData = (leaveTypeLoading && (!showMoreLess || leaveMasterList?.length === 0)) ? dummyData : leaveMasterList;
 
     return (
         <div className="leaveTypeListMain">
@@ -231,14 +231,14 @@ export const LeaveTypeList = () => {
                                     })}
 
                                 </ul>
-                                <div className="clearBTN">
+                                {/* <div className="clearBTN">
                                     {(statusFilter !== 'All') && (
                                         <button className="clear-filters-btn" onClick={resetFilters}>
                                             <span>Clear filters</span>
                                             <X size={14} />
                                         </button>
                                     )}
-                                </div>
+                                </div> */}
                             </div>
                         </aside>
                         <div className="employee-table-wrapper">
@@ -288,14 +288,14 @@ export const LeaveTypeList = () => {
                                         <tr>
                                             <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
                                                 {(!leaveTypeLoading && leaveMasterList?.length === 0) && (
-                                                    <ListDataNotFound module="applicants" handleReset={resetFilters} />
+                                                    <ListDataNotFound module="Laeve Type" handleReset={resetFilters} />
                                                 )}
                                             </td>
                                         </tr>
                                     </tbody>
                                 )}
-
                             </table>
+                            {(!leaveTypeLoading || showMoreLess) &&
                                 <div className="load-more-container">
                                     {(visibleCount < totalLeaves) && (
                                         <button onClick={handleLoadMore} className="load-more-btn">
@@ -308,7 +308,7 @@ export const LeaveTypeList = () => {
                                         </button>
                                     )}
                                 </div>
-                            
+                            }
                         </div>
                     </>
                 </main>

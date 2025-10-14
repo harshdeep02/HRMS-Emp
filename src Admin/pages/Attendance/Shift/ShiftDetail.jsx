@@ -8,13 +8,12 @@ import Loader from '../../../utils/common/Loader/Loader';
 import { toast } from 'react-toastify';
 import FormTimePicker from '../../../utils/common/FormTimePicker/FormTimePicker';
 import { useDispatch, useSelector } from 'react-redux';
-import { createNewShift, getShiftMasterDetails } from '../../../Redux/Actions/shiftActions';
+import { createNewShift, getShiftMasterDetails, updateShiftStatus } from '../../../Redux/Actions/shiftActions';
 import { shiftStatusOption } from '../../../utils/Constant';
 import { handleFormError } from '../../../utils/helper';
 import SaveBtn from '../../../utils/common/SaveBtn';
-import { BiSolidCalendarStar } from "react-icons/bi";
 import './ShiftDetails.scss'
-
+import ConfirmPopup from '../../../utils/common/ConfirmPopup';
 
 export const ShiftDetail = () => {
     const { id } = useParams();
@@ -36,12 +35,12 @@ export const ShiftDetail = () => {
     const [viewMode, setViewMode] = useState('detail');
     const [calculatedDuration, setCalculatedDuration] = useState('');
 
-
     //redux
     const createShift = useSelector((state) => state?.createShift);
     const shiftDetails = useSelector((state) => state?.shiftMasterDetails);
     const shiftDetail = shiftDetails?.data?.result;
     const shiftLoading = shiftDetails?.loading || false;
+    const updateStatus = useSelector((state) => state?.updateShiftStatus);
 
     useEffect(() => {
         if (id && shiftDetail?.id !== id) {
@@ -143,9 +142,9 @@ export const ShiftDetail = () => {
     });
 
     const basicRequiredFields = [
-        { key: "shift_name", label: "Please fill shift name", required: true, ref: shift_name_ref },
-        { key: "start_time", label: "Please select start time", required: true, ref: start_time_ref },
-        { key: "end_time", label: "Please select end time", required: true, ref: end_time_ref },
+        { key: "shift_name", label: "Please fill Shift Name", required: true, ref: shift_name_ref },
+        { key: "start_time", label: "Please select Start Time", required: true, ref: start_time_ref },
+        { key: "end_time", label: "Please select End Time", required: true, ref: end_time_ref },
     ];
 
     // --- Form Validation ---
@@ -197,12 +196,40 @@ export const ShiftDetail = () => {
     const handleTimeChange = (name, time) => {
         setFormData((prevState) => ({ ...prevState, [name]: time }));
     };
+
+    //update status
+    const [showModal, setShowModal] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState("");
+    const handleUpdateStatus = () => {
+        const sendData = {
+            id: id,
+            status: selectedStatus,
+        };
+        dispatch(updateShiftStatus(sendData))
+            .then((res) => {
+                if (res?.success) {
+                    setShowModal(false);
+                    dispatch(getShiftMasterDetails({ id }));
+                }
+            })
+            .catch((error) => {
+                setShowModal(false);
+                console.log("error-", error);
+            });
+    };
+
     const handleStatus = (val) => {
-        setFormData(prevData => ({
-            ...prevData,
-            status: val,
-        }));
-    }
+        if (viewMode === "add") {
+            setFormData((prevData) => ({
+                ...prevData,
+                status: val,
+            }));
+        }
+        else {
+            setShowModal(true);
+            setSelectedStatus(val);
+        }
+    };
 
     // const checkDisabled = viewMode === 'detail';
     const isDetailView = viewMode === "detail";
@@ -212,7 +239,15 @@ export const ShiftDetail = () => {
     }
 
     return (
-        <div className="">
+        <>
+            <ConfirmPopup
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleUpdateStatus}
+                type="update"
+                module="Status"
+                loading={updateStatus?.loading}
+            />
             <button onClick={() => navigate(`${viewMode == 'edit' ? `/shift-details/${id}` : '/shift-list'}`)} className="close_nav header_close">Close</button>
             <div className="dept-page-container">
                 <h2 className="dept-page-main-heading">{renderHeader()}</h2>
@@ -285,7 +320,7 @@ export const ShiftDetail = () => {
                                 <div className="dept-page-icon-wrapper"  >
                                     <Clock size={20} strokeWidth={1.25} />
                                 </div>
-                                <label >Break Time</label>
+                                <label >Break Time(in Min)</label>
                                 <FormTimePicker label="Break Time" type="break_time" initialTime={formData.break_time} onTimeChange={handleTimeChange} disabled={isDetailView} ampm={false} showOnlyMinutes={true} />
                             </div>
 
@@ -306,6 +341,6 @@ export const ShiftDetail = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };

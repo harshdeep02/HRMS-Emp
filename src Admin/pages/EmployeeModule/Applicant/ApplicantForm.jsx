@@ -100,6 +100,9 @@ const ApplicantForm = ({ viewMode, formData, setFormData, handleSearch, handleSt
         }
     ];
 
+    const [documentUpload, setDocumentUpload] = useState(false);
+    console.log("documentUpload",documentUpload);
+
     const handleDateChange = (type, date) => {
         setFormData((prev) => ({ ...prev, [type]: date }));
     };
@@ -433,6 +436,7 @@ const ApplicantForm = ({ viewMode, formData, setFormData, handleSearch, handleSt
                             fieldName="resume"
                             multiple={false}
                             isDetailView={isDetailView}
+                            setDocumentUpload={setDocumentUpload}
                         />
                     </div>
                     <div className="dept-page-input-group dept_uplod document-container">
@@ -446,13 +450,14 @@ const ApplicantForm = ({ viewMode, formData, setFormData, handleSearch, handleSt
                             fieldName="other_document"
                             multiple={true}
                             isDetailView={isDetailView}
+                            setDocumentUpload={setDocumentUpload}
                         />
                     </div>
                 </div>
             </div>
 
             {!isDetailView && (
-                <SaveBtn handleSubmit={handleSaveOrUpdate} viewMode={viewMode} loading={createUpdateApplicant?.loading} color='#fff' />
+                <SaveBtn handleSubmit={handleSaveOrUpdate} viewMode={viewMode} loading={createUpdateApplicant?.loading} isDisabled={documentUpload} color='#fff' />
             )}
         </>
     );

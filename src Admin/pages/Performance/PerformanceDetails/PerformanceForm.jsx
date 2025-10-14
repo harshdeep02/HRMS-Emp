@@ -70,7 +70,6 @@ export const PerformanceForm = ({
     const employeeList = employeeData?.data?.result;
     const createPerformance = useSelector((state) => state.createPerformance); // Placeholder for redux state
 
-
     const user_ref = useRef(null);
 
     const [errors, setErrors] = useState({});
@@ -94,16 +93,16 @@ export const PerformanceForm = ({
 
     const handleSelect = (name, item) => {
         if (name === "user_id") {
-            const selectedEmployee = employeeList?.find(emp => emp?.id === item?.id);
+            const selectedEmployee = employeeList?.find(emp => emp?.user_id === item?.id);
             setFormData((prevData) => ({
                 ...prevData,
                 user: item?.label,
                 [name]: item?.id,
-                department_id: selectedEmployee?.employee?.department_id,
-                department: selectedEmployee?.employee?.department?.department_name,
-                designation_id: selectedEmployee?.employee?.designation_id,
-                designation: selectedEmployee?.employee?.designation?.designation_name,
-                user_image: selectedEmployee?.employee?.image ? JSON.parse(selectedEmployee?.employee?.image) : "",
+                department_id: selectedEmployee?.department_id,
+                department: selectedEmployee?.department?.department_name,
+                designation_id: selectedEmployee?.designation_id,
+                designation: selectedEmployee?.designation?.designation_name,
+                user_image: selectedEmployee?.image ? JSON.parse(selectedEmployee?.image) : "",
             }));
         }
         else {
@@ -168,12 +167,12 @@ export const PerformanceForm = ({
     const employeeOptions = useMemo(
         () =>
             employeeList?.map((e) => {
-                const fullName = [e?.employee?.first_name, e?.employee?.last_name]
+                const fullName = [e?.first_name, e?.last_name]
                     .filter(Boolean)
                     .join(" ");
                 return {
-                    id: e?.employee?.user_id,
-                    label: `${fullName} (${e?.employee?.employee_id})`,
+                    id: e?.user_id,
+                    label: `${fullName} (${e?.employee_id})`,
                 };
             }),
         [employeeList]

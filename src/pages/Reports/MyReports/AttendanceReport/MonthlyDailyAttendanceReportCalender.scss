@@ -1,0 +1,71 @@
+/* ================= Popup Styles ================= */
+.attendance-popover {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-left: 3px solid #5c2d91; /* purple line jaise image me */
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #333;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 280px;
+  max-width: 280px;
+  text-align: left;
+  
+}
+
+.attendance-popover p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: #444;
+    text-align: left;
+    display: flex;
+    width: 100%;
+}
+
+.attendance-popover strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.popup-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  font-size: 13px;
+  padding: 4px 0;
+  width: 100%;
+//   border-bottom: 1px solid #f0f0f0;
+}
+
+.popup-row:last-child {
+  border-bottom: none;
+}
+
+.popup-row span:first-child {
+  color: #666;
+}
+
+.popup-row span:last-child {
+  color: #5c2d91; /* purple highlight jaise image me */
+  font-weight: 500;
+}
+
+.checkTime{
+  font-size: 11px;
+  font-weight: 400;
+  color: #2A2A2A;
+}
+
+.dailyAttenValues .status-badge.absent{
+      color: #989E03;  
+}.dailyAttenValues .status-badge.absent .dot{
+      background-color: #989E03;
+}

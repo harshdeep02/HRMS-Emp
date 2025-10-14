@@ -15,6 +15,7 @@ import { getFileList } from "../../../Redux/Actions/fileActions.js";
 import './OrganizationList.scss'
 import { formatDate3 } from "../../../utils/common/DateTimeFormat.js";
 import { getEmployeeList } from "../../../Redux/Actions/employeeActions.js";
+import { getDepartmentList } from "../../../Redux/Actions/departmentActions.js";
 const INITIAL_VISIBLE_COUNT = 9;
 
 export const OrganizationList = () => {
@@ -30,16 +31,18 @@ export const OrganizationList = () => {
     const fileListLoading = fileData?.loading || false;
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data?.result;
-    const fetchEmployee = () => {
-        dispatch(getEmployeeList());
+    const departmentData = useSelector((state) => state?.departmentList);
+    const departmentLists = departmentData?.data?.department || [];
+    const fetchDepartments = () => {
+        dispatch(getDepartmentList());
     };
 
     useEffect(() => {
-        if (!employeeList) fetchEmployee();
+        if (!departmentLists) fetchDepartments();
 
     }, []);
-    const findEmployees = (employees) => {
-        return employees?.map((emp) => employeeList?.find((user) => user.id === emp))
+    const findDepartment = (departments) => {
+        return departments?.map((item) => departmentLists?.find((dep) => dep.id === item))
 
     }
 
@@ -85,6 +88,7 @@ export const OrganizationList = () => {
                 fy,
                 noofrec: visibleCount,
                 currentpage: currentPage,
+                 file_type: "organization",
                 ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
                 ...(searchTerm && { search: searchTerm }),
                 ...(dateFilter && { custom_date: formatDate3(new Date(dateFilter)) }),
@@ -254,7 +258,7 @@ export const OrganizationList = () => {
                         </aside>
                         <div className="employee-table-wrapper">
 
-                            <table className="employee-table emp-t-4">
+                            <table className="employee-table emp-t-5">
                                 <thead>
                                     <tr>
                                         <th>File Name</th>
@@ -269,16 +273,17 @@ export const OrganizationList = () => {
                                         {ListData?.map(item => {
                                             const StatusIcon = statusConfig[item?.status]?.icon || XCircle;
                                             const statusClassName = statusConfig[item?.status]?.className;
-                                            const paersedEmployee = item?.employees?.length > 0 ? JSON.parse(item?.employees) : []
-                                            const findedEmployees = findEmployees(paersedEmployee)?.map((e) => [e?.first_name, e?.last_name].filter(Boolean).join(" "))
-                                            return (
-                                                <tr
+                                            const paersedDepartments = item?.departments?.length > 0 ? JSON.parse(item?.departments) : []
+                                            const findedDepartment = findDepartment(paersedDepartments)?.map((dep) => dep?.department_name)
+
+                                             return (
+                                            <tr
                                                     key={item?.id}
                                                     className="employee-row"
                                                     onClick={() => navigate(`/organisation-file-details/${item?.id}`)}
                                                 >
                                                     <td><div className="department loadingtd Semi_Bold">{item?.file_name}</div></td>
-                                                    <td><div className="department loadingtd">{findedEmployees?.map((emp) => <span>{emp} </span>)}</div></td>
+                                                    <td><div className="department loadingtd">{findedDepartment?.map((emp, i) => <span>{`${emp}${i<findedDepartment?.length-1 ? ",":''}`} </span>)}</div></td>
                                                     <td><div className="department loadingtd">{item?.deadline}</div></td>
                                                     <td className="loadingtd">
                                                         <div className={`status-badge ${statusClassName}`}>

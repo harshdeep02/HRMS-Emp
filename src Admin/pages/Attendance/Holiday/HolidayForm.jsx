@@ -126,7 +126,7 @@ const HolidayForm = ({ viewMode, formData, setFormData }) => {
 
                     <div className={`dept-page-input-group ${viewMode === "edit" && "disableBackground"}`}>
                         <div className={`dept-page-icon-wrapper`}><CalendarMinus size={20} strokeWidth={1.5} /></div>
-                        <label className={!isDetailView ? "redCol" : ''}>Holiday Name{!isDetailView ? <span className='redCol mandat'>*</span> : ''}</label>
+                        <label className={!isDetailView ? "redCol" : ''}>Holiday Name{!isDetailView ? <span className='redCol mandat'> *</span> : ''}</label>
                         <input
                             type="text"
                             name='holiday_name'

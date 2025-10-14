@@ -1,7 +1,4 @@
 import {
-    Users,
-    Building2,
-    Parentheses,
     Warehouse,
     AppWindowMac,
     Proportions
@@ -25,8 +22,6 @@ const DesignationForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 
     //Data from redux
     const createUpdateDesignation = useSelector((state) => state?.createDesignation);
-    const designationDetails = useSelector((state) => state?.designationDetails);
-    const designationDetail = designationDetails?.data?.designation;
     const departmentData = useSelector((state) => state?.departmentList);
     const departmentLists = departmentData?.data?.department || [];
 
@@ -44,8 +39,8 @@ const DesignationForm = ({ viewMode, formData, setFormData, handleSearch }) => {
     });
 
     const basicRequiredFields = [
-        { key: "designation_name", label: "Please fill name", required: true, ref: designation_name_ref },
-        { key: "department_id", label: "Please select department", required: true, ref: department_ref },
+        { key: "designation_name", label: "Please fill Name", required: true, ref: designation_name_ref },
+        { key: "department_id", label: "Please select Department", required: true, ref: department_ref },
     ];
 
     const handleSelect = (name, item) => {
@@ -114,7 +109,7 @@ const DesignationForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                 {/* <h3>Basic Information</h3>
                 <p className="dept-page-subtitle">Basic profile overview</p> */}
                 <div className="dept-page-input-group">
-                    <div className="dept-page-icon-wrapper"><Warehouse size={20} strokeWidth={1.5} /></div>
+                    <div className="dept-page-icon-wrapper"><Warehouse ilding2 size={20} strokeWidth={1.5} /></div>
                     <label className={viewMode !== "detail" ? 'color_red' : ""}>Designation Name{viewMode !== "detail" && <b className='color_red'>*</b>}</label>
                     <input
                         ref={designation_name_ref}
@@ -140,7 +135,7 @@ const DesignationForm = ({ viewMode, formData, setFormData, handleSearch }) => {
                         loading={departmentData?.loading}
                         showSearchBar={true}
                         disabled={viewMode === 'detail'}
-                        selectedName={viewMode === 'detail' ? designationDetail?.department?.department_name : ""}
+                        selectedName={formData?.department_name ?? ""}
                     />
                 </div>
 

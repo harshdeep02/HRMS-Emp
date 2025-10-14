@@ -1,0 +1,106 @@
+.leaveReportSummaryMain{
+.day.sick-leave {
+    background: #4976F4;
+    color: #F2F2F2;
+}
+
+
+.day.sick-leave span.day-number {
+    color: #F2F2F2;
+}
+
+.status-badge.sick-leave {
+    color: #4976F4;
+    font-weight: 500;
+    font-size: 11.7px;
+    font-family: 'Inter';
+}
+
+.status-badge.sick-leave .dot {
+    background-color: #4976F4;
+}
+
+.day.casual-leave {
+    background: #B1AB1D;
+    color: #F2F2F2;
+}
+
+
+.day.casual-leave span.day-number,
+.day.annual-leave span.day-number{
+    color: #F2F2F2;
+}
+
+.day-footer .status-container .status-badge {
+    color: #4976F4;
+    font-weight: 500;
+    font-size: 11.7px;
+    font-family: 'Inter';
+}
+
+.day-footer .status-container .status-badge .dot {
+    background-color: #4976F4;
+}
+
+.day.annual-leave {
+    background: #954BAF;
+    color: #F2F2F2;
+}
+.day-footer .status-container .status-badge.holiday {
+    background-color: rgba(237, 242, 254, 0.4);
+    color: #da2626;
+}
+.attendanceValues .status-badge .dot {
+    background-color: #4976F4;
+}
+.attendanceValues .annual-leave{
+    color: #954BAF;
+}
+.attendanceValues .casual-leave{
+    color: #B1AB1D;
+}
+
+.attendanceValues .status-badge.annual-leave .dot{
+    background-color: #954BAF;
+}
+.attendanceValues .status-badge.casual-leave .dot{
+    background-color: #B1AB1D;
+}
+.attendanceValues .status-badge.holiday {
+    color: #da2626;
+}
+.attendanceValues .status-badge.holiday .dot {
+    background-color: #da2626;
+}
+.leaveReportSummaryMain .status-badge.sick-leave, 
+.attendanceValues .status-badge {
+    font-size: 16px;
+    font-weight: 400;
+}
+.day .weekly-off-text {
+    font-size: 11.7px;
+    color: #2A2A2A;
+    font-weight: 400;
+}
+
+.attendanceValues {
+    padding: 24px 0;
+    padding-bottom: 0;
+}
+.status-badge {
+    cursor: default;
+}
+
+.calendar-header-att .nav-arrow:disabled {
+    background-color: #8f818136;
+    cursor: default;
+}
+
+.reportCalen .calendar-header-att .nav-arrow:disabled:hover {
+    background-color: #8f818136;
+}
+.calendar-header-att .month-year-picker-dropdown select {
+    cursor: pointer;
+}
+}
+

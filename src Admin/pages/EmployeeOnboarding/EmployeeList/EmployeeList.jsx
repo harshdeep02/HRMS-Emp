@@ -9,7 +9,6 @@ import { getEmployeeList, importEmployees } from "../../../Redux/Actions/employe
 import SearchBox from "../../../utils/common/SearchBox.jsx";
 import DynamicFilter from "../../../utils/common/DynamicFilter.jsx";
 import SortFilter from "../../../utils/common/SortFilter.jsx";
-import DynamicLoader from "../../../utils/common/DynamicLoader/DynamicLoader.jsx";
 import LoadingDots from "../../../utils/common/LoadingDots/LoadingDots.jsx";
 import { employeeStatusOptions } from "../../../utils/Constant.js";
 import defaultImage from "../../../assets/default-user.png";
@@ -152,26 +151,26 @@ const EmployeeList = () => {
         {
             label: "Employee",
             key: (emp) =>
-                emp?.employee?.display_name ||
-                [emp?.employee?.first_name, emp?.employee?.last_name].filter(Boolean).join(" ") ||
+                emp?.display_name ||
+                [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") ||
                 "N/A",
         },
         {
             label: "Department",
-            key: (emp) => emp?.employee?.department?.department_name || "N/A",
+            key: (emp) => emp?.department?.department_name || "N/A",
         },
         {
             label: "Email",
-            key: (emp) => emp?.employee?.email || "N/A",
+            key: (emp) => emp?.email || "N/A",
         },
         {
             label: "Mobile No",
-            key: (emp) => emp?.employee?.mobile_no || "N/A",
+            key: (emp) => emp?.mobile_no || "N/A",
         },
         {
             label: "Status",
             key: (emp) =>
-                statusConfig[emp?.employee?.employee_status]?.label || "N/A",
+                statusConfig[emp?.employee_status]?.label || "N/A",
         },
     ];
 
@@ -225,7 +224,6 @@ const EmployeeList = () => {
             image: null,
         }
     }));
-
 
     const ListData = (employeeLoading && !showMoreLess) ? dummyData : employeeList;
 
@@ -353,7 +351,7 @@ const EmployeeList = () => {
                             {employeeList?.slice(0, 7)?.map((emp, idx) => {
 
                                 return (
-                                    <img key={idx} src={employeeImage(emp?.employee?.image)} alt={emp?.employee?.display_name || [emp?.employee?.first_name, emp?.employee?.last_name].filter(Boolean).join(" ") || "-"} />
+                                    <img key={idx} src={employeeImage(emp?.image)} alt={emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || "-"} />
                                 )
                             })}
                         </div>
@@ -375,6 +373,12 @@ const EmployeeList = () => {
                                 <span className="label">In office</span>
                                 <span className="count green mt-5">
                                     {metaData?.onsite}
+                                </span>
+                            </div>
+                            <div>
+                                <span className="label">Hybrid</span>
+                                <span className="count green mt-5">
+                                    {metaData?.hybrid}
                                 </span>
                             </div>
                         </div>
@@ -413,38 +417,38 @@ const EmployeeList = () => {
                             {(employeeLoading || employeeList?.length > 0) ? (
                                 <tbody className={`${(employeeLoading && !showMoreLess) ? 'LoadingList' : ''}`}>
                                     {ListData?.map(emp => {
-                                        const StatusIcon = statusConfig[emp?.employee?.employee_status]?.icon || XCircle;
-                                        const statusClassName = statusConfig[emp?.employee?.employee_status]?.className;
+                                        const StatusIcon = statusConfig[emp?.employee_status]?.icon || XCircle;
+                                        const statusClassName = statusConfig[emp?.employee_status]?.className;
                                         return (
                                             <tr
                                                 key={emp?.id}
                                                 className="employee-row"
-                                                onClick={() => navigate(`/employee-details/${emp?.id}`)}
+                                                onClick={() => navigate(`/employee-details/${emp?.user_id}`)}
                                             >
                                                 <td className="td">
                                                     <>
                                                         <div className="info_img">
                                                             <div className="loadingImg">
-                                                                <img src={employeeImage(emp?.employee?.image)} alt={emp?.employee?.display_name || [emp?.employee?.first_name, emp?.employee?.last_name].filter(Boolean).join(" ") || "-"} className="avatar" />
+                                                                <img src={employeeImage(emp?.image)} alt={emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || "-"} className="avatar" />
                                                             </div>
-                                                            <div className="name loadingtdsmall Semi_Bold ">{emp?.employee?.display_name || [emp?.employee?.first_name, emp?.employee?.last_name].filter(Boolean).join(" ") || "-"}</div>
+                                                            <div className="name loadingtdsmall Semi_Bold ">{emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || "-"}</div>
                                                         </div>
                                                     </>
                                                 </td>
                                                 <td>
-                                                    <div className="department loadingtd">{emp?.employee?.department?.department_name}</div>
+                                                    <div className="department loadingtd">{emp?.department?.department_name}</div>
                                                 </td>
                                                 <td className="td">
                                                     <div className="contact-info ">
-                                                        <div className="loadingtdTOP"><Mail size={14} /> <span>{emp?.employee?.email}</span></div>
+                                                        <div className="loadingtdTOP"><Mail size={14} /> <span>{emp?.email}</span></div>
                                                         <div className="loadingtdBOTTOM "><Phone size={14} />
-                                                            <span className="phone Bold">{emp?.employee?.mobile_no}</span></div>
+                                                            <span className="phone Bold">{emp?.mobile_no}</span></div>
                                                     </div>
                                                 </td>
                                                 <td className="loadingtd ">
                                                     <div className={`status-badge ${statusClassName}`}>
                                                         <StatusIcon size={16} />
-                                                        <span>{statusConfig[emp?.employee?.employee_status]?.label}</span>
+                                                        <span>{statusConfig[emp?.employee_status]?.label}</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -490,29 +494,29 @@ const EmployeeList = () => {
                                 <section className={`employee-list-section ${view}-view  ${(employeeLoading && !showMoreLess) ? 'grid_cards_loading' : ''}`}>
                                     {
                                         ListData?.map(emp => {
-                                            const StatusIcon = statusConfig[emp?.employee?.employee_status]?.icon || XCircle;
-                                            const statusClassName = statusConfig[emp?.employee?.employee_status]?.className;
+                                            const StatusIcon = statusConfig[emp?.employee_status]?.icon || XCircle;
+                                            const statusClassName = statusConfig[emp?.employee_status]?.className;
                                             return (
-                                                <div key={emp?.id} className="employee-card" onClick={() => navigate(`/employee-details/${emp?.id}`)}>
+                                                <div key={emp?.id} className="employee-card" onClick={() => navigate(`/employee-details/${emp?.user_id}`)}>
                                                     <div className="top_info">
                                                         <div className="employee-info info_img">
-                                                            <img src={employeeImage(emp?.employee?.image)} alt={emp?.employee?.display_name || [emp?.employee?.first_name, emp?.employee?.last_name].filter(Boolean).join(" ") || "-"} className="avatar" />
+                                                            <img src={employeeImage(emp?.image)} alt={emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || "-"} className="avatar" />
                                                         </div>
                                                         <div className="employee-info">
-                                                            <div className="name">{emp?.employee?.display_name || [emp?.employee?.first_name, emp?.employee?.last_name].filter(Boolean).join(" ") || ""}</div>
+                                                            <div className="name">{emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || ""}</div>
                                                             <div className="status_">
                                                                 <div className={`status-badge ${statusClassName}`}>
                                                                     <StatusIcon size={16} />
-                                                                    <span>{statusConfig[emp?.employee?.employee_status]?.label}</span>
+                                                                    <span>{statusConfig[emp?.employee_status]?.label}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div className="contact-info">
-                                                        <div className=""><Warehouse size={16} strokeWidth={1.5} />{emp?.employee?.department?.department_name}</div>
-                                                        <div><Mail size={16} strokeWidth={1.5} /> <span>{emp?.employee?.email}</span></div>
-                                                        <div><Phone size={16} strokeWidth={1.5} /> <span className="phone">{emp?.employee?.mobile_no}</span></div>
+                                                        <div className=""><Warehouse size={16} strokeWidth={1.5} />{emp?.department?.department_name}</div>
+                                                        <div><Mail size={16} strokeWidth={1.5} /> <span>{emp?.email}</span></div>
+                                                        <div><Phone size={16} strokeWidth={1.5} /> <span className="phone">{emp?.mobile_no}</span></div>
                                                     </div>
                                                 </div>
                                             );

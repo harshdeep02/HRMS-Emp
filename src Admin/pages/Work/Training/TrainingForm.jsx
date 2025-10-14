@@ -44,7 +44,7 @@ const TrainingForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 
     const employeeOptions = useMemo(
         () => employeeLists?.map(e => ({
-            id: e?.employee?.user_id, label: [e?.employee?.first_name, e?.employee?.last_name]
+            id: e?.user_id, label: [e?.first_name, e?.last_name]
                 .filter(Boolean)
                 .join(" "),
         })),

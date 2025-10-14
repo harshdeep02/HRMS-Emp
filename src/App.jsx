@@ -43,6 +43,21 @@ import { HolidayDetails } from './pages/Organization/Holiday/HolidayDetails.jsx'
 import { LeaveList } from './pages/Leave Tracker/Leave/LeaveList.jsx';
 import { LeaveDetail } from './pages/Leave Tracker/Leave/LeaveDetail.jsx';
 
+// ─── Ticket Module ───────────────────────────────────────────────
+import { TicketList } from './pages/Ticket/TicketList.jsx';
+import { TicketDetails } from './pages/Ticket/TicketDetails.jsx';
+
+// ─── Report ───────────────────────────────────────────────
+import { MyReports } from './pages/Reports/MyReports/MyReports.jsx';
+import LeaveReport from './pages/Reports/MyReports/LeaveReport/LeaveReport.jsx';
+import EmployeeAttritionBoard from './pages/Reports/MyReports/EmployeeAttrition/EmployeeAttritionBoard.jsx';
+import MYPerformanceReview from './pages/Reports/MyReports/PerformanceReview/MYPerformanceReview.jsx';
+import { AttendanceReport } from './pages/Reports/MyReports/AttendanceReport/AttendanceReport.jsx';
+import { LeaveSummaryReport } from './pages/Reports/MyReports/LeaveReport/LeaveSummaryReport.jsx';
+import { MyAppraisalHistory } from './pages/Reports/MyReports/AppraisalHistory/MyAppraisalHistory.jsx';
+
+
+
 
 
 
@@ -140,6 +155,20 @@ function App() {
                 <Route path="/leave-list" element={<LeaveList />} />
                 <Route path="/add-new-leave" element={<LeaveDetail />} />
                 <Route path="/leave-details/:id" element={<LeaveDetail />} />
+
+                {/* ================= Ticket ================= */}
+                <Route path="/ticket-list" element={<TicketList />} />
+                <Route path="/add-ticket" element={<TicketDetails />} />
+                <Route path="/ticket-details/:id" element={<TicketDetails />} />
+
+                 {/* ================= Reports ================= */}
+                <Route path="/my-reports" element={<MyReports />} />
+                <Route path="/my-reports/leave-balance" element={<LeaveReport />} />
+                <Route path="/my-reports/leave-summary" element={<LeaveSummaryReport />} />
+                <Route path="/my-reports/employee-attrition-board" element={<EmployeeAttritionBoard />} />
+                <Route path="/my-reports/attendance-report" element={<AttendanceReport />} />
+                <Route path="/my-reports/rerformance-review" element={<MYPerformanceReview />} />
+                <Route path="/my-reports/appraisal-history" element={<MyAppraisalHistory />} />
 
 
               </>

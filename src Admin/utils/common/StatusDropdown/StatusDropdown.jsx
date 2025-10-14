@@ -15,9 +15,9 @@ const StatusDropdown = ({ options = [], defaultValue, onChange, disabled }) => {
     onChange?.(value);
   };
 
-  const processedOptions = options.map(opt => ({
+  const processedOptions = options?.map(opt => ({
   ...opt,
-  disabled: opt.value === defaultValue, // add disabled flag
+  disabled: opt?.value === defaultValue, // add disabled flag
 }));
 
   // Find the label for the currently selected value

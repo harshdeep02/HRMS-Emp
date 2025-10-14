@@ -3,7 +3,7 @@ import './ConfirmPopup.css';
 import { Info } from 'lucide-react';
 import LoadingButton from './LoadingButton';
 
-const ConfirmPopup = ({ open, onClose, onConfirm, type, module, role="", loading, confimationText }) => {
+const ConfirmPopup = ({ open, onClose, onConfirm, type, module, role = "", loading, confimationText }) => {
   return (
     <Dialog
       open={open}
@@ -36,7 +36,7 @@ const ConfirmPopup = ({ open, onClose, onConfirm, type, module, role="", loading
           disabled={loading}
           onClick={onConfirm}
         >
-          {loading ? <LoadingButton loading={loading} color='#fff' /> : (type === "disable" ? "Yes, Disable" : type === "enable" ? "Yes, Enable" : type === "update" ? "Yes, Update" : type === "Sent" ? "Yes, Send": type === "Approve"?"Yes, Approve": type === "Declined" ? "Yes, Declined" : "Yes, Delete")}
+          {loading ? <LoadingButton loading={loading} color='#fff' /> : (type === "disable" ? "Yes, Disable" : type === "enable" ? "Yes, Enable" : type === "update" ? "Yes, Update" : type === "Sent" ? "Yes, Send" : type === "Approve" ? "Yes, Approve" : type === "Declined" ? "Yes, Declined" : "Yes, Delete")}
         </Button>
       </div>
     </Dialog>

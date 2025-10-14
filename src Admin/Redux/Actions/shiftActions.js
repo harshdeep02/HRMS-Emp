@@ -1,4 +1,4 @@
-import { assignShift, createShift, deleteAssignShiftMaster, deleteShiftMaster, fetchAssignShiftDetails, fetchAssignShiftList, fetchShiftList, fetchShiftMasterDetails, updateShiftMasterStatus } from "../../services/shift";
+import { assignShift, createShift, deleteAssignShiftMaster, deleteShiftMaster, fetchAssignShiftDetails, fetchAssignShiftList, fetchShiftList, fetchShiftMasterDetails, updateStatus } from "../../services/shift";
 import { ADD_SHIFT_FAILURE, ADD_SHIFT_REQUEST, ADD_SHIFT_SUCCESS, ASSIGN_SHIFT_FAILURE, ASSIGN_SHIFT_REQUEST, ASSIGN_SHIFT_SUCCESS, DELETE_ASSIGN_SHIFT_FAILURE, DELETE_ASSIGN_SHIFT_REQUEST, DELETE_ASSIGN_SHIFT_SUCCESS, DELETE_SHIFT_REQUEST, DELETE_SHIFT_SUCCESS, GET_ASSIGN_SHIFT_DETAIL_FAILURE, GET_ASSIGN_SHIFT_DETAIL_REQUEST, GET_ASSIGN_SHIFT_DETAIL_SUCCESS, GET_ASSIGN_SHIFT_LIST_FAILURE, GET_ASSIGN_SHIFT_LIST_REQUEST, GET_ASSIGN_SHIFT_LIST_SUCCESS, GET_SHIFT_DETAIL_FAILURE, GET_SHIFT_DETAIL_REQUEST, GET_SHIFT_DETAIL_SUCCESS, GET_SHIFT_LIST_FAILURE, GET_SHIFT_LIST_REQUEST, GET_SHIFT_LIST_SUCCESS, UPDATE_SHIFT_STATUS_FAILURE, UPDATE_SHIFT_STATUS_REQUEST, UPDATE_SHIFT_STATUS_SUCCESS } from "../Constants/shiftConstants";
 import { toast } from "react-toastify";
 
@@ -209,10 +209,10 @@ export const deleteAssignShift = (params) => async (dispatch) => {
         dispatch({ type: DELETE_ASSIGN_SHIFT_FAILURE, payload: error.message });
     }
 };
-export const updateNewShiftMasterStatus = (params) => async (dispatch) => {
+export const updateShiftStatus = (params) => async (dispatch) => {
     try {
         dispatch({ type: UPDATE_SHIFT_STATUS_REQUEST });
-        const { data } = await updateShiftMasterStatus(params)
+        const { data } = await updateStatus(params)
         const { message, success } = data;
         dispatch({
             type: UPDATE_SHIFT_STATUS_SUCCESS,

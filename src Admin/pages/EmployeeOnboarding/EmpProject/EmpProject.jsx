@@ -27,7 +27,7 @@ export const EmpProject = () => {
     const projectData = useSelector((state) => state?.projectList);
     const projectLists = projectData?.data?.result || [];
     const totalProjects = projectData?.data?.count || 0;
-    const projectListLoading = true//projectData?.loading || false;
+    const projectListLoading = projectData?.loading || false;
     const priority_options = showMasterData("20");
     const masterData = useSelector(state => state?.masterData?.data);
 

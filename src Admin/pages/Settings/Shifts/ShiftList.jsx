@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Frame, TrendingUp, UserPlus, XCircle } from 'lucide-react';
 // import './Organization.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { getDepartmentList } from '../../../Redux/Actions/departmentActions';
-import DynamicLoader from '../../../utils/common/DynamicLoader/DynamicLoader';
 import LoadingDots from '../../../utils/common/LoadingDots/LoadingDots';
 import './ShiftList.scss'
 import { getShiftList } from '../../../Redux/Actions/shiftActions';

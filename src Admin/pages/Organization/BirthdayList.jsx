@@ -47,7 +47,7 @@ const BirthdayList = () => {
     const searchBoxRef = useRef();
     const [statusFilter, setStatusFilter] = useState("All");
     const [departmentFilter, setDepartmentFilter] = useState("All");
-    const [sortBy, setSortBy] = useState("");
+    const [sortBy, setSortBy] = useState("recent");
     const [currentPage, setCurrentPage] = useState(1);
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
     const [view, setView] = useState('list');
@@ -75,6 +75,7 @@ const BirthdayList = () => {
                 fy,
                 noofrec: visibleCount,
                 currentpage: currentPage,
+                employee_status: 1,
                 ...(statusFilter && statusFilter !== "All" && { filter_by_birth: statusFilter }),
                 ...(departmentFilter && departmentFilter !== "All" && { department_id: departmentFilter }),
                 ...(searchTerm && { search: searchTerm }),
@@ -83,7 +84,7 @@ const BirthdayList = () => {
             const res = await dispatch(getEmpBirthdayList(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching employee list:", error);
+            console.error("Error fetching birthday list:", error);
             setShowMoreLess(false);
         }
     }, [searchTerm, statusFilter, departmentFilter, sortBy, visibleCount]);
@@ -153,7 +154,6 @@ const BirthdayList = () => {
         image: null,
     }));
 
-
     const ListData = (birthdayLoading && (!showMoreLess || birthdayList?.length === 0)) ? dummData : birthdayList;
 
     return (
@@ -218,7 +218,7 @@ const BirthdayList = () => {
                                 })}
                             </ul>
                             <div className="clearBTN">
-                                {(statusFilter !== 'All' || departmentFilter !== 'All') && (
+                                {(departmentFilter !== 'All') && (
                                     <button className="clear-filters-btn" onClick={resetFilters}>
                                         <span>
                                             Clear filter
@@ -252,16 +252,14 @@ const BirthdayList = () => {
                                                         className="employee-row not_Detail"
                                                     >
                                                         <td>
-
                                                             <div className="info_img">
                                                                 <div className="loadingImg">
 
-                                                                    <img className="avatar" src={employeeImage(emp?.image)} alt={emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || "-"} className="avatar" />
+                                                                    <img className="avatar" src={employeeImage(emp?.image)} alt={emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || "-"} />
                                                                 </div>
 
                                                                 <div className="name Semi_Bold loadingtdsmall">{emp?.display_name || [emp?.first_name, emp?.last_name].filter(Boolean).join(" ") || "-"}</div>
                                                             </div>
-
                                                         </td>
                                                         <td>
                                                             <div className="department loadingtd">{emp?.department?.department_name}</div>

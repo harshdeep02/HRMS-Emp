@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
-import { ADD_TRAVEL_FAILURE, ADD_TRAVEL_REQUEST, ADD_TRAVEL_SUCCESS, DELETE_TRAVEL_FAILURE, DELETE_TRAVEL_REQUEST, DELETE_TRAVEL_SUCCESS, GET_TRAVEL_DETAIL_FAILURE, GET_TRAVEL_DETAIL_REQUEST, GET_TRAVEL_DETAIL_SUCCESS, GET_TRAVEL_HISTORY_DETAIL_FAILURE, GET_TRAVEL_HISTORY_DETAIL_REQUEST, GET_TRAVEL_HISTORY_DETAIL_SUCCESS, GET_TRAVEL_LIST_FAILURE, GET_TRAVEL_LIST_REQUEST, GET_TRAVEL_LIST_SUCCESS } from "../Constants/travelConstants";
-import { createTravel, deleteTravelApi, fetchTravelDetails, fetchTravelHistoryDetails, fetchTravelList } from "../../services/travel";
+import { ADD_TRAVEL_FAILURE, ADD_TRAVEL_REQUEST, ADD_TRAVEL_SUCCESS, DELETE_TRAVEL_FAILURE, DELETE_TRAVEL_REQUEST, DELETE_TRAVEL_SUCCESS, GET_TRAVEL_DETAIL_FAILURE, GET_TRAVEL_DETAIL_REQUEST, GET_TRAVEL_DETAIL_SUCCESS, GET_TRAVEL_HISTORY_DETAIL_FAILURE, GET_TRAVEL_HISTORY_DETAIL_REQUEST, GET_TRAVEL_HISTORY_DETAIL_SUCCESS, GET_TRAVEL_LIST_FAILURE, GET_TRAVEL_LIST_REQUEST, GET_TRAVEL_LIST_SUCCESS, UPDATE_TRAVEL_STATUS_FAILURE, UPDATE_TRAVEL_STATUS_REQUEST, UPDATE_TRAVEL_STATUS_SUCCESS } from "../Constants/travelConstants";
+import { createTravel, deleteTravelApi, fetchTravelDetails, fetchTravelHistoryDetails, fetchTravelList, updateTravelStatusApi } from "../../services/travel";
 
 
 export const createNewTravel = (params) => async (dispatch) => {
@@ -13,7 +13,7 @@ export const createNewTravel = (params) => async (dispatch) => {
             payload: data,
         });
         if (status === 200) {
-             toast.success(message || "Created successfully.", {
+            toast.success(message || "Created successfully.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -53,7 +53,7 @@ export const getTravelList = (params) => async (dispatch) => {
         return response.data;
     } catch (error) {
         dispatch({ type: GET_TRAVEL_LIST_FAILURE, payload: error.message });
-        throw error; 
+        throw error;
     }
 };
 
@@ -119,5 +119,29 @@ export const deleteTravel = (params, navigate) => async (dispatch) => {
         dispatch({ type: DELETE_TRAVEL_FAILURE, payload: error.message });
     }
 };
+
+export const updateTravelStatus = (params) => async (dispatch) => {
+    try {
+        dispatch({ type: UPDATE_TRAVEL_STATUS_REQUEST });
+        const { data } = await updateTravelStatusApi(params)
+        const { message, success } = data;
+        dispatch({
+            type: UPDATE_TRAVEL_STATUS_SUCCESS,
+            payload: data
+        });
+        if (success) {
+            toast.success(message);
+            return data;
+        }
+        else {
+            toast.error(message);
+            return { success: false };
+        }
+    } catch (error) {
+        toast.error(error.message)
+        dispatch({ type: UPDATE_TRAVEL_STATUS_FAILURE, payload: error.message });
+    }
+};
+
 
 

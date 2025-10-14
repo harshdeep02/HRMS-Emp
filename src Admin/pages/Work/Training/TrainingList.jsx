@@ -31,7 +31,6 @@ import { showMastersValue } from "../../../utils/helper.js";
 
 const INITIAL_VISIBLE_COUNT = 7;
 
-
 const TrainingList = () => {
 
     const navigate = useNavigate();
@@ -284,7 +283,7 @@ const TrainingList = () => {
                                     <tr>
                                         <th>TRAINING TYPE</th>
                                         <th>TRAINER NAME</th>
-                                        <th>TRAINING COST</th>
+                                        {/* <th>TRAINING COST</th> */}
                                         <th>START & END DATE</th>
                                         <th>STATUS</th>
                                     </tr>
@@ -302,7 +301,7 @@ const TrainingList = () => {
                                                         </div>
                                                     </td>
                                                     <td className="loadingtd">{item?.trainer?.trainer_name}</td>
-                                                    <td className="loadingtd">{item?.training_cost}</td>
+                                                    {/* <td className="loadingtd">{item?.training_cost}</td> */}
                                                     <td className="">
                                                         <div className="contact-info">
                                                             <div className="loadingtd"><CalendarArrowUp size={14} /> <span>{formatDate(item?.start_date)}</span></div>

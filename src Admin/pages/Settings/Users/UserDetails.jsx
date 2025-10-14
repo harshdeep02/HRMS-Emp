@@ -57,6 +57,7 @@ export const UserDetails = () => {
 
     const employeeDetails = useSelector((state) => state?.employeeDetails);
     const employeeDetail = employeeDetails?.data?.result;
+    const userDetail = employeeDetails?.data?.user;
     const employeeDetailsLoading = employeeDetails?.loading;
 
     const userRoleState = useSelector((state) => state?.userRole);
@@ -71,7 +72,7 @@ export const UserDetails = () => {
         email: "",
         is_disabled: 0,
         image: null,
-        role: 0
+        role_id: 0
     });
 
     const fetchEmployees = (search = "") => {
@@ -120,8 +121,8 @@ export const UserDetails = () => {
                 first_name: employeeDetail?.first_name ? employeeDetail?.first_name : "",
                 last_name: employeeDetail?.last_name ? employeeDetail?.last_name : "",
                 email: employeeDetail?.email,
-                is_disabled: employeeDetail?.is_disabled,
-                role: employeeDetail?.role,
+                is_disabled: userDetail?.is_disabled,
+                role_id: userDetail?.role_id,
                 image: employeeImage(employeeDetail?.image)
             }))
         }
@@ -156,8 +157,8 @@ export const UserDetails = () => {
                     first_name: selectedEmployee?.employee?.first_name,
                     last_name: selectedEmployee?.employee?.last_name,
                     email: selectedEmployee?.employee?.email,
-                    is_disabled: selectedEmployee?.employee?.is_disabled,
-                    role: selectedEmployee?.employee?.role,
+                    is_disabled: selectedEmployee?.is_disabled,
+                    role_id: selectedEmployee?.role_id,
                     image: employeeImage(selectedEmployee?.employee?.image),
                 }));
             }
@@ -217,7 +218,7 @@ export const UserDetails = () => {
         const dataToSubmit = {
             user_id: formData?.employee_id,
             is_disabled: selectedStatus !== "" ? selectedStatus : formData?.is_disabled,
-            role: formData?.role
+            role_id: formData?.role_id
         };
 
         dispatch(setUserRole(dataToSubmit))
@@ -273,7 +274,7 @@ export const UserDetails = () => {
                 onConfirm={handleSaveOrUpdate}
                 type={formData?.is_disabled === 0 ? "disable" : "enable"}
                 module="login"
-                role={formData?.role === 1 ? "User" : formData?.role === 2 ? "Admin" : ""}
+                role={formData?.role_id === 1 ? "User" : formData?.role_id === 2 ? "Admin" : ""}
                 loading={userRoleLoading}
             />
             <button onClick={() => navigate(`${viewMode == 'edit' ? `/settings/user-details/${id}` : '/settings/users-list'}`)} className="close_nav header_close">Close</button>
@@ -374,10 +375,10 @@ export const UserDetails = () => {
                                 <div className="dept-page-icon-wrapper"><LogOut size={20} strokeWidth={1.5} /></div>
                                 <label>Role</label>
                                 <SelectDropdown
-                                    selectedValue={formData?.role}
+                                    selectedValue={formData?.role_id}
                                     options={enableDisableOptions}
                                     onSelect={handleSelect}
-                                    type="role"
+                                    type="role_id"
                                     disabled={viewMode === 'detail'}
                                 />
                             </div>

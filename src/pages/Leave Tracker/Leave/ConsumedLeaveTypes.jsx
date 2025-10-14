@@ -25,18 +25,21 @@ const fetchLeaveReport = useCallback(async () => {
       fetchLeaveReport()
     },[fetchLeaveReport])
 
-      console.log(leaveBalnceData)
-const leaveName = ["Annual Leave", "Sick Leave", "Casual Leave"]
-const findLeaveData = leaveBalnceData?.map((item)=>({  [item.leave_name]:item}))
+  const leaveName = ["Sick Leave", "Annual Leave", "Casual Leave"]
+    const findLeaveData = leaveBalnceData?.reduce((acc, curr)=>{  
+      acc[curr?.leave_name] = curr
+      return acc;
+    },{})
 
   const leaveData = [
-    { type: "SL", used: 4, total: 10 },
-    { type: "AL", used: 2, total: 10 },
-    { type: "CL", used: 3, total: 10 },
+    { type: "SL", used: findLeaveData[leaveName[0]]?.taken_leaves, total: findLeaveData[leaveName[0]]?.total_leaves },
+    { type: "AL", used: findLeaveData[leaveName[1]]?.taken_leaves, total: findLeaveData[leaveName[1]]?.total_leaves },
+    { type: "CL", used: findLeaveData[leaveName[2]]?.taken_leaves, total: findLeaveData[leaveName[2]]?.total_leaves },
   ];
 
-  const totalUsed = leaveData.reduce((sum, l) => sum + l.used, 0);
-  const totalAvailable = leaveData.reduce((sum, l) => sum + l.total, 0);
+  const totalUsed = leaveData.reduce((sum, l) => sum + Number(l.used || 0), 0) || 0;
+  console.log(totalUsed)
+  const totalAvailable = leaveData.reduce((sum, l) => sum + Number(l.total || 0), 0) || 0;
 
   const radius = 42;
   const circumference = 2 * Math.PI * radius;

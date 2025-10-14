@@ -49,7 +49,7 @@ export const PerformanceDetails = () => {
         organisation: buildCompetencyArray(org_competency)
     });
 
-    
+
     const sendForApproval = useSelector((state) => state?.sendForApproval);
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data || [];
@@ -71,7 +71,7 @@ export const PerformanceDetails = () => {
         const path = location.pathname;
         if (path.includes('/add-performance') || path.includes('/edit-performance')) {
             // if (employeeList?.length === 0) 
-                fetchEmployee("");
+            fetchEmployee("");
         }
     }, [location]);
 
@@ -145,11 +145,12 @@ export const PerformanceDetails = () => {
         }
     };
 
-    useEffect(()=>{
-        if(formData?.status === 4){
-        setDisableBtn(true)
-    }
-    },formData?.status)
+    useEffect(() => {
+        if (formData?.status === 4) {
+            setDisableBtn(true)
+        }
+    }, [formData?.status])
+
     const handleStatus = (val) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -157,40 +158,40 @@ export const PerformanceDetails = () => {
         }));
     };
 
-    const handleSendForApproval= async()=>{
-        try{
-            const dataToSend= {
+    const handleSendForApproval = async () => {
+        try {
+            const dataToSend = {
                 id,
-                status:4 
+                status: 4
             }
-       const res=  await dispatch(SendApproval(dataToSend))
-       if(res?.data?.status){
-        setShowModal(false);
-        dispatch(getPerformanceDetails({ id }));
-        setDisableBtn(true)
-        // setFormData((prev)=>({...prev, status:2}))
-       }
-    }
-    catch(error){
+            const res = await dispatch(SendApproval(dataToSend))
+            if (res?.data?.status) {
                 setShowModal(false);
-                console.log("error-", error);
-            };
+                dispatch(getPerformanceDetails({ id }));
+                setDisableBtn(true)
+                // setFormData((prev)=>({...prev, status:2}))
+            }
+        }
+        catch (error) {
+            setShowModal(false);
+            console.log("error-", error);
+        };
     }
-    
+
     if (performanceData?.loading) {
         return <div className="loading-state"><Loader /></div>;
     }
 
     return (
         <div className="performanceDetailMain">
-             <ConfirmPopup
-                    open={showModal}
-                    onClose={() => setShowModal(false)}
-                    onConfirm={handleSendForApproval}
-                    type="Sent"
-                    module="for Approval"
-                    loading={sendForApproval?.loading}
-                />
+            <ConfirmPopup
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleSendForApproval}
+                type="Sent"
+                module="for Approval"
+                loading={sendForApproval?.loading}
+            />
             <button onClick={() => navigate(viewMode === 'edit' ? `/performance-details/${id}` : '/performance-list')} className="close_nav header_close">
                 Close
             </button>
@@ -231,18 +232,18 @@ export const PerformanceDetails = () => {
                                 disabled={true}
                             // viewMode={viewMode !== "detail"}
                             />
-                            
-                            {formData?.status != 1 && viewMode !=="add"  &&
-                               (<div class="approvalHeadRight" style={{position: "absolute", top: "30px" ,right: "115px"}}>
-                            <button disabled={disableBtn} style={disableBtn? {cursor:"default"}:{}} onClick={()=>setShowModal(!showModal)}class="approvedBtn status-label status-approved">
-                                {formData?.status != 4 ? "Sent For Approval": "Waiting For Approval"}</button>
-                            </div>)
+
+                            {formData?.status != 1 && viewMode !== "add" &&
+                                (<div class="approvalHeadRight" style={{ position: "absolute", top: "30px", right: "115px" }}>
+                                    <button disabled={disableBtn} style={disableBtn ? { cursor: "default" } : {}} onClick={() => setShowModal(!showModal)} class="approvedBtn status-label status-approved">
+                                        {formData?.status != 4 ? "Sent For Approval" : "Waiting For Approval"}</button>
+                                </div>)
                             }
-                            {formData?.status == 3 ||viewMode === 'detail' && formData?.status == 2 ? (
+                            {formData?.status == 3 || viewMode === 'detail' && formData?.status == 2 ? (
                                 <button className="dept-page-edit-btn" onClick={handleEditClick}>
                                     Edit
                                 </button>
-                            ):''}
+                            ) : ''}
                         </div>
 
                         <PerformanceForm

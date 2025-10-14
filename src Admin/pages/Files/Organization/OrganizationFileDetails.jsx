@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployeeList } from "../../../Redux/Actions/employeeActions.js";
 import { getFileDetails } from "../../../Redux/Actions/fileActions.js";
 import { OrganizationFileForm } from "./OrganizationFileForm.jsx";
+import { getDepartmentList } from "../../../Redux/Actions/departmentActions.js";
 export const OrganizationFileDetails = () => {
 
     const location = useLocation();
@@ -21,6 +22,9 @@ export const OrganizationFileDetails = () => {
     const dispatch = useDispatch();
 
     //Data from redux
+    const departmentData = useSelector((state) => state?.departmentList);
+    const departmentLists = departmentData?.data?.department || [];
+
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data?.result;
 
@@ -29,7 +33,7 @@ export const OrganizationFileDetails = () => {
 
     const [viewMode, setViewMode] = useState("detail");
     const [formData, setFormData] = useState({
-        employees: [],
+        departments: [],
         deadline: "",
         description: "",
         file_name: '',
@@ -39,8 +43,17 @@ export const OrganizationFileDetails = () => {
         status: 1
     });
 
+
+    const fetchDepartments = (search = "") => {
+        const sendData = { status: 1 };
+        if (search) {
+            sendData["search"] = search;
+        }
+        dispatch(getDepartmentList(sendData));
+    };
+
     const fetchEmployee = (search = "") => {
-        const sendData = {};
+        const sendData = {employee_status: 1};
         if (search) {
             sendData["search"] = search;
         }
@@ -49,8 +62,8 @@ export const OrganizationFileDetails = () => {
 
     useEffect(() => {
         const path = location.pathname;
-        if (path.includes('/add-employee-file') || path.includes('/edit-organisation-file')) {
-            if (!employeeList) fetchEmployee();
+        if (path.includes('/add-organisation-file') || path.includes('/edit-organisation-file')) {
+            fetchDepartments();
         }
     }, [location]);
 
@@ -61,7 +74,7 @@ export const OrganizationFileDetails = () => {
     }, [id]);
 
     const handleSearch = (query) => {
-        fetchEmployee(query);
+        fetchDepartments(query);
     };
 
     useEffect(() => {
@@ -80,7 +93,7 @@ export const OrganizationFileDetails = () => {
         if (id && fileDetails) {
             setFormData((prev) => ({
                 ...prev,
-                employees: fileDetails?.employees ? JSON.parse(fileDetails?.employees) : [],
+                departments: fileDetails?.employees ? JSON.parse(fileDetails?.departments) : [],
                 deadline: fileDetails?.deadline,
                 file_name: fileDetails?.file_name,
                 notify_all: fileDetails?.notify_all,

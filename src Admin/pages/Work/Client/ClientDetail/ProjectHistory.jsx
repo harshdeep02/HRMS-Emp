@@ -138,9 +138,9 @@ const ProjectHistory = () => {
                 <table className="detail-table emp-t-5 project-history-table empProject">
                     <thead>
                         <th>Project Name</th>
-                        <th>Assigned To</th>
+                        <th>PROJECT LEADER</th>
                         <th>Start Date</th>
-                        <th>End Date</th>
+                        <th>Due Date</th>
                         <th className='status-badge'>Status</th>
                     </thead>
                     {(projectLoading || clientProjecList?.length > 0) ? (
@@ -152,7 +152,7 @@ const ProjectHistory = () => {
                                 return (
                                     <tr key={item?.id} className="detail_tr_row employee-row">
                                         <td className=''>
-                                            <div className='loadingtd'>
+                                            <div className='loadingtd purplle Bold'>
                                                 {item?.project_name}
                                             </div>
                                         </td>

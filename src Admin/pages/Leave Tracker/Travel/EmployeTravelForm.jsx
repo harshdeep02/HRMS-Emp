@@ -7,7 +7,6 @@ import {
     Clock,
     ClipboardList,
     Plane,
-    Building,
     Proportions,
     User
 } from 'lucide-react';
@@ -20,11 +19,7 @@ import SaveBtn from '../../../utils/common/SaveBtn.jsx';
 import { calculateDuration, handleFormError } from "../../../utils/helper.js";
 import FormDatePicker from '../../../utils/common/FormDatePicker.jsx';
 import SelectDropdown from '../../../utils/common/SelectDropdown/SelectDropdown.jsx';
-import StatusDropdown from '../../../utils/common/StatusDropdown/StatusDropdown.jsx';
 import { createNewTravel, getTravelDetails } from '../../../Redux/Actions/travelActions.js';
-import { travelStatusOptions } from '../../../utils/Constant.js';
-import { UserProfileImageUpload } from '../../../utils/common/UserProfileImageUpload/UserProfileImageUpload.jsx';
-
 
 const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 
@@ -50,8 +45,8 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
     const employeeOptions = useMemo(
         () =>
             employeeList?.map((e) => ({
-                id: e?.employee?.user_id,
-                label: [e?.employee?.first_name, e?.employee?.last_name]
+                id: e?.user_id,
+                label: [e?.first_name, e?.last_name]
                     .filter(Boolean)
                     .join(" "),
             })),
@@ -61,16 +56,25 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
     const user_id_ref = useRef(null);
     const department_ref = useRef(null);
     const customer_name_ref = useRef(null);
+    const place_of_visit_ref = useRef(null);
+    const expected_date_of_arrival_ref = useRef(null);
+    const expected_date_of_departure_ref = useRef(null);
 
     const visuallyRequiredFields = {
         user_id: true,
         department_id: true,
+        place_of_visit: true,
+        expected_date_of_departure: true,
+        expected_date_of_arrival: true,
         customer_name: true,
     };
 
     const [errors, setErrors] = useState({
         user_id: false,
         department_id: false,
+        place_of_visit: false,
+        expected_date_of_departure: false,
+        expected_date_of_arrival: false,
         customer_name: false,
     });
 
@@ -88,13 +92,31 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
             ref: department_ref,
         },
         {
+            key: "place_of_visit",
+            label: "Please fill Place Of Visit",
+            required: true,
+            ref: place_of_visit_ref,
+        },
+        {
+            key: "expected_date_of_departure",
+            label: "Please fill Expected Date Of Departure",
+            required: true,
+            ref: expected_date_of_departure_ref,
+        },
+        {
+            key: "expected_date_of_arrival",
+            label: "Please fill Expected Date Of Arrival",
+            required: true,
+            ref: expected_date_of_arrival_ref,
+        },
+        {
             key: "customer_name",
             label: "Please fill Customer Name",
             required: true,
             ref: customer_name_ref,
-        }
+        },
     ];
-
+    
     const validateForm = () => {
         for (let field of basicRequiredFields) {
             const value = formData[field.key];
@@ -116,11 +138,11 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
             let updates = {};
 
             if (name === "user_id") {
-                const selectedEmployee = employeeList?.find(emp => emp?.id === item?.id);
+                const selectedEmployee = employeeList?.find(emp => emp?.user_id === item?.id);
                 updates = {
                     [name]: item?.id,
-                    department_id: selectedEmployee?.employee?.department_id,
-                    user_image: selectedEmployee?.employee?.image ? JSON.parse(selectedEmployee?.employee?.image) : "",
+                    department_id: selectedEmployee?.department_id,
+                    user_image: selectedEmployee?.image ? JSON?.parse(selectedEmployee?.image) : "",
                 };
             } else if (name === "is_billable_to_customer") {
                 updates = { [name]: item?.label };
@@ -182,13 +204,6 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
         }
     };
 
-    const handleStatus = (val) => {
-        setFormData(prevData => ({
-            ...prevData,
-            status: val
-        }));
-    };
-
     const handleSaveOrUpdate = (e) => {
         e.preventDefault();
         if (!validateForm()) return;
@@ -196,6 +211,15 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
         const formDataToSubmit = {
             ...formData,
             // user_image: formData?.user_image ? JSON.stringify(formData?.user_image) : ""
+            user_id: formData?.user_id,
+            purpose_of_visit: formData?.purpose_of_visit,
+            place_of_visit: formData?.place_of_visit,
+            expected_date_of_arrival: formData?.expected_date_of_arrival,
+            expected_date_of_departure: formData?.expected_date_of_departure,
+            expected_duration_in_days: formData?.expected_duration_in_days,
+            is_billable_to_customer: formData?.is_billable_to_customer,
+            customer_name: formData?.customer_name,
+            status: formData?.status,
         };
         if (viewMode === 'edit') {
             formDataToSubmit["id"] = id;
@@ -204,7 +228,7 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
         dispatch(createNewTravel(formDataToSubmit))
             .then((res) => {
                 if (res?.status === 200) {
-                    navigate(id ? `/travel-details/${res?.travel?.id}` : `/travel-list`);
+                    navigate(id ? `/travel-details/${id}` : `/travel-list`);
                     if (id) dispatch(getTravelDetails({ id }));
                 }
             })
@@ -218,37 +242,6 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
 
     return (
         <>
-            {/* Added the new header section here */}
-            <div className="dept-page-cover-section dept-page-cover-section_2">
-                <div className="profile_pic_head">
-                    <UserProfileImageUpload
-                        formData={formData}
-                        setFormData={setFormData}
-                        fieldName="user_image"
-                        isEditMode={false}
-                    />
-                </div>
-                {/* {!isDetailView ? */}
-                <StatusDropdown
-                    options={travelStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
-                        value: item?.id,
-                        label: item?.label,
-                        icon: item?.icon,
-                    }))}
-                    defaultValue={formData?.status}
-                    onChange={(val) => handleStatus(val)}
-                    viewMode={!isDetailView}
-                />
-                {/* :
-                    <div className="status-dropdown">
-                        <div className={`status-label dropdown-trigger`}>
-                            {travelStatusOptions?.filter((item) => item?.id == formData?.status)?.[0]?.label}
-                        </div>
-                    </div>
-                } */}
-            </div>
-            {/* End of new header section */}
-
             <div className={`dept-page-basic-info-section ${viewMode === "edit" ? "isEditPage" : ""}`} style={{ marginTop: '0px' }}>
                 <h3>Basic Information</h3>
                 <p className="dept-page-subtitle">{viewMode !== "detail" ? "Please Provide" : ''} Travel Basic Details Below.</p>
@@ -268,7 +261,7 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                         loading={employeeData?.loading}
                         showSearchBar={true}
                         disabled={isDetailView}
-                        selectedName={isDetailView ? [travelDetail?.employee?.first_name, travelDetail?.employee?.last_name].filter(Boolean).join(" ") : ""}
+                        selectedName={formData?.user_name ?? ""}
                     />
                 </div>
 
@@ -286,15 +279,15 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                         loading={departmentData?.loading}
                         showSearchBar={false}
                         disabled={true}
-                        selectedName={isDetailView ? travelDetail?.department?.department_name : ""}
                     />
                 </div>
 
                 {/* Place of Visit */}
                 <div className="dept-page-input-group">
                     <div className="dept-page-icon-wrapper"><Plane size={20} strokeWidth={1.5} /></div>
-                    <label>Place Of Visit</label>
+                    <label className={!isDetailView ? 'color_red' : ""}>Place Of Visit{!isDetailView ? <span>*</span> : ''}</label>
                     <input
+                        ref={place_of_visit_ref}
                         type="text"
                         name="place_of_visit"
                         value={formData?.place_of_visit}
@@ -308,8 +301,9 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                     <div className="dept-page-icon-wrapper"  >
                         <Calendar size={20} strokeWidth={1.25} />
                     </div>
-                    <label >Expected Date Of Departure</label>
+                    <label className={!isDetailView ? 'color_red' : ""}>Expected Date Of Departure{!isDetailView ? <span>*</span> : ''}</label>
                     <FormDatePicker
+                    ref={expected_date_of_arrival_ref}
                         label="Expected Date Of Departure"
                         onDateChange={handleDateChange}
                         initialDate={formData?.expected_date_of_departure}
@@ -324,8 +318,9 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                     <div className="dept-page-icon-wrapper"  >
                         <Calendar size={20} strokeWidth={1.25} />
                     </div>
-                    <label >Expected Date Of Arrival</label>
+                    <label className={!isDetailView ? 'color_red' : ""}>Expected Date Of Arrival{!isDetailView ? <span>*</span> : ''}</label>
                     <FormDatePicker
+                    ref={expected_date_of_departure_ref}
                         label="Expected Date Of Arrival"
                         onDateChange={handleDateChange}
                         initialDate={formData?.expected_date_of_arrival}
@@ -344,7 +339,7 @@ const EmployeTravelForm = ({ viewMode, formData, setFormData, handleSearch }) =>
                         name="expected_duration_in_days"
                         value={formData?.expected_duration_in_days}
                         onChange={handleChange}
-                        disabled={isDetailView}
+                        disabled = {true}
                     />
                 </div>
 

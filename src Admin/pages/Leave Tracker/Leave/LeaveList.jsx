@@ -323,7 +323,7 @@ export const LeaveList = () => {
                                 })}
                             </ul>
                             <div className="clearBTN">
-                                {(statusFilter !== 'All' || dateFilter !== null || leaveTypeFilter !== "All") && (
+                                {(dateFilter !== null || leaveTypeFilter !== "All") && (
                                     (!leaveLoading && !showMoreLess) &&
                                     <button className="clear-filters-btn" onClick={resetFilters}>
                                         <span>Clear filter</span><X size={14} />
@@ -392,7 +392,7 @@ export const LeaveList = () => {
                                 ) : (
                                     <tbody className="table_not_found">
                                         <tr>
-                                            <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
+                                            <td colSpan={5} style={{ textAlign: 'center', padding: '20px' }}>
                                                 {(!leaveLoading && leaveList?.length === 0) && (
                                                     <ListDataNotFound module="Leave" handleReset={resetFilters} />
                                                 )}

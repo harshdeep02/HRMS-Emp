@@ -50,6 +50,7 @@ export const LeaveSummary = ({ emp_id }) => {
     const [dateFilter, setDateFilter] = useState(null); // State for date filter
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [statusFilter, setStatusFilter] = useState("All");
     const [view, setView] = useState('list');
 
     const showSummaryData = [
@@ -82,7 +83,7 @@ export const LeaveSummary = ({ emp_id }) => {
                 ...(leaveTypeFilter && leaveTypeFilter !== "All" && { leave_type_id: leaveTypeFilter }),
                 // ...(searchTerm && { search: searchTerm }),
                 // ...(sortBy && { sort_by: sortBy }), // backend should handle sort
-                // ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
+                ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
             };
             await dispatch(getLeaveSummaryDetails(sendData));
             setIsLoadingMore(false);
@@ -90,11 +91,11 @@ export const LeaveSummary = ({ emp_id }) => {
             console.error("Error fetching leave list:", error);
             setIsLoadingMore(false);
         }
-    }, [visibleCount, currentPage, dateFilter, leaveTypeFilter]);
+    }, [visibleCount, currentPage,statusFilter, dateFilter, leaveTypeFilter]);
 
     useEffect(() => {
         fetchEmpLeaves();
-    }, [visibleCount, currentPage, dateFilter, leaveTypeFilter]);
+    }, [visibleCount, currentPage,statusFilter, dateFilter, leaveTypeFilter]);
 
     // Data for the DepartmentFilter component, structured correctly for this page
     // const leaveTypeOptions = [
@@ -138,6 +139,10 @@ export const LeaveSummary = ({ emp_id }) => {
         setDateFilter(date);
         setVisibleCount(INITIAL_VISIBLE_COUNT)
     };
+        const handleStatusFilter = (newFilter) => {
+        setStatusFilter(newFilter);
+        setVisibleCount(INITIAL_VISIBLE_COUNT); // reset count
+    };
 
     const handleLeaveTypeFilter = (newFilter) => {
         setLeaveTypeFilter(newFilter);
@@ -145,6 +150,7 @@ export const LeaveSummary = ({ emp_id }) => {
     };
 
     const resetFilters = () => {
+         setStatusFilter("All");
         setLeaveTypeFilter("All");
         setDateFilter(null); // Reset date filter
         // Clear date input manually if needed
@@ -155,6 +161,12 @@ export const LeaveSummary = ({ emp_id }) => {
     const formatCount = (count) => {
         return count.toString().padStart(2, "0");
     };
+
+        const leaveStatusOptions = [
+        { value: 1, label: "Approved" },
+        { value: 2, label: "Pending" },
+        { value: 3, label: "Rejected" },
+    ];
     const dummData = Array.from({ length: 5 }, (_, i) => ({
         id: i,
         name: "",
@@ -210,6 +222,12 @@ export const LeaveSummary = ({ emp_id }) => {
                                 onDateChange={handleDateFilter}
                                 initialDate={dateFilter}
                             />
+                             <DynamicFilter
+                                filterBy="status"
+                                filterValue={statusFilter}
+                                onChange={handleStatusFilter}
+                                options={leaveStatusOptions}
+                            />
                         </div>
                     </div>
                 </div>
@@ -223,9 +241,9 @@ export const LeaveSummary = ({ emp_id }) => {
                     <thead>
                         {/* <tr className="visually-hidden"></tr> */}
                         <tr>
-                            <th>Leave Master</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
+                            <th>Leave Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                             <th>Reason</th>
                             <th className="status-badge">STATUS</th>
                         </tr>
@@ -238,7 +256,7 @@ export const LeaveSummary = ({ emp_id }) => {
                                 const statusClassName = statusConfig[item.status]?.className || 'default';
                                 return (
                                     <tr key={item.id} className="employee-row detail_tr_row ">
-                                        <td><div className="department purplle Semi_Bold loadingtd">{item?.leave_master?.leave_name}</div></td>
+                                        <td><div className="purplle Bold loadingtd">{item?.leave_master?.leave_name}</div></td>
                                         <td><div className="department loadingtd">{item?.from_date}</div></td>
                                         <td><div className="department loadingtd">{item?.to_date}</div></td>
                                         <td><div className="contact-info loadingtd">

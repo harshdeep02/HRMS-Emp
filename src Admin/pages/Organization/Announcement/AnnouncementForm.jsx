@@ -26,6 +26,8 @@ const AnnouncementForm = ({ viewMode, formData, setFormData, handleSearch }) => 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+    const [documentUpload, setDocumentUpload] = useState(false);
+
 
     //Data from redux
     const createAnnouncement = useSelector((state) => state?.createAnnouncement);
@@ -195,7 +197,7 @@ const AnnouncementForm = ({ viewMode, formData, setFormData, handleSearch }) => 
                             <Calendar size={20} strokeWidth={1.25} />
                         </div>
                         <label >Expiry Date</label>
-                        <FormDatePicker label="Expiry date" onDateChange={handleDateChange} initialDate={formData?.expiry} type="expiry" disabled={isDetailView} />
+                        <FormDatePicker label="Expiry date" onDateChange={handleDateChange} initialDate={formData?.expiry} type="expiry" disabled={isDetailView} restrict={true}/>
                     </div>
                     <div className="dept-page-input-group">
                         <div className="dept-page-icon-wrapper">
@@ -267,6 +269,7 @@ const AnnouncementForm = ({ viewMode, formData, setFormData, handleSearch }) => 
                             fieldName="attachment"
                             multiple={false}
                             isDetailView={isDetailView}
+                            setDocumentUpload={setDocumentUpload}
                         />
 
                     </div>
@@ -279,6 +282,7 @@ const AnnouncementForm = ({ viewMode, formData, setFormData, handleSearch }) => 
                     viewMode={viewMode}
                     loading={createAnnouncement?.loading}
                     color="#fff"
+                    isDisabled={documentUpload}
                 />
             )}
         </>

@@ -1,4 +1,4 @@
-import { ADD_TRAVEL_FAILURE, ADD_TRAVEL_REQUEST, ADD_TRAVEL_SUCCESS, DELETE_TRAVEL_FAILURE, DELETE_TRAVEL_REQUEST, DELETE_TRAVEL_SUCCESS, GET_TRAVEL_DETAIL_FAILURE, GET_TRAVEL_DETAIL_REQUEST, GET_TRAVEL_DETAIL_SUCCESS, GET_TRAVEL_HISTORY_DETAIL_FAILURE, GET_TRAVEL_HISTORY_DETAIL_REQUEST, GET_TRAVEL_HISTORY_DETAIL_SUCCESS, GET_TRAVEL_LIST_FAILURE, GET_TRAVEL_LIST_REQUEST, GET_TRAVEL_LIST_SUCCESS } from "../Constants/travelConstants";
+import { ADD_TRAVEL_FAILURE, ADD_TRAVEL_REQUEST, ADD_TRAVEL_SUCCESS, DELETE_TRAVEL_FAILURE, DELETE_TRAVEL_REQUEST, DELETE_TRAVEL_SUCCESS, GET_TRAVEL_DETAIL_FAILURE, GET_TRAVEL_DETAIL_REQUEST, GET_TRAVEL_DETAIL_SUCCESS, GET_TRAVEL_HISTORY_DETAIL_FAILURE, GET_TRAVEL_HISTORY_DETAIL_REQUEST, GET_TRAVEL_HISTORY_DETAIL_SUCCESS, GET_TRAVEL_LIST_FAILURE, GET_TRAVEL_LIST_REQUEST, GET_TRAVEL_LIST_SUCCESS, UPDATE_TRAVEL_STATUS_FAILURE, UPDATE_TRAVEL_STATUS_REQUEST, UPDATE_TRAVEL_STATUS_SUCCESS } from "../Constants/travelConstants";
 
 const initialState = {
     loading: false,
@@ -59,6 +59,18 @@ export const deleteTravelReducer = (state = initialState, action) => {
         case DELETE_TRAVEL_SUCCESS:
             return { ...state, loading: false, error: null, data: action.payload }
         case DELETE_TRAVEL_FAILURE:
+            return { ...state, loading: false, error: action.payload }
+        default: return state;
+    }
+}
+
+export const updateTravelStatusReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case UPDATE_TRAVEL_STATUS_REQUEST:
+            return { ...state, loading: true, error: null };
+        case UPDATE_TRAVEL_STATUS_SUCCESS:
+            return { ...state, loading: false, error: null, data: action.payload }
+        case UPDATE_TRAVEL_STATUS_FAILURE:
             return { ...state, loading: false, error: action.payload }
         default: return state;
     }

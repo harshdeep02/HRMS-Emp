@@ -30,7 +30,7 @@ export const LeaveForm = ({ viewMode, formData, setFormData, handleSearch }) => 
 
     const employeeOptions = useMemo(
         () => employeeLists?.map(e => ({
-            id: e?.employee?.user_id, label: [e?.employee?.first_name, e?.employee?.last_name]
+            id: e?.user_id, label: [e?.first_name, e?.last_name]
                 .filter(Boolean)
                 .join(" "),
         })),
@@ -112,8 +112,10 @@ export const LeaveForm = ({ viewMode, formData, setFormData, handleSearch }) => 
             const updatedData = { ...prevData };
             switch (name) {
                 case "user_id":
+                    const selectedEmployee = employeeLists?.find(emp => emp?.user_id === item?.id);
                     updatedData.user_name = item?.label;
-                    updatedData[name] = item?.id;
+                    updatedData.user_image = selectedEmployee?.image ? JSON?.parse(selectedEmployee?.image) : "",
+                        updatedData[name] = item?.id;
                     break;
 
                 case "leave_type_id":
@@ -124,7 +126,7 @@ export const LeaveForm = ({ viewMode, formData, setFormData, handleSearch }) => 
                 case "type_of_leave":
                     updatedData[name] = item?.label;
                     if (item?.label === "Half Day" && prevData?.from_date) {
-                        updatedData.to_date = prevData.from_date;
+                        updatedData.to_date = prevData?.from_date;
                     }
                     break;
 
@@ -208,7 +210,7 @@ export const LeaveForm = ({ viewMode, formData, setFormData, handleSearch }) => 
             <div className="leaveFormMain">
                 <div className="dept-page-basic-info-section">
                     <h3>Basic Information</h3>
-                    <p className="dept-page-subtitle">{viewMode !== "detail"? "Please Provide" :''} Leaves Basic Details Below</p>
+                    <p className="dept-page-subtitle">{viewMode !== "detail" ? "Please Provide" : ''} Leaves Basic Details Below</p>
                     <div className="dept-page-input-group">
                         <div className="dept-page-icon-wrapper"><User size={20} strokeWidth={1.5} /></div>
                         <label className={!isDetailView ? "color_red" : ""}>Employee{!isDetailView ? <span>*</span> : ''}</label>

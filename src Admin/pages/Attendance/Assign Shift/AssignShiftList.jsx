@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 // UPDATED: Added new icons
-import { Aperture, List, Moon, MoreVertical, Sun, TrendingUp, UserPlus, X, XCircle } from "lucide-react";
+import { Aperture, List, Moon, MoreVertical, Sun, TrendingUp, UserPlus, X } from "lucide-react";
 import "../../EmployeeOnboarding/EmployeeList/EmployeeList.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,8 +13,9 @@ import './AssignShiftList.scss'
 import ImportList from "../../../utils/common/Import/ImportList.jsx";
 import ExportList from "../../../utils/common/Export/ExportList.jsx";
 import ListDataNotFound from "../../../utils/common/ListDataNotFound.jsx";
-import { formatDate } from "../../../utils/common/DateTimeFormat.js";
+import { formatDate, formatDate3 } from "../../../utils/common/DateTimeFormat.js";
 import defaultImage from "../../../assets/default-user.png";
+import DatePicker from "../../../utils/common/DatePicker/DatePicker.jsx";
 
 const INITIAL_VISIBLE_COUNT = 8;
 
@@ -35,7 +36,7 @@ export const AssignShiftList = () => {
         const lower = label.toLowerCase();
 
         if (lower.includes("general")) return Aperture;
-        if (lower.includes("afternoon") || lower.includes("morning")) return Sun;
+        if (lower.includes("afternoon") || lower.includes("morning") || lower.includes("first")) return Sun;
         if (lower.includes("night")) return Moon;
 
         return List; // default
@@ -63,8 +64,8 @@ export const AssignShiftList = () => {
     const [departmentFilter, setDepartmentFilter] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
-    const [view, setView] = useState('list');
     const [showMoreLess, setShowMoreLess] = useState(false);
+    const [dateFilter, setDateFilter] = useState(null);
     const [open, setOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -90,6 +91,7 @@ export const AssignShiftList = () => {
                 ...(statusFilter && statusFilter !== "All" && { shift_id: statusFilter }),
                 ...(departmentFilter && departmentFilter !== "All" && { department_id: departmentFilter }),
                 ...(searchTerm && { search: searchTerm }),
+                ...(dateFilter && { custom_date: formatDate3(new Date(dateFilter)) }),
             };
             const res = await dispatch(getAssignShiftList(sendData));
             setShowMoreLess(false);
@@ -97,18 +99,24 @@ export const AssignShiftList = () => {
             console.error("Error fetching Assign Shift list:", error);
             setShowMoreLess(false);
         }
-    }, [searchTerm, statusFilter, departmentFilter, visibleCount]);
+    }, [searchTerm, statusFilter, departmentFilter, visibleCount, dateFilter]);
 
     useEffect(() => {
         fetchAssignShiftList();
-    }, [searchTerm, statusFilter, departmentFilter, visibleCount]);
+    }, [searchTerm, statusFilter, departmentFilter, visibleCount, dateFilter]);
 
     const resetFilters = () => {
         setSearchTerm("");
         setStatusFilter("All");
         setDepartmentFilter("All");
         setShowMoreLess(false);
-        searchBoxRef.current?.clearInput(); // 👈 clear input field
+        if (searchBoxRef.current) {
+            searchBoxRef.current.clearInput();
+        }
+        setDateFilter(null);
+        // Clear date input manually if needed
+        const dateInput = document.getElementById('date-filter-input');
+        if (dateInput) dateInput.value = '';
     };
 
     const handleLoadMore = () => {
@@ -121,11 +129,15 @@ export const AssignShiftList = () => {
         setShowMoreLess(true);
     };
 
-
-
     const handleStatusFilter = (newFilter) => {
         setStatusFilter(newFilter);
         setVisibleCount(INITIAL_VISIBLE_COUNT); // reset count
+    };
+
+    const handleDateFilter = (date) => {
+        setCurrentPage(1);
+        setDateFilter(date);
+        setVisibleCount(INITIAL_VISIBLE_COUNT)
     };
 
     const handleDepartmentFilter = (newFilter) => {
@@ -163,7 +175,7 @@ export const AssignShiftList = () => {
         };
         return dispatch(createNewDepartment(payload));
     };
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         first_name: "",
         last_name: "",
@@ -175,7 +187,7 @@ export const AssignShiftList = () => {
     }));
 
 
-    const ListData = (assignShiftLoading && (!showMoreLess || assignShiftList?.length === 0)) ? dummData : assignShiftList;
+    const ListData = (assignShiftLoading && !showMoreLess) ? dummyData : assignShiftList;
 
     return (
         <div className="assignShiftMain">
@@ -207,6 +219,11 @@ export const AssignShiftList = () => {
                                         filterBy="department"
                                         filterValue={departmentFilter}
                                         onChange={handleDepartmentFilter}
+                                    />
+                                    <DatePicker
+                                        label=""
+                                        onDateChange={handleDateFilter}
+                                        initialDate={dateFilter}
                                     />
                                 </div>
                             </div>

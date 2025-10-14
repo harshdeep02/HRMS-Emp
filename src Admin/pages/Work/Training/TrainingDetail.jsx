@@ -73,7 +73,7 @@ export const TrainingDetail = () => {
         end_date: "",
         duration: "",
         description: "",
-        status: 1
+        status: 3
     });
 
     // Detect view mode from URL

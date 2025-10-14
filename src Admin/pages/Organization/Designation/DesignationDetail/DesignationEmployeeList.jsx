@@ -6,10 +6,10 @@ import LoadingDots from '../../../../utils/common/LoadingDots/LoadingDots';
 import ListDataNotFound from '../../../../utils/common/ListDataNotFound';
 import SearchBox from '../../../../utils/common/SearchBox.jsx';
 import DynamicFilter from '../../../../utils/common/DynamicFilter.jsx';
-import { Phone } from 'lucide-react';
+import { Mail, Phone, XCircle } from 'lucide-react';
 import defaultUserImage from "../../../../assets/default-user.png";
 import { getEmpDesignationDetails } from '../../../../Redux/Actions/designationActions';
-import DynamicLoader from '../../../../utils/common/DynamicLoader/DynamicLoader.jsx';
+import { employeeStatusOptions } from '../../../../utils/Constant.js';
 
 const DesignationEmployeeList = () => {
     const { id } = useParams();
@@ -17,22 +17,30 @@ const DesignationEmployeeList = () => {
 
     // Data from redux, using the correct state slice for designation
     const employeeData = useSelector((state) => state?.empDesignationDetails);
-    const employeeList = employeeData?.data?.getDesignationEmp || [];
+    const employeeList = employeeData?.data?.employees || [];
     const totalEmployees = employeeData?.data?.count || 0;
     const employeeLoading = employeeData?.loading;
 
     // State for managing the number of visible employees
-    const INITIAL_VISIBLE_COUNT = 10;
+    const INITIAL_VISIBLE_COUNT = 8;
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
     const [searchTerm, setSearchTerm] = useState("");
     const searchBoxRef = useRef();
     const [showMoreLess, setShowMoreLess] = useState(false);
-    const [designationFilter, setDesignationFilter] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const [sortBy, setSortBy] = useState("recent");
     const [view, setView] = useState('list');
     const [statusFilter, setStatusFilter] = useState("All");
 
+    const statusConfig = employeeStatusOptions?.reduce((acc, status) => {
+        if (!status?.id) return acc; // skip undefined values
+        acc[status?.id] = {
+            label: status?.label,
+            icon: status?.icon,
+            className: status?.label.replace(/\s+/g, "-").toLowerCase()
+        };
+        return acc;
+    }, {});
 
     // Fetch employees logic using the correct API for designation
     const fetchEmployees = useCallback(async () => {
@@ -41,18 +49,19 @@ const DesignationEmployeeList = () => {
             const sendData = {
                 fy,
                 noofrec: visibleCount,
-                designation_id: id,
                 currentpage: currentPage,
+                designation_id: id,
                 ...(searchTerm && { search: searchTerm }),
                 ...(sortBy && { sort_by: sortBy }),
+                ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
             };
             await dispatch(getEmpDesignationDetails(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching employee list:", error);
+            console.error("Error fetching employees:", error);
             setShowMoreLess(false);
         }
-    }, [dispatch, id, searchTerm, visibleCount, currentPage, sortBy]);
+    }, [id, searchTerm, visibleCount, currentPage, sortBy, statusFilter]);
 
     useEffect(() => {
         fetchEmployees();
@@ -64,14 +73,14 @@ const DesignationEmployeeList = () => {
         setVisibleCount(INITIAL_VISIBLE_COUNT);
     };
 
-    const handleDesignationFilter = (value) => {
-        setDesignationFilter(value);
+    const handleStatusFilter = (value) => {
+        setStatusFilter(value);
         setVisibleCount(INITIAL_VISIBLE_COUNT);
     };
 
     const resetFilters = () => {
         setSearchTerm('');
-        setDesignationFilter('All');
+        setStatusFilter("All");
         setSortBy("recent");
         setVisibleCount(INITIAL_VISIBLE_COUNT);
         if (searchBoxRef.current) {
@@ -89,27 +98,21 @@ const DesignationEmployeeList = () => {
         setShowMoreLess(true);
     };
 
-    const getEmployeeImage = (img) => {
-        try {
-            const parsedImage = JSON.parse(img);
-            return parsedImage;
-        } catch (e) {
-            return img || defaultUserImage;
-        }
-    };
+    const employeeImage = (img) => img
+        ? (() => {
+            try {
+                return JSON.parse(img);
+            } catch {
+                return img;
+            }
+        })()
+        : defaultUserImage;
 
-    const designationOptions = [
-        { label: 'All', value: 'All' },
-        ...[...new Set(employeeList.map(emp => emp?.designation_name))].map(des => ({
-            label: des,
-            value: des
-        }))
-    ];
-    const dummData = Array.from({ length: INITIAL_VISIBLE_COUNT }, (_, i) => ({
+    const dummyData = Array.from({ length: INITIAL_VISIBLE_COUNT }, (_, i) => ({
 
     }));
 
-    const ListData = (employeeLoading && !showMoreLess) ? dummData : employeeList;
+    const ListData = (employeeLoading && !showMoreLess) ? dummyData : employeeList;
 
     return (
         <>
@@ -123,53 +126,65 @@ const DesignationEmployeeList = () => {
                             <div className="toolbar-actions">
                                 <div className="border_box">
                                     <DynamicFilter
-                                        filterBy="Designation"
-                                        filterValue={designationFilter}
-                                        onChange={handleDesignationFilter}
-                                        options={designationOptions}
+                                        filterBy="status"
+                                        filterValue={statusFilter}
+                                        onChange={handleStatusFilter}
+                                        options={employeeStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
+                                            value: item?.id,
+                                            label: item?.label,
+                                        })) || []}
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <table className="detail-table emp-t-3 project-history-table empProject">
+                    <table className="detail-table emp-t-5 project-history-table empProject">
                         <thead>
                             <th>Employee</th>
-                            <th> Email</th>
-                            <th>Mobile</th>
+                            <th>Contacts</th>
+                            <th>Status</th>
                         </thead>
                         {(employeeLoading || employeeList?.length > 0) ? (
-
                             <tbody className={`${employeeLoading && !showMoreLess ? 'LoadingList' : ''}`}>
-                                {ListData.slice(0, visibleCount).map(employee => (
-                                    <tr key={employee.id} className="detail_tr_row employee-row">
-                                        <td className="td">
-                                            <div className="info_img">
-                                                <div className="loadingImg">
-                                                    <img
-                                                        src={getEmployeeImage(employee?.image)}
-                                                        alt={employee?.first_name}
-                                                        className="avatar"
-                                                    />
+                                {ListData?.map(employee => {
+                                    const StatusIcon = statusConfig[employee?.employee_status]?.icon || XCircle;
+                                    const statusClassName = statusConfig[employee?.employee_status]?.className;
+                                    return (
+                                        <tr key={employee?.id} className="detail_tr_row employee-row">
+                                            <td className="td">
+                                                <div className="info_img">
+                                                    <div className="loadingImg">
+                                                        <img
+                                                            src={employeeImage(employee?.image)}
+                                                            alt={employee?.first_name}
+                                                            className="avatar"
+                                                        />
+                                                    </div>
+                                                    <span className='loadingtdsmall purplle Bold'>{[employee?.first_name, employee?.last_name].filter(Boolean).join(" ")}</span>
                                                 </div>
-                                                <span className='loadingtdsmall '>{[employee?.first_name, employee?.last_name].filter(Boolean).join(" ")}</span>
-                                            </div>
-                                        </td>
-                                        <td className='loadingtd'>{employee?.email}</td>
-                                        <td className="contact-info loadingtd">
-                                            <div>
-                                                <Phone size={16} className="phone-icon" />
-                                                {employee?.mobile_no}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            </td>
+                                            <td className="td">
+                                                    <div className="contact-info ">
+                                                        <div className="loadingtdTOP blackPhone"><Mail size={14} /> <span>{employee?.email}</span></div>
+                                                        <div className="loadingtdBOTTOM "><Phone size={14} />
+                                                            <span className="purplle Semi_Bold">{employee?.mobile_no}</span></div>
+                                                    </div>
+                                                </td>
+                                            <td className="loadingtd ">
+                                                <div className={`status-badge ${statusClassName}`}>
+                                                    <StatusIcon size={16} />
+                                                    <span>{statusConfig[employee?.employee_status]?.label}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         ) : (
 
                             <tbody className="table_not_found">
                                 <tr>
-                                    <td colSpan={4} style={{ textAlign: 'center', paddingLeft: '150px' }}>
+                                    <td colSpan={4} style={{ textAlign: 'center', paddingLeft: '20px' }}>
                                         {(!employeeLoading && employeeList?.length === 0) && (
                                             <ListDataNotFound module="Employees" handleReset={resetFilters} />
                                         )}
@@ -179,20 +194,21 @@ const DesignationEmployeeList = () => {
                             </tbody>
                         )}
                     </table>
-
                 </div>
-                <div className="load-more-container">
-                    {visibleCount < totalEmployees && (
-                        <button onClick={handleLoadMore} className="load-more-btn">
-                            {(employeeLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show More"}
-                        </button>
-                    )}
-                    {visibleCount >= totalEmployees && totalEmployees > INITIAL_VISIBLE_COUNT && (
-                        <button onClick={handleShowLess} className="load-more-btn">
-                            Show Less
-                        </button>
-                    )}
-                </div>
+                {(!employeeLoading || showMoreLess) &&
+                    <div className="load-more-container">
+                        {visibleCount < totalEmployees && (
+                            <button onClick={handleLoadMore} className="load-more-btn">
+                                {(employeeLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show More"}
+                            </button>
+                        )}
+                        {visibleCount >= totalEmployees && totalEmployees > INITIAL_VISIBLE_COUNT && (
+                            <button onClick={handleShowLess} className="load-more-btn">
+                                {(employeeLoading && showMoreLess) ? <LoadingDots color="#8a3ffc" size={6} /> : "Show Less"}
+                            </button>
+                        )}
+                    </div>
+                }
             </>
 
         </>

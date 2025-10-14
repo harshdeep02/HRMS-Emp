@@ -9,10 +9,11 @@ import "../../EmployeeOnboarding/AddEmployee/AddEmloyee.scss";
 import '../../EmployeeModule/Applicant/ApplicantDetails.scss'
 import './EmployeeHealthDetails.scss'
 import { useDispatch, useSelector } from "react-redux";
-import { getEmpHealthDetails } from "../../../Redux/Actions/employeeHealthActions.js";
+import { getEmpHealthDetails, updateEmpHealthStatus } from "../../../Redux/Actions/employeeHealthActions.js";
 import { empHealthStatusOptions } from "../../../utils/Constant.js";
 import EmpHealthForm from "./EmpHealthForm.jsx";
 import { getEmployeeList } from "../../../Redux/Actions/employeeActions.js";
+import ConfirmPopup from "../../../utils/common/ConfirmPopup.jsx";
 
 export const EmployeeHealthDetails = () => {
 
@@ -23,8 +24,9 @@ export const EmployeeHealthDetails = () => {
 
     //Data from redux
     const empHealthDetails = useSelector((state) => state?.empHealthDetails);
-    const empHealthDetail = empHealthDetails?.data?.result || [];
+    const empHealthDetail = empHealthDetails?.data?.result || {};
     const empHealthDetailLoading = empHealthDetails?.loading || false;
+    const updateStatus = useSelector((state) => state?.updateEmpHealthStatus);
 
     const employeeData = useSelector((state) => state?.employeeList);
     const employeeList = employeeData?.data?.result || [];
@@ -63,7 +65,7 @@ export const EmployeeHealthDetails = () => {
     };
 
     const fetchEmployees = (search = "") => {
-        const sendData = { employee_status: "1,5" };
+        const sendData = { employee_status: 1 };
         if (search) {
             sendData["search"] = search;
         }
@@ -78,8 +80,10 @@ export const EmployeeHealthDetails = () => {
     useEffect(() => {
         const path = location.pathname;
         if (path.includes('/add-new-employee-health') || path.includes('/edit-employee-health')) {
-            // if (departmentList?.length === 0) fetchDepartments();
-            if (employeeList?.length === 0) fetchEmployees();
+            // if (departmentList?.length === 0) 
+            // fetchDepartments();
+            // if (employeeList?.length === 0) 
+            fetchEmployees();
         }
     }, [location.pathname]);
 
@@ -103,7 +107,9 @@ export const EmployeeHealthDetails = () => {
             setFormData((prev) => ({
                 ...prev,
                 user_id: empHealthDetail?.user_id || "",
+                user: [empHealthDetail?.employee?.first_name, empHealthDetail?.employee?.last_name]?.filter(Boolean)?.join(" "),
                 department_id: empHealthDetail?.department_id || "",
+                department_name: empHealthDetail?.department ? empHealthDetail?.department?.department_name : "",
                 contact_no: empHealthDetail?.contact_no || "",
                 contact_name: empHealthDetail?.contact_name || "",
                 gender: empHealthDetail?.gender || "",
@@ -121,19 +127,46 @@ export const EmployeeHealthDetails = () => {
                 attachment: empHealthDetail?.attachment ? JSON.parse(empHealthDetail?.attachment) : "",
                 // attachment: empHealthDetail?.attachment,
                 notes: empHealthDetail?.notes || "",
-                status: empHealthDetail?.status || 1,
+                status: empHealthDetail?.status,
                 user_image: empHealthDetail?.employee?.image ? JSON.parse(empHealthDetail?.employee?.image) : ""
             }));
         }
-    }, [empHealthDetail?.id]);
+    }, [empHealthDetail]);
 
     const handleEditClick = () => navigate(`/edit-employee-health/${id}`);
 
+    //update status
+    const [showModal, setShowModal] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState("");
+    const handleUpdateStatus = () => {
+        const sendData = {
+            id: id,
+            status: selectedStatus,
+        };
+        dispatch(updateEmpHealthStatus(sendData))
+            .then((res) => {
+                if (res?.success) {
+                    setShowModal(false);
+                    dispatch(getEmpHealthDetails({ id }));
+                }
+            })
+            .catch((error) => {
+                setShowModal(false);
+                console.log("error-", error);
+            });
+    };
+
     const handleStatus = (val) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            status: val,
-        }));
+        if (viewMode === "add") {
+            setFormData((prevData) => ({
+                ...prevData,
+                status: val,
+            }));
+        }
+        else {
+            setShowModal(true);
+            setSelectedStatus(val);
+        }
     };
 
     const renderHeader = () =>
@@ -163,35 +196,43 @@ export const EmployeeHealthDetails = () => {
     const isDetailView = viewMode === "detail";
 
     return (
-        <div className="employeeHealthDetailMain">
-            <button onClick={() => navigate(`${viewMode == 'edit' ? `/employee-health-details/${id}` : '/employee-health-list'}`)} className="close_nav header_close">Close</button>
-
-            <div className="dept-page-container">
-                <h2 className="dept-page-main-heading">{renderHeader()}</h2>
-                <div className="dept-page-content-wrapper">
-                    <div className="dept-page-left-panel">
-                        <h3 className="dept-page-mark-text">{renderMark()}</h3>
-                        <p className="dept-page-info-text">{renderHeaderInfo()}</p>
-                        <div className="dept-page-illustration-box">
-                            <img
-                                className=" "
-                                src={bannerImg}
-                                alt="Illustration"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="dept-page-right-panel">
-                        <div className="dept-page-cover-section dept-page-cover-section_2">
-                            <div className="profile_pic_head">
-                                <UserProfileImageUpload
-                                    formData={formData}
-                                    setFormData={setFormData}
-                                    fieldName="user_image"
-                                    isEditMode={false}
+        <>
+            <ConfirmPopup
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleUpdateStatus}
+                type="update"
+                module="Status"
+                loading={updateStatus?.loading}
+            />
+            <div className="employeeHealthDetailMain">
+                <button onClick={() => navigate(`${viewMode == 'edit' ? `/employee-health-details/${id}` : '/employee-health-list'}`)} className="close_nav header_close">Close</button>
+                <div className="dept-page-container">
+                    <h2 className="dept-page-main-heading">{renderHeader()}</h2>
+                    <div className="dept-page-content-wrapper">
+                        <div className="dept-page-left-panel">
+                            <h3 className="dept-page-mark-text">{renderMark()}</h3>
+                            <p className="dept-page-info-text">{renderHeaderInfo()}</p>
+                            <div className="dept-page-illustration-box">
+                                <img
+                                    className=" "
+                                    src={bannerImg}
+                                    alt="Illustration"
                                 />
                             </div>
-                            {/* {viewMode !== "detail" ? */}
+                        </div>
+
+                        <div className="dept-page-right-panel">
+                            <div className="dept-page-cover-section dept-page-cover-section_2">
+                                <div className="profile_pic_head">
+                                    <UserProfileImageUpload
+                                        formData={formData}
+                                        setFormData={setFormData}
+                                        fieldName="user_image"
+                                        isEditMode={false}
+                                    />
+                                </div>
+                                {/* {viewMode !== "detail" ? */}
                                 <StatusDropdown
                                     options={empHealthStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
                                         value: item?.id,
@@ -209,23 +250,24 @@ export const EmployeeHealthDetails = () => {
                                     </div>
                                 </div>
                             } */}
+                            </div>
+
+                            {isDetailView && (
+                                <button className="dept-page-edit-btn" onClick={handleEditClick}>
+                                    <PencilLine size={16} /> Edit
+                                </button>
+                            )}
+
+                            <EmpHealthForm
+                                viewMode={viewMode}
+                                formData={formData}
+                                setFormData={setFormData}
+                                handleSearch={handleSearch}
+                            />
                         </div>
-
-                        {isDetailView && (
-                            <button className="dept-page-edit-btn" onClick={handleEditClick}>
-                                <PencilLine size={16} /> Edit
-                            </button>
-                        )}
-
-                        <EmpHealthForm
-                            viewMode={viewMode}
-                            formData={formData}
-                            setFormData={setFormData}
-                            handleSearch={handleSearch}
-                        />
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }

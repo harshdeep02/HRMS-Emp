@@ -13,9 +13,10 @@ import { LeaveForm } from './LeaveForm.jsx';
 import StatusDropdown from '../../../utils/common/StatusDropdown/StatusDropdown.jsx';
 import { getEmployeeList } from '../../../Redux/Actions/employeeActions.js';
 import { getLeaveTypeList } from '../../../Redux/Actions/leaveMasterActions.js';
-import { getLeaveDetails } from '../../../Redux/Actions/leaveActions.js';
+import { getLeaveDetails, updateLeaveStatus } from '../../../Redux/Actions/leaveActions.js';
 import { LeaveSummary } from './LeaveSummary.jsx';
 import { UserProfileImageUpload } from '../../../utils/common/UserProfileImageUpload/UserProfileImageUpload.jsx';
+import ConfirmPopup from '../../../utils/common/ConfirmPopup.jsx';
 
 const texts = {
     add: {
@@ -65,6 +66,8 @@ export const LeaveDetail = () => {
     const leaveData = useSelector((state) => state?.leaveDetails);
     const leaveDetails = leaveData?.data?.leave || {};
 
+    const updateStatus = useSelector((state) => state?.updateLeaveStatus);
+
     const [activeFormIndex, setActiveFormIndex] = useState(0);
     const navItems = [
         { name: 'Basic Information', icon: BookUser },
@@ -74,8 +77,8 @@ export const LeaveDetail = () => {
     const [filledForms, setFilledForms] = useState({
         'Basic Information': false,
         'Leave Summary': false,
-
     });
+
     useEffect(() => {
         if (id && leaveDetails?.id !== id) {
             dispatch(getLeaveDetails({ id }))
@@ -91,6 +94,7 @@ export const LeaveDetail = () => {
                 user_name: [leaveDetails?.employee?.first_name, leaveDetails?.employee?.last_name]
                     .filter(Boolean)
                     .join(" "),
+                user_image: leaveDetails?.employee?.image ? JSON.parse(leaveDetails?.employee?.image) : "",
                 leave_type_id: leaveDetails?.leave_type_id || '',
                 leave_type_name: leaveDetails?.leave_type?.leave_type || '',
                 type_of_leave: leaveDetails?.type_of_leave || '',
@@ -127,8 +131,10 @@ export const LeaveDetail = () => {
     useEffect(() => {
         const path = location.pathname;
         if (path.includes('/add-new-leave') || path.includes('/edit-leave-details')) {
-            if (!employeeLists || employeeLists?.length === 0) fetchEmployees();
-            if (leaveMasterLists?.length === 0) fetchLeaveTypes();
+            // if (!employeeLists || employeeLists?.length === 0) 
+            fetchEmployees();
+            // if (leaveMasterLists?.length === 0) 
+            fetchLeaveTypes();
         }
     }, [location.pathname]);
 
@@ -149,110 +155,149 @@ export const LeaveDetail = () => {
         navigate(`/edit-leave-details/${id}`);
     };
 
+    const [showModal, setShowModal] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState("");
+
+    const handleUpdateStatus = () => {
+        const sendData = {
+            id: id,   // applicant ke liye job_id nahi applicant_id bhejna hai
+            status: selectedStatus,
+        };
+        dispatch(updateLeaveStatus(sendData))
+            .then((res) => {
+                if (res?.success) {
+                    setShowModal(false);
+                    dispatch(getLeaveDetails({ id }));
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        status: selectedStatus,
+                    }));
+                }
+            })
+            .catch((error) => {
+                setShowModal(false);
+                console.log("error-", error);
+            });
+    };
+
     const handleStatus = (val) => {
-        setFormData(prevData => ({
-            ...prevData,
-            status: val,
-        }));
-    }
+        if (viewMode === "add") {
+            setFormData((prevData) => ({
+                ...prevData,
+                status: val,
+            }));
+        }
+        else {
+            setShowModal(true);
+            setSelectedStatus(val);
+        }
+    };
 
     if (leaveData?.loading) {
         return <div className="loading-state"> <Loader /> </div>;
     }
 
     return (
-        <div className="leaveDetailsMain">
-            <div className="dept-page-container">
-                <button onClick={() => navigate(`${viewMode == 'edit' ? `/leave-details/${id}` : '/leave-list'}`)} className="close_nav header_close">Close</button>
-                <h2 className="dept-page-main-heading">{texts[viewMode].header}</h2>
-                <div className="dept-page-content-wrapper">
-                    {viewMode === 'add' && (
-                        <div className="dept-page-left-panel">
-                            <h3 className="dept-page-mark-text">{texts[viewMode].mark}</h3>
-                            <p className="dept-page-info-text">{texts[viewMode].info}</p>
-                            <div className="dept-page-illustration-box">
-                                <img className=' ' src={bannerImg} alt="Illustration" />
-                            </div>
-                        </div>
-                    )}
-                    {viewMode !== 'add' && (
-                        <>
-                            <div className="navbar-container"> {/* Ek wrapper div add karein */}
-                                <div className="navbar-items">
-                                    {navItems?.map((item, index) => {
-                                        // Logic to determine if a tab should be clickable
-                                        const isFirstTab = index === 0;
-                                        // ✅ First tab always clickable
-                                        const isClickable = isFirstTab || Boolean(id);
-                                        return (
-                                            <span
-                                                key={index}
-                                                className={`${index === activeFormIndex ? 'active' : ''} ${filledForms[item?.name] ? 'filled' : ''} ${!isClickable ? 'disabled' : ''}`}
-                                                onClick={() => {
-                                                    if (isClickable) setActiveFormIndex(index);
-                                                }}
-                                            >
-                                                <item.icon size={20} strokeWidth={1.5} /> {/* Icon render karein */}
-                                                <p>{item?.name}</p> {/* Text render karein */}
-                                            </span>
-                                        );
-                                    })}
+        <>
+            <ConfirmPopup
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleUpdateStatus}
+                type="update"
+                module="Status"
+                loading={updateStatus?.loading}
+            />
+            <div className="leaveDetailsMain">
+                <div className="dept-page-container">
+                    <button onClick={() => navigate(`${viewMode == 'edit' ? `/leave-details/${id}` : '/leave-list'}`)} className="close_nav header_close">Close</button>
+                    <h2 className="dept-page-main-heading">{texts[viewMode].header}</h2>
+                    <div className="dept-page-content-wrapper">
+                        {viewMode === 'add' && (
+                            <div className="dept-page-left-panel">
+                                <h3 className="dept-page-mark-text">{texts[viewMode].mark}</h3>
+                                <p className="dept-page-info-text">{texts[viewMode].info}</p>
+                                <div className="dept-page-illustration-box">
+                                    <img className=' ' src={bannerImg} alt="Illustration" />
                                 </div>
                             </div>
-                        </>
-                    )}
-                    {activeFormIndex == 0 &&
-                        <div className="dept-page-right-panel ">
-                            <div className="dept-page-cover-section dept-page-cover-section_2">
-                                <div className="profile_pic_head">
-                                    <UserProfileImageUpload
+                        )}
+                        {viewMode !== 'add' && (
+                            <>
+                                <div className="navbar-container"> {/* Ek wrapper div add karein */}
+                                    <div className="navbar-items">
+                                        {navItems?.map((item, index) => {
+                                            // Logic to determine if a tab should be clickable
+                                            const isFirstTab = index === 0;
+                                            // ✅ First tab always clickable
+                                            const isClickable = isFirstTab || Boolean(id);
+                                            return (
+                                                <span
+                                                    key={index}
+                                                    className={`${index === activeFormIndex ? 'active' : ''} ${filledForms[item?.name] ? 'filled' : ''} ${!isClickable ? 'disabled' : ''}`}
+                                                    onClick={() => {
+                                                        if (isClickable) setActiveFormIndex(index);
+                                                    }}
+                                                >
+                                                    <item.icon size={20} strokeWidth={1.5} /> {/* Icon render karein */}
+                                                    <p>{item?.name}</p> {/* Text render karein */}
+                                                </span>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        {activeFormIndex == 0 &&
+                            <div className="dept-page-right-panel ">
+                                <div className="dept-page-cover-section dept-page-cover-section_2">
+                                    <div className="profile_pic_head">
+                                        <UserProfileImageUpload
+                                        formData={formData}
+                                        setFormData={setFormData}
                                         fieldName="user_image"
                                         isEditMode={false}
                                     />
-                                </div>
-                                {/* {viewMode !== "detail" ? */}
-                                <StatusDropdown
-                                    options={leavesStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
-                                        value: item?.id,
-                                        label: item?.label,
-                                        icon: item?.icon,
+                                    </div>
+                                    {/* {viewMode !== "detail" ? */}
+                                    <StatusDropdown
+                                        options={leavesStatusOptions?.filter((item) => item?.label !== "All")?.map((item) => ({
+                                            value: item?.id,
+                                            label: item?.label,
+                                            icon: item?.icon,
 
-                                    }))}
-                                    defaultValue={formData?.status}
-                                    onChange={(val) => handleStatus(val)}
-                                    viewMode={viewMode !== "detail"}
-                                />
-                                {/* : */}
-                                {/* <div className="status-dropdown">
+                                        }))}
+                                        defaultValue={formData?.status}
+                                        onChange={(val) => handleStatus(val)}
+                                        viewMode={viewMode !== "detail"}
+                                    />
+                                    {/* : */}
+                                    {/* <div className="status-dropdown">
                                         <div className={`status-label dropdown-trigger`}>
                                             {leavesStatusOptions?.filter((item) => item.id == formData?.status)?.[0]?.label}
                                         </div>
                                     </div>
                                 } */}
+                                </div>
+                                {viewMode === 'detail' && (
+                                    <button className="dept-page-edit-btn" onClick={handleEditClick}>
+                                        Edit
+                                    </button>
+                                )}
+                                <LeaveForm
+                                    viewMode={viewMode}
+                                    formData={formData}
+                                    setFormData={setFormData}
+                                    handleSearch={handleSearch}
+                                />
                             </div>
-                            {viewMode === 'detail' && (
-                                <button className="dept-page-edit-btn" onClick={handleEditClick}>
-                                    Edit
-                                </button>
-                            )}
-                            <LeaveForm
-                                viewMode={viewMode}
-                                formData={formData}
-                                setFormData={setFormData}
-                                handleSearch={handleSearch}
-                            />
-                        </div>
-                    }
-                    {viewMode === 'detail' && (
-                        <>
-                            {activeFormIndex == 1 &&
-                                <LeaveSummary emp_id={leaveDetails?.user_id} />
-                            }
-                        </>
-                    )}
-                </div>
+                        }
+                        {activeFormIndex == 1 &&
+                            <LeaveSummary emp_id={leaveDetails?.user_id} />
+                        }
+                    </div>
 
+                </div>
             </div>
-        </div>
+        </>
     )
 }

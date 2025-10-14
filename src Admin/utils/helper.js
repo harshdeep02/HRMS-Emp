@@ -345,6 +345,6 @@ export const mergeAttendanceAndHolidays = (attendanceData = [], holidayData = []
 
 
 export function getOrgData() {
-    const orgData = localStorage.getItem("LoggedInORG");
+    const orgData = localStorage.getItem("loggedInORG");
     return orgData ? JSON.parse(orgData) : null;
 }

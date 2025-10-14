@@ -446,9 +446,9 @@ const AddEmployee = () => {
             [tabName.replace(/\s(.)/g, (match) => match.toUpperCase()).replace(/\s/g, "").replace(/^./, str => str.toLowerCase())]: newErrors
         }));
 
-        for (let i = 0; i < requiredFields[tabName].length; i++) {
+        for (let i = 0; i < requiredFields[tabName]?.length; i++) {
             const field = requiredFields[tabName][i];
-            const hasError = newErrors[field.key];
+            const hasError = newErrors[field?.key];
             if (hasError) {
                 handleFormError(field.ref);
                 field.ref?.current?.focus();
@@ -468,7 +468,7 @@ const AddEmployee = () => {
                 ...prevState,
                 [currentForm]: true,
             }));
-            if (activeFormIndex < formNames.length - 1) {
+            if (activeFormIndex < formNames?.length - 1) {
                 setActiveFormIndex(activeFormIndex + 1);
             }
         }
@@ -536,7 +536,7 @@ const AddEmployee = () => {
                             <div className='header_emp'>
                                 <div className="navbar-container"> {/* Ek wrapper div add karein */}
                                     <div className="navbar-items">
-                                        {navItems.map((item, index) => {
+                                        {navItems?.map((item, index) => {
                                             // Logic to determine if a tab should be clickable
                                             const isFirstTab = index === 0;
 
@@ -546,13 +546,13 @@ const AddEmployee = () => {
                                             return (
                                                 <span
                                                     key={index}
-                                                    className={`${index === activeFormIndex ? 'active' : ''} ${filledForms[item.name] ? 'filled' : ''} ${!isClickable ? 'disabled' : ''}`}
+                                                    className={`${index === activeFormIndex ? 'active' : ''} ${filledForms[item?.name] ? 'filled' : ''} ${!isClickable ? 'disabled' : ''}`}
                                                     onClick={() => {
                                                         if (isClickable) setActiveFormIndex(index);
                                                     }}
                                                 >
                                                     <item.icon size={20} strokeWidth={1.5} /> {/* Icon render karein */}
-                                                    <p>{item.name}</p> {/* Text render karein */}
+                                                    <p>{item?.name}</p> {/* Text render karein */}
                                                 </span>
                                             );
                                         })}
@@ -567,8 +567,8 @@ const AddEmployee = () => {
                             </div>
                         </div>
 
-                        <div className={` ${activeFormIndex === 0 ? 'BasicDetailsForm' : 'form-content'}`}>
-                            <div className={`  ${!isEditPage && isEditPage && activeFormIndex === 5 || activeFormIndex === 10 || activeFormIndex === 9 || activeFormIndex === 8 || activeFormIndex === 7 ? '' : 'form_box'}  ${!isEditMode && activeFormIndex === formNames?.length ? 'form_box_formNames' : ''}`}>
+                        <div className={`${activeFormIndex === 0 ? 'BasicDetailsForm' : 'form-content'}`}>
+                            <div className={`${!isEditPage && isEditPage && activeFormIndex === 5 || activeFormIndex === 10 || activeFormIndex === 9 || activeFormIndex === 8 || activeFormIndex === 7 ? '' : 'form_box'}  ${!isEditMode && activeFormIndex === formNames?.length ? 'form_box_formNames' : ''}`}>
                                 <form onSubmit={(e) => e.preventDefault()}>
 
                                     {activeFormIndex === 0 && <BasicDetailsForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} handleSearch={handleSearch} isEditPage={isEditPage} />}

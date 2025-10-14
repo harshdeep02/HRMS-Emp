@@ -97,3 +97,22 @@ export const deleteTravelApi = async (data) => {
         console.log(error);
     }
 }
+
+export const updateTravelStatusApi = async (data) => {
+    try {
+         const token = localStorage.getItem('AccessToken');
+        let config = {
+            method: 'post',
+            url: API_URL + `/travel/status/update`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            data: data
+        };
+        const request = apiController(config);
+        return request;
+    } catch (error) {
+        console.log(error);
+    }
+}

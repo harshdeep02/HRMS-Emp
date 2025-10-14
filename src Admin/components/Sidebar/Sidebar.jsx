@@ -78,6 +78,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         localStorage.removeItem("UserData");
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("dropdownSearchParams");
+        localStorage.removeItem("loggedInORG");
         window.location.href = "/login";
     };
     const allItems = [...menuItems, ...moreItems, ...menuItemsReport];

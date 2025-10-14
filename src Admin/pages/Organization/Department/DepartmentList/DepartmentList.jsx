@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 // UPDATED: Added new icons
-import { List, MoreVertical, TrendingUp, UserPlus, Frame, X, SquareMenu } from "lucide-react";
+import { MoreVertical, TrendingUp, UserPlus, Frame, X, SquareMenu, XCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getDepartmentList } from "../../../../Redux/Actions/departmentActions.js";
@@ -49,6 +49,7 @@ const DepartmentList = () => {
         const icon = status.icon || SquareMenu; // fallback to Users if no mapping exists
         acc[status?.id] = {
             icon,
+            label,
             className: label.replace(/\s+/g, "-").toLowerCase()
         };
         return acc;
@@ -89,7 +90,7 @@ const DepartmentList = () => {
             await dispatch(getDepartmentList(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching department list:", error);
+            console.error("Error fetching department list", error);
             setShowMoreLess(false);
         }
     }, [dispatch, searchTerm, statusFilter, sortBy, visibleCount, currentPage]);
@@ -139,13 +140,8 @@ const DepartmentList = () => {
     const departmentExportHeaders = [
         { label: "Department Name", key: (item) => item?.department_name || "N/A" },
         { label: "Parent Department", key: (item) => item?.parent_department?.department_name || "N/A" },
-        {
-            label: "Department Head",
-            key: (item) =>
-                [item?.department_head?.first_name, item?.department_head?.last_name]
-                    .filter(Boolean)
-                    .join(" ") || "N/A",
-        },
+        { label: "Department Head", key: (item) => [item?.department_head?.first_name, item?.department_head?.last_name]?.filter(Boolean)?.join(" ") || "N/A" },
+        { label: "Status", key: (item) => statusConfig[item?.status]?.label || "N/A" },
     ];
 
     const handleDepartmentImportRow = async (row) => {
@@ -153,6 +149,7 @@ const DepartmentList = () => {
             department_name: row["Department Name"] || "",
             parent_department_id: row["Parent Department"] || "",  // might need to resolve to ID
             department_head_id: row["Department Head"] || "",      // might need to resolve to ID
+            status: row['Status'],
         };
 
         // Example: dispatch to create department
@@ -167,11 +164,10 @@ const DepartmentList = () => {
         department_name: "",
         department_head: { first_name: "", last_name: "" },
         parent_department: { department_name: "" },
+        status: ""
     }));
 
-
     const ListData = (departmentLoading && !showMoreLess) ? dummyData : departmentList;
-
 
     return (
         <div className="employee-dashboard-list depatmentListMain">
@@ -244,7 +240,7 @@ const DepartmentList = () => {
                                     if (status?.label === "All") {
                                         count = metaData?.all ?? 0;
                                     } else {
-                                        count = metaData?.[status?.label.toLowerCase().replace(" ", "")] ?? 0;
+                                        count = metaData?.[status?.label?.toLowerCase()?.replace(" ", "")] ?? 0;
                                     }
                                     return (
                                         <li
@@ -256,7 +252,7 @@ const DepartmentList = () => {
                                                 <Icon size={16} strokeWidth={1.5} />
                                                 <span>{status?.label}</span>
                                             </div>
-                                            <span className="counts">({String(count).padStart(2, '0')})</span>
+                                            <span className="counts">({String(count)?.padStart(2, '0')})</span>
                                         </li>
                                     );
                                 })}
@@ -278,40 +274,47 @@ const DepartmentList = () => {
                                     <th>Department</th>
                                     <th>Parent Department</th>
                                     <th>Department head</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             {(departmentLoading || departmentList?.length > 0) ? (
                                 <>
                                     <tbody className={`${departmentLoading && !showMoreLess ? 'LoadingList' : ''}`}>
-                                        {ListData?.map(dep => (
-                                            <tr
-                                                key={dep?.id}
-                                                className="employee-row"
-                                                onClick={() => navigate(`/department-details/${dep?.id}`)}
-                                            >
-                                                <td className="">
-
-                                                    <div className="employee-info info_img loadingtd">
-                                                        <div className="avatar-icon">
-                                                            <Frame size={16} strokeWidth={1.5} />
+                                        {ListData?.map(dep => {
+                                            const StatusIcon = statusConfig[dep?.status]?.icon || XCircle;
+                                            const statusClassName = statusConfig[dep?.status]?.className;                                           
+                                            return (
+                                                <tr
+                                                    key={dep?.id}
+                                                    className="employee-row"
+                                                    onClick={() => navigate(`/department-details/${dep?.id}`)}
+                                                >
+                                                    <td className="">
+                                                        <div className="employee-info info_img loadingtd">
+                                                            <div className="avatar-icon">
+                                                                <Frame size={16} strokeWidth={1.5} />
+                                                            </div>
+                                                            <div className="name Semi_Bold">{dep?.department_name}</div>
                                                         </div>
-                                                        <div className="name Semi_Bold">{dep?.department_name}</div>
-                                                    </div>
-
-
-                                                </td>
-                                                <td className="loadingtd">
-                                                    <div className=" department">{dep?.parent_department?.department_name || ''}</div>
-                                                </td>
-                                                <td className="td loadingtd" >
-                                                    <div className="contact-info ">
-                                                        <span>{[dep?.department_head?.first_name, dep?.department_head?.last_name].filter(Boolean).join(" ") || ''}</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                                    </td>
+                                                    <td className="loadingtd">
+                                                        <div className=" department">{dep?.parent_department?.department_name || ''}</div>
+                                                    </td>
+                                                    <td className="td loadingtd" >
+                                                        <div className="contact-info ">
+                                                            <span>{[dep?.department_head?.first_name, dep?.department_head?.last_name].filter(Boolean).join(" ") || ''}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="loadingtd">
+                                                        <div className={`status-badge  ${statusClassName}`}>
+                                                            <StatusIcon size={16} />
+                                                            <span>{statusConfig[dep?.status]?.label}</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
                                     </tbody>
-
                                 </>
                             ) : (
                                 // ❗ 4 new loding
@@ -328,7 +331,6 @@ const DepartmentList = () => {
                         </table>
                         {/* {!departmentLoading && departmentList?.length === 0 && */}
                         {(!departmentLoading || showMoreLess) &&
-
                             <div className="load-more-container">
                                 {(visibleCount < totalDepartments) && (
                                     <button onClick={handleLoadMore} className="load-more-btn">

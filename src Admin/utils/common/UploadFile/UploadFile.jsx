@@ -38,7 +38,8 @@ export const UploadFile = ({
     fieldName,
     multiple = false,
     isDetailView = false,
-    className
+    className,
+    setDocumentUpload = false
 }) => {
     const fileInputRef = useRef(null);
     const [uploadProgress, setUploadProgress] = useState({});
@@ -73,6 +74,7 @@ export const UploadFile = ({
             if (event.lengthComputable) {
                 const percent = Math.round((event.loaded / event.total) * 100);
                 setUploadProgress(prev => ({ ...prev, [file.name]: percent }));
+                setDocumentUpload(true);
             }
         };
 
@@ -92,9 +94,11 @@ export const UploadFile = ({
                     const updatedFiles = multiple ? [...existingFiles, newFileObject] : [newFileObject];
                     return { ...current, [fieldName]: updatedFiles };
                 });
+                setDocumentUpload(false);
                 toast.success(`Uploaded: ${file.name}`);
             } else {
                 toast.error(`Upload failed for ${file.name}`);
+                setDocumentUpload(false);
             }
         };
 
@@ -105,6 +109,7 @@ export const UploadFile = ({
                 delete newProgress[file.name];
                 return newProgress;
             });
+            setDocumentUpload(false);
         };
 
         xhr.send(data);

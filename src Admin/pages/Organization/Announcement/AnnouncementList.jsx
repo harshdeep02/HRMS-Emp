@@ -85,7 +85,7 @@ export const AnnouncementList = () => {
             const res = await dispatch(getAnnouncementList(sendData));
             setShowMoreLess(false);
         } catch (error) {
-            console.error("Error fetching job list:", error);
+            console.error("Error fetching announcement list:", error);
             setShowMoreLess(false);
         }
     }, [searchTerm, statusFilter, departmentFilter, sortBy, visibleCount, dateFilter]);
@@ -166,7 +166,7 @@ export const AnnouncementList = () => {
 
     // ❗ 1 new loding
     // ✅ Table ke hisaab se dummy loading rows
-    const dummData = Array.from({ length: 7 }, (_, i) => ({
+    const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         subject: "",
         created_at: "",
@@ -175,7 +175,7 @@ export const AnnouncementList = () => {
     }));
 
 
-    const ListData = (announcementLoading && (!showMoreLess || announcementLists?.length === 0)) ? dummData : announcementLists;
+    const ListData = (announcementLoading && (!showMoreLess || announcementLists?.length === 0)) ? dummyData : announcementLists;
     return (
         <div className="employee-dashboard-list job_list jobListMain">
             <div className="dashboard-sticky-header">
@@ -278,7 +278,7 @@ export const AnnouncementList = () => {
                                 })}
                             </ul>
                             <div className="clearBTN">
-                                {(statusFilter !== 'All' || departmentFilter !== 'All' || dateFilter !== null) && (
+                                {(departmentFilter !== 'All' || dateFilter !== null) && (
                                     <button className="clear-filters-btn" onClick={resetFilters}>
                                         <span>
                                             Clear filter
@@ -346,7 +346,7 @@ export const AnnouncementList = () => {
                                     // ❗ 4 new loding
                                     <tbody className="table_not_found">
                                         <tr>
-                                            <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>
+                                            <td colSpan={5} style={{ textAlign: 'center', padding: '20px' }}>
                                                 {(!announcementLoading && announcementLists?.length === 0) && (
                                                     <ListDataNotFound module="announcement" handleReset={resetFilters} />
                                                 )}

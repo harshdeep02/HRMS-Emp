@@ -58,7 +58,7 @@ export const AssignShiftDetails = () => {
     };
 
     const fetchEmployees = async (search = "", id = formData?.department_id) => {
-        const sendData = { department_id: id, };
+        const sendData = { department_id: id, employee_status: 1 };
         if (search) {
             sendData["search"] = search;
         }
@@ -79,8 +79,10 @@ export const AssignShiftDetails = () => {
     useEffect(() => {
         const path = location.pathname;
         if (path.includes('/assign-shift') || path.includes('/edit-assign-shift')) {
-            if (departmentLists?.length === 0) fetchDepartments();
-            if (shiftLists?.length === 0) fetchShifts();
+            // if (departmentLists?.length === 0) 
+            fetchDepartments();
+            // if (shiftLists?.length === 0) 
+            fetchShifts();
         }
     }, [location.pathname]);
 

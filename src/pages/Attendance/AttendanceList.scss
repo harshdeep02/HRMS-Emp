@@ -1,0 +1,32 @@
+.attendanceListMain .check-in-out {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.attendanceListMain .status-badge svg{
+    // fill: #494949;
+    color: #494949;
+} 
+
+.attendanceListMain .applicants-loader{
+
+    aside {
+       div:nth-child(5),
+        div:nth-child(6),
+        div:nth-child(7),
+        div:nth-child(8),
+        div:nth-child(9),
+        div:nth-child(10),
+        div:nth-child(11),
+        div:nth-child(12),
+        div:nth-child(13){
+            display:none
+        }
+
+
+    }
+}
+.attendanceListMain .contentS.list-view .employee-table td {
+    width: 220px;
+}
