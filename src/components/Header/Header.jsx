@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import './Header.scss';
 import { getBreadcrumbs } from '../../utils/getBreadcrumbs';
 import { menuItems } from '../Sidebar/Sidebar';
-import { BookCheck, ChevronRight, CircleX, FileChartColumnIncreasing, FilesIcon, Home, SquareCheck } from 'lucide-react';
+import { BookCheck, ChevronRight, CircleX, ClipboardCheck, FileChartColumnIncreasing, FilesIcon, Home, SquareCheck } from 'lucide-react';
 
 export const moreItems = [
  {
@@ -12,14 +12,30 @@ export const moreItems = [
     icon: FileChartColumnIncreasing,
     path: '/my-reports', // parent link
     BreadL: 'My Reports',
-    // submenu: [
-    //   { main: 'My Reports', label: 'Leave Balance', path: '/my-reports', list: '/my-reports/leave-balance' },
+    submenu: [
+      { main: 'My Reports', label: 'Leave Balance', path: '/my-reports', list: '/my-reports/leave-balance' },
     //   { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
     //   { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
     //   { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/performance-review' },
     //   { main: 'My Reports', label: 'Appraisal History', path: '/my-reports', list: '/my-reports/appraisal-history' },
-    // ]
-  } 
+    ]
+  }, 
+
+   {
+    id: 'policy',
+    label: 'Policy',
+    icon: ClipboardCheck ,
+    BreadL: 'Policy',
+      submenu: [
+    { main: 'Policy', label: 'Attendance', path: '/attendance-policy', BreadL: 'Attendance Policy' },
+    { main: 'Policy', label: 'Leaves', path: '/leaves-policy', BreadL: 'Leaves Policy' },
+    { main: 'Policy', label: 'Shift', path: '/shift-policy', BreadL: 'Shift Policy' },
+    { main: 'Policy', label: 'Performance', path: '/performance-policy', BreadL: 'Performance Policy' },
+    { main: 'Policy', label: 'Travel', path: '/travel-policy', BreadL: 'Travel Policy' },
+  ]
+   }
+
+   
 ];
 
 export const menuItemsExtra = (id, Id, id2) => [
@@ -52,15 +68,15 @@ export const menuItemsExtra = (id, Id, id2) => [
 ]
 
 export const menuItemsReport = [
-    {
-        id: 'reports', submenu: [
-            { main: 'My Reports', label: 'Leave Balance', path: '/my-reports', list: '/my-reports/leave-balance' },
-            { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
-            { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
-            { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/rerformance-review' },
-            { main: 'My Reports', label: 'Appraisal History', path: '/my-reports', list: '/my-reports/appraisal-history' },
-        ],
-    },
+    // {
+    //     id: 'reports', submenu: [
+    //         { main: 'My Reports', label: 'Leave Balance', path: '/my-reports/leave-balance', list: '/my-reports/leave-balance' },
+    //         { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
+    //         { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
+    //         { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/rerformance-review' },
+    //         { main: 'My Reports', label: 'Appraisal History', path: '/my-reports', list: '/my-reports/appraisal-history' },
+    //     ],
+    // },
 
 
 ]

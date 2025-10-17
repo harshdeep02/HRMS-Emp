@@ -50,14 +50,21 @@ import { TicketDetails } from './pages/Ticket/TicketDetails.jsx';
 // ─── Report ───────────────────────────────────────────────
 import { MyReports } from './pages/Reports/MyReports/MyReports.jsx';
 import LeaveReport from './pages/Reports/MyReports/LeaveReport/LeaveReport.jsx';
-import EmployeeAttritionBoard from './pages/Reports/MyReports/EmployeeAttrition/EmployeeAttritionBoard.jsx';
 import MYPerformanceReview from './pages/Reports/MyReports/PerformanceReview/MYPerformanceReview.jsx';
 import { AttendanceReport } from './pages/Reports/MyReports/AttendanceReport/AttendanceReport.jsx';
 import { LeaveSummaryReport } from './pages/Reports/MyReports/LeaveReport/LeaveSummaryReport.jsx';
 import { MyAppraisalHistory } from './pages/Reports/MyReports/AppraisalHistory/MyAppraisalHistory.jsx';
 
+// ─── Attendance ───────────────────────────────────────────────
+import AttendanceList from './pages/Attendance/AttendanceList.jsx';
+import AttendanceDetail from './pages/Attendance/AttendanceDetail.jsx';
 
-
+// ─── Policy ───────────────────────────────────────────────
+import { AttendancePolicy } from './pages/Policy/AttendancePolicy/AttendancePolicy.jsx';
+import { LeavePolicy } from './pages/Policy/LeavesPolicy/LeavePolicy.jsx';
+import { ShiftPolicy } from './pages/Policy/ShiftPolicy/ShiftPolicy.jsx';
+import { PerformancePolicy } from './pages/Policy/PerformancePolicy/PerformancePolicy.jsx';
+import { TravelPolicy } from './pages/Policy/TravelPolicy/TravelPolicy.jsx';
 
 
 
@@ -141,10 +148,10 @@ function App() {
 
                 {/* ================= Organization Module ================= */}
                 <Route path="/employee-list" element={<EmployeeList />} />
-                <Route path="/department-list" element={<DepartmentList />} />
+                {/* <Route path="/department-list" element={<DepartmentList />} />
                 <Route path="/department-details/:id" element={<DepartmentDetail />} />
                 <Route path="/designation-list" element={<DesignationList />} />
-                <Route path="/designation-details/:id" element={<DesignationDetails />} />
+                <Route path="/designation-details/:id" element={<DesignationDetails />} /> */}
                 <Route path="/announcement-list" element={<AnnouncementList />} />
                 <Route path="/announcement-details/:id" element={<AnnouncementDetails />} />
                 <Route path="/holiday-list" element={<HolidayList />} />
@@ -165,10 +172,21 @@ function App() {
                 <Route path="/my-reports" element={<MyReports />} />
                 <Route path="/my-reports/leave-balance" element={<LeaveReport />} />
                 <Route path="/my-reports/leave-summary" element={<LeaveSummaryReport />} />
-                <Route path="/my-reports/employee-attrition-board" element={<EmployeeAttritionBoard />} />
                 <Route path="/my-reports/attendance-report" element={<AttendanceReport />} />
                 <Route path="/my-reports/rerformance-review" element={<MYPerformanceReview />} />
                 <Route path="/my-reports/appraisal-history" element={<MyAppraisalHistory />} />
+
+                {/* =================  Attendance  =================*/}
+                <Route path="/attendance-list" element={<AttendanceList />} />
+                <Route path="/attendance-details/:id" element={<AttendanceDetail />} />
+
+
+                {/* =================  Policy  =================*/}
+                <Route path="/attendance-policy" element={<AttendancePolicy />} />
+                <Route path="/leaves-policy" element={<LeavePolicy />} />
+                <Route path="/shift-policy" element={<ShiftPolicy />} />
+                <Route path="/performance-policy" element={<PerformancePolicy />} />
+                <Route path="/travel-policy" element={<TravelPolicy />} />
 
 
               </>

@@ -266,7 +266,15 @@ export const LeaveForm = ({ viewMode, formData, setFormData, handleSearch }) => 
                             <CalendarFold size={20} strokeWidth={1.25} />
                         </div>
                         <label className={!isDetailView ? "color_red" : ""}>Start Date{!isDetailView ? <span>*</span> : ''}</label>
-                        <FormDatePicker label="Start date" onDateChange={handleDateChange} initialDate={formData?.from_date} type="from_date" required={true} restrict={true} disabled={isDetailView} />
+                        <FormDatePicker 
+                        label="Start date" 
+                        onDateChange={handleDateChange} 
+                        initialDate={formData?.from_date} 
+                        type="from_date" 
+                        // required={true} 
+                        // restrict={true} 
+                         toDate={formData?.to_date}
+                        disabled={isDetailView} />
                     </div>
 
                     <div className="dept-page-input-group">
@@ -274,7 +282,15 @@ export const LeaveForm = ({ viewMode, formData, setFormData, handleSearch }) => 
                             <CalendarFold size={20} strokeWidth={1.25} />
                         </div>
                         <label className={!isDetailView ? "color_red" : ""}>End Date{!isDetailView ? <span>*</span> : ''}</label>
-                        <FormDatePicker label="End date" onDateChange={handleDateChange} initialDate={formData?.to_date} type="to_date" required={true} disabled={formData?.type_of_leave === "Half Day" ? true : isDetailView} restrict={true} fromDate={formData?.from_date} />
+                        <FormDatePicker 
+                            label="End date"
+                            onDateChange={handleDateChange}
+                            initialDate={formData?.to_date}
+                            type="to_date"
+                            // required={true}
+                            disabled={formData?.type_of_leave === "Half Day" ? true : isDetailView}
+                            // restrict={true}
+                            fromDate={formData?.from_date} />
                     </div>
                       <div className="dept-page-input-group">
                         <div className="dept-page-icon-wrapper"><CalendarFold size={20} strokeWidth={1.5} /></div>

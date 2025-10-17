@@ -1,29 +1,8 @@
 import { useState, useEffect } from 'react';
 import './AddEmloyee.scss';
 import './NavbarForm.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import SelectDropdown from '../../../utils/common/SelectDropdown/SelectDropdown.jsx';
 import { Binary, Building2, Earth, Map, Pencil, Route } from 'lucide-react';
-import SubmitButton from '../../../utils/common/SubmitButton.jsx';
-import { addEmpAddress, getEmployeeDetails } from '../../../Redux/Actions/employeeActions.js';
-import { useNavigate } from 'react-router-dom';
-
 const ContactsForm = ({ formData }) => {
-
-    const navigate = useNavigate();
-
-    const addUpdateAddress = useSelector((state) => state?.addEmpAddress);
-
-    const countryData = useSelector((state) => state?.countryList);
-    const countryLists = countryData?.data?.country || [];
-
-    const stateData = useSelector((state) => state?.stateList);
-    const stateLists = stateData?.data?.country || [];
-
-    const cityData = useSelector((state) => state?.cityList);
-    const cityLists = cityData?.data?.country || [];
-
-
 
     return (
         <>

@@ -1,0 +1,257 @@
+// Import your variables if you have them, e.g., $fontSize12
+$fontSize12: 12px;
+$fontSize10: 10px;
+
+.calendar {
+	width: 100%;
+	margin: 0 auto;
+	// min-width: 700px;
+	border-radius: 6px;
+}
+
+.calendar-header-att {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px dashed #e8e8e8;
+
+	.header-controls {
+		display: flex;
+		align-items: center;
+		h2 {
+			font-size: 16px;
+			color: #1c1c1c;
+			font-weight: 500;
+			letter-spacing: -0.3px;
+		}
+	}
+
+	.nav-arrow {
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		border-radius: 6px;
+		width: 36px;
+		height: 36px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		color: #555;
+		margin-right: 8px;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: #f5f5f5;
+		}
+	}
+
+	.month-year-container {
+		position: relative;
+		.heade_right {
+			display: flex;
+			.arrow_l_r {
+				display: flex;
+			}
+		}
+	}
+
+	.month-year-selector {
+		display: flex;
+		align-items: center;
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		padding: 6px 12px;
+		border-radius: 6px;
+		font-weight: 500;
+		color: #333;
+		cursor: pointer;
+		font-size: 14px;
+
+		span {
+			margin-right: 8px;
+		}
+
+		svg {
+			color: #777;
+		}
+	}
+	.month-year-picker-dropdown {
+		position: absolute;
+		top: 105%;
+		right: 0;
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		border-radius: 6px;
+		padding: 10px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		z-index: 100;
+		display: flex;
+		gap: 10px;
+
+		select {
+			padding: 5px;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+		}
+	}
+}
+
+.calendar-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	border-left: 1px solid #e8e8e8;
+	border: 1px solid #e8e8e8;
+	border-top: 1px solid #e0e0e0;
+}
+
+.day_name_attendance {
+	text-align: center;
+	font-weight: 600;
+	color: #666;
+	padding: 12px 0;
+	font-size: $fontSize12;
+	background-color: #faf6ff;
+	border-right: 1px solid #e0e0e0;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.empty-cell,
+.day {
+	min-height: 100px;
+	min-width: 100px;
+
+	border-right: 1px solid #e0e0e0;
+	border-bottom: 1px solid #e0e0e0;
+	background-color: #fff;
+	padding: 8px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: relative; // For dropdown positioning
+}
+
+.day {
+	.day-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		width: 100%;
+	}
+
+	.day-number {
+		width: 100%;
+		text-align: end;
+		font-weight: 500;
+		color: #333;
+	}
+
+	.weekly-off-text {
+		font-size: $fontSize12;
+		color: #1c1c1c;
+		// align-self: center;
+		// margin: auto;
+		font-weight: 500;
+	}
+
+	.day-footer {
+		font-size: $fontSize10;
+		color: #555;
+		.shift-name {
+			font-weight: 600;
+		}
+	}
+
+	&.weekly-off {
+		background-color: #fafafa;
+	}
+}
+
+.status-container {
+	position: relative;
+}
+
+.status-badge {
+	display: flex;
+	align-items: center;
+	padding: 3px 6px;
+	border-radius: 12px;
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: capitalize;
+	border: none;
+	cursor: pointer;
+
+	.dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		margin-right: 6px;
+	}
+
+	.chevron-down {
+		margin-left: 4px;
+		opacity: 0.6;
+	}
+
+	&.present {
+		background-color: #e7f3ff;
+		color: #006de2;
+		.dot {
+			background-color: #006de2;
+		}
+	}
+
+	&.absent {
+		background-color: #ffebee;
+		color: #d32f2f;
+		.dot {
+			background-color: #d32f2f;
+		}
+	}
+
+	&.half-day {
+		background-color: #fff8e1;
+		color: #f57c00;
+		.dot {
+			background-color: #f57c00;
+		}
+	}
+}
+.status-badge_2 {
+	padding: 7px 12px !important;
+}
+.statusfix {
+	width: fit-content;
+	padding: 3px 8px;
+}
+
+.status-dropdown_at {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	background-color: white;
+	border-radius: 6px;
+	// box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	border: 1px solid #eee;
+	z-index: 10;
+	width: 100px;
+	margin-top: 4px;
+	overflow: hidden;
+
+	.dropdown_-_option {
+		font-weight: 400;
+		font-size: 13.5px;
+		line-height: 14px;
+		letter-spacing: 0%;
+		margin: 5px;
+		border-radius: 3px;
+		padding: 6px 12px;
+		font-size: #1c1c1c;
+		cursor: pointer;
+		&:hover {
+			background: #f6edfd;
+		}
+	}
+}

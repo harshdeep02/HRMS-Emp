@@ -16,16 +16,18 @@ import { getTicketList } from "../../Redux/Actions/ticketActions.js";
 import { formatDate } from "../../utils/common/DateTimeFormat.js";
 import { showMasterData, showMastersValue } from "../../utils/helper.js";
 import './TicketList.scss'
+import { getUserData } from "../../services/login.js";
 const INITIAL_VISIBLE_COUNT = 9;
 
 export const TicketList = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {id} = getUserData()
 
     //Data from redux
     const ticketListData = useSelector((state) => state?.ticketList);
-    const ticketList = ticketListData?.data?.result;
+    const ticketList = ticketListData?.data?.result|| [];
     const ticketListLoading = ticketListData?.loading || false;
     const totalTicket = ticketListData?.data?.count || 0;
     const metaData = ticketListData?.data?.metadata || {};
@@ -75,6 +77,7 @@ export const TicketList = () => {
                 fy,
                 noofrec: visibleCount,
                 currentpage: currentPage,
+                user_id : id,
                 ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
                 ...(priorityFilter && priorityFilter !== "All" && { priority: priorityFilter }),
                 ...(searchTerm && { search: searchTerm }),
@@ -216,25 +219,11 @@ export const TicketList = () => {
                             >
                                 <button className="add-employee-btn" onClick={() => navigate('/add-ticket')}><UserPlus size={16} /> </button>
                             </Tooltips>
-                                <div className="relative" ref={menuRef}>
-                                    <Tooltips title="Export" placement="top" arrow={true}>
-                                        <button
-                                            className="menu-btn"
-                                            onClick={() => setOpen((prev) => !prev)}
-                                        >
-                                            <MoreVertical size={24} />
-                                        </button>
-                                    </Tooltips>
-                                    {open && (
-                                        <div className="menu-popup">
-                                            <ExportList
+                                <ExportList
                                                 data={ticketList}
                                                 headers={exportHeaders}
                                                 filename="Ticket.csv"
                                             />
-                                        </div>
-                                    )}
-                                </div>
                         </div>
                     </header>
                 </div>

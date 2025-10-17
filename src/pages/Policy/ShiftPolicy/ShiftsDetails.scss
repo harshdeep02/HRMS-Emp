@@ -1,0 +1,261 @@
+.generalSettingMain .switch {
+        position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 20px;
+}
+.generalSettingMain .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.generalSettingMain .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border: 2px solid #79747E;
+}
+.generalSettingMain .slider.round {
+    border-radius: 34px;
+}
+
+
+.generalSettingMain .slider.round:before {
+    border-radius: 50%;
+}
+
+.generalSettingMain .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 15px;
+    left: 2px;
+    bottom: 1.2px;
+    background-color: #79747E;
+    -webkit-transition: 0.4s;
+    transition: 0.4s
+}
+
+.generalSettingMain .address-container {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.generalSettingMain .switch input:checked + .slider:before {
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+    background: #fff;
+    bottom: 3px;
+    left: -8px;
+}
+
+.generalSettingMain input:checked + .slider {
+    background-color: #007aff;
+        border: none;
+}
+
+.setRow1Head {
+    font-size: 24px;
+    font-weight: 500;
+    color: #000;
+    line-height: 32px;
+}
+
+.setRow1Body {
+    font-size: 16px;
+    font-weight: 400;
+    color: #676767;
+    max-width: 545px;
+    text-transform: capitalize;
+    line-height: 24px;
+    padding-bottom: 25px;
+}
+
+.genSetCom {
+    border-bottom: 1px solid #E8E8E8;
+    margin-bottom: 20px;
+}
+
+.genSetRow2 {
+    display: flex;
+    gap: 18px;
+}
+
+.setRow2Head {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1C1C1C;
+    line-height: 25px;
+}
+
+.setRow2Body {
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #494949;
+    padding-bottom: 25px;
+}
+
+.setRow3Head {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 32px;
+    color: #000;
+}
+
+.setRow3Body {
+    font-weight: 400;
+    font-size: 16px;
+    color: #676767;
+    line-height: 24px;
+    max-width: 545px;
+    text-transform: capitalize;
+}
+
+.setRow2Right {
+    max-width: 651px;
+}
+
+.setRow3Check {
+    display: flex;
+    gap: 55px;
+    align-items: center;
+    padding: 20px 0 30px 0;
+}
+
+.setEmailCheck, .setFeedCheck {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.setEmailCheck span, .setFeedCheck span {
+    color: #1E1E1E;
+    font-size: 14px;
+}
+
+.setFeedCheck {
+}
+
+.setRow4Head {
+    font-size: 20px;
+    font-weight: 500;
+    color: #000;
+    line-height: 32px;
+}
+
+.setRow4Body {
+    font-size: 16px;
+    font-weight: 400;
+    color: #676767;
+    max-width: 545px;
+    text-transform: capitalize;
+    padding-top: 10px;
+    line-height: 24px;
+    padding-bottom: 20px;
+}
+
+.setRow4Bot select {
+    border: 1px solid #B9B9B9;
+    padding: 5px 9px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #979797;
+    border-radius: 6px;
+}
+
+.genSetRow4 {
+    padding-bottom: 15px;
+}
+
+.custom-checkbox {
+     appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #000;
+}
+
+.custom-checkbox:checked {
+     border: 1px solid #a448ee;
+      background-color: #a448ee;
+}
+
+.custom-checkbox:checked::after {
+ content: "✔";
+color: white;
+position: absolute;
+top: -1.5px;
+left: 1px;
+font-size: 10px;
+
+}
+
+.setFeedCheck input{
+width: 14px;
+}
+
+.ShiftPolicyMain .policy-container .policy-title {
+    flex-direction: column;
+    align-items: flex-start;
+        gap: 0.5rem;
+}
+
+
+.ShiftPolicyMain .policy-title p {
+    font-size: 16px;
+    color: #676767;
+    font-weight: 400;
+    max-width: 545px;
+    text-transform: capitalize;
+}
+
+
+.ShiftPolicyMain .policy-body h3 {
+    text-transform: capitalize;
+    font-size: 17px;
+    font-weight: 500;
+    color: #1C1C1C;
+    line-height: 24px;
+}
+
+.ShiftPolicyMain .policy-body p {
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1C1C1C;
+    line-height: 24px;
+}
+
+.ShiftPolicyMain .policy-container .policy-body p strong {
+    font-weight: 700;
+}
+
+.ShiftPolicyMain .policy-container .policy-body {
+    max-width: 725px;
+}
+.setLeaveDetailMain .otherDetailPageSroll{
+        height: calc(100vh - 150px) !important;
+}
+
+.setLeaveDetailMain .dropdown .dropdown_I {
+    max-height: 140px;
+}
+
+.ShiftPolicyMain .policy-body.otherDetailPageSroll {
+    height: calc(100vh - 202px) !important;
+}

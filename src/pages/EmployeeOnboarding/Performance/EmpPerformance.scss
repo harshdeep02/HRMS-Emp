@@ -1,0 +1,345 @@
+// --- Root variables provided by you ---
+:root {
+	--bg-primary: #ffffff;
+	--text-primary: #2a2a2a;
+	--text-secondary: #6c757d; // A slightly softer grey for labels
+	--border-color: #e9ecef;
+	--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05),
+		0 2px 4px -2px rgb(0 0 0 / 0.05);
+
+	// Custom colors from the screenshot
+	--rating-color: #884ec2;
+	--expected-color: #B66DF1; // Darker purple
+	--achieved-color: #E3C6FA; // Lighter purple
+	--tab-active-border: #884ec2;
+}
+
+.performance-container {
+	  padding: 15px 5px;
+      overflow: auto;
+      scroll-behavior: smooth;
+	//   background-color: #f8f9fa;
+	//   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.card {
+	background-color: var(--bg-primary);
+	border-radius: 7px;
+	//   box-shadow: var(--shadow-md);
+	padding: 24px;
+	margin-bottom: 2rem;
+}
+
+// --- Summary Card Styles ---
+.card_headers {
+	padding: 15px 25px;
+	border-radius: 7px;
+	border: 1px solid var(--border-color);
+	h2 {
+		font-weight: 400;
+		font-style: Regular;
+		font-size: 18px;
+		leading-trim: NONE;
+		line-height: 20px;
+		letter-spacing: -0.5px;
+		text-transform: capitalize;
+		margin-bottom: 10px;
+		color: #000000;
+	}
+}
+.performance-summary-card {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 20px;
+	align-items: center;
+
+	.summary-item {
+		display: flex;
+		flex-direction: column;
+
+		label {
+			font-size: 13px;
+			color: #2a2a2a;
+			margin-bottom: 8px;
+			opacity: 0.7;
+		}
+
+		span {
+			font-weight: 500;
+			font-style: Medium;
+			font-size: 16px;
+			leading-trim: NONE;
+			line-height: 20.37px;
+			letter-spacing: 0%;
+			color: #141414;
+		}
+
+		&.rating {
+			.rating-text {
+				font-weight: 500;
+				font-style: Medium;
+				font-size: 32px;
+				leading-trim: NONE;
+				line-height: 32.35px;
+				letter-spacing: -4%;
+
+				background: linear-gradient(91.07deg, #400f6f 0.91%, #7b1dd5 99.59%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				font-size: 32px !important;
+				line-height: 1;
+			}
+		}
+	}
+}
+
+// --- Stats Card Styles ---
+.performance-stats-card {
+	border: 1px solid var(--border-color);
+	margin-top: 20px;
+	.stats-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-bottom: 16px;
+		h2 {
+			font-weight: 400;
+			font-size: 18px;
+			leading-trim: NONE;
+			line-height: 20px;
+			letter-spacing: -0.5px;
+			text-transform: capitalize;
+			color: #000000;
+		}
+	}
+
+	.tabs-container {
+		display: flex;
+		gap: 24px;
+        border-bottom: 1px solid var(--border-color);
+        width: fit-content;
+
+		.tab {
+			background: none;
+			border: none;
+			cursor: pointer;
+			padding: 8px 4px;
+			color: var(--text-secondary);
+			border-bottom: 2px solid transparent;
+			transition: all 0.3s ease-in-out;
+			font-weight: 400;
+			font-style: Medium;
+			font-size: 14px;
+			leading-trim: NONE;
+			line-height: 18px;
+			letter-spacing: -1%;
+			width: 105px;
+			height: 32px;
+			border-radius: 6px;
+
+			&.active {
+				color: #320b57;
+				font-weight: 500;
+				background: #f6edfd;
+				border-bottom-color: #8b2fe3;
+                border-bottom: 2px solid;
+                box-shadow: 1px 1px 1px 0.1px #8c2fe32e;
+			}
+		}
+	}
+
+	.nav-controls {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+
+		.arrow-btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 32px;
+			height: 32px;
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			background-color: var(--bg-primary);
+			cursor: pointer;
+			color: var(--text-secondary);
+
+			&:hover {
+				background-color: #f1f3f5;
+			}
+		}
+
+		.date-select {
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			padding: 6px 12px;
+			font-size: 14px;
+			font-weight: 500;
+		}
+	}
+
+	.stats-body {
+		margin-top: 24px;
+        border: 1px dashed var(--border-color);
+        border-top: none;
+		.stats-title-row {
+			display: flex;
+			justify-content: space-between;
+			padding: 0 1rem;
+			margin-bottom: 1rem;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+
+			h4 {
+				font-size: 12px;
+				color: var(--text-secondary);
+				font-weight: 600;
+				letter-spacing: 0.5px;
+			}
+
+			.statistics-title {
+				flex-basis: 60%;
+			}
+		}
+	}
+
+	.competency-list {
+		.competency-row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 12px 1rem;
+			border-bottom: 1px dashed var(--border-color);
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			.competency-name {
+				flex-basis: 40%;
+				font-size: 15px;
+				color: var(--text-primary);
+			}
+
+			.chart-container {
+				flex-basis: 60%;
+			}
+		}
+	}
+
+	.chart-legend {
+		display: flex;
+		justify-content: center;
+		gap: 24px;
+		margin-top: 24px;
+		padding-top: 16px;
+		// border-top: 1px solid var(--border-color);
+
+		.legend-item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 13px;
+			color: var(--text-secondary);
+
+			.legend-color-box {
+				width: 24px;
+				height: 14px;
+				border-radius: 4px;
+
+				&.expected {
+					background-color: var(--expected-color);
+				}
+				&.achieved {
+					background-color: var(--achieved-color);
+				}
+			}
+		}
+	}
+}
+
+// In Recharts, the bars are rendered in order. To overlay, we can use absolute positioning.
+// This is an advanced trick if simple stacking isn't enough. For this design, we can actually
+// make one bar thinner and visually appear on top without complex CSS.
+// Let's adjust the component to render two separate, overlaid bars.
+
+.chart-container .recharts-bar-rectangle {
+	// This makes the two bars appear overlaid by rendering the 'achieved' bar
+	// as a thinner bar on top of the 'expected' bar. Let's adjust the JSX.
+}
+
+// Final check on component logic. The new JSX with two <Bar> components and two <Cell> fills is simpler
+// and achieves the desired visual effect without needing complex CSS overrides.
+// I've updated the JSX to render two bars instead of one with stacked data.
+// Note: for true overlay, we would use a ComposedChart, but for this visual effect, two Bars work perfectly.
+
+.nav-controls {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	.arrow-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border: 1px solid var(--border-color);
+		border-radius: 6px;
+		background-color: var(--bg-primary);
+		cursor: pointer;
+		color: var(--text-secondary);
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: #f1f3f5;
+		}
+	}
+
+	// Wrapper for positioning the dropdown
+	.date-select-wrapper {
+		position: relative;
+	}
+
+	// The main button that shows the date
+	.date-select-btn {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		background-color: transparent;
+		border: 1px solid var(--border-color);
+		border-radius: 6px;
+		padding: 6px 12px;
+		font-size: 14px;
+		font-weight: 500;
+		cursor: pointer;
+		color: var(--text-primary);
+
+		&:hover {
+			background-color: #f1f3f5;
+		}
+	}
+
+	// The dropdown that appears on click
+	.month-year-picker-dropdown {
+		position: absolute;
+		top: calc(100% + 5px);
+		right: 0;
+		z-index: 10;
+		background-color: var(--bg-primary);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		box-shadow: var(--shadow-md);
+		padding: 8px;
+		display: flex;
+		gap: 8px;
+
+		select {
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			padding: 6px;
+			font-size: 14px;
+		}
+	}
+}

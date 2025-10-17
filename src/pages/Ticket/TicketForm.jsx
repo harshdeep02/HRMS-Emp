@@ -18,11 +18,13 @@ import FormDatePicker from '../../utils/common/FormDatePicker.jsx';
 import { UploadFile } from '../../utils/common/UploadFile/UploadFile.jsx';
 import TextAreaWithLimit from '../../utils/common/TextAreaWithLimit.jsx';
 import { createNewTicket } from '../../Redux/Actions/ticketActions.js';
+import { getUserData } from '../../services/login.js';
 
 export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {id} = getUserData()
     const [documentUpload, setDocumentUpload] = useState(false);
 
 
@@ -117,6 +119,7 @@ export const TicketForm = ({ viewMode, formData, setFormData, handleSearch }) =>
         e.preventDefault();
         if (!validateForm()) return;
         const dataToSubmit = {
+            user_id:id,
             requested_to_id: formData?.requested_to_id,
             priority: formData?.priority,
             subject: formData?.subject,

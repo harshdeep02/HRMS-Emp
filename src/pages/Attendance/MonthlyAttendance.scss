@@ -126,8 +126,8 @@
 
 
 .attendanceDetailMain .status-badge.holiday {
-    color: #da2626;
-    padding: 4px 23px;
+    // color: #da2626;
+    // padding: 4px 23px;
 }
 
 .attendanceDetailMain .day.holiday:hover .add-attendance-icon-center{
@@ -176,4 +176,31 @@
 .calMain .status-badge.holiday .dot{
     background-color: #da2626;
 
+}
+
+.empDashAtt .reportCalen .status-badge.present {
+    background-color: #EDF2FE99;
+}
+
+.empDashAtt .status-badge {
+    padding: 3px 12px;
+}
+
+.empDashAtt .reportCalen .status-badge.absent {
+background-color: #F7EDED;
+color: #AF4B4B;
+}
+
+.empDashAtt .reportCalen .status-badge.absent .dot {
+    background-color: #AF4B4B;
+}
+
+.empDashAtt .calendar-header-att {
+    border-bottom: 0;
+}
+
+.empDashAtt .day_name_attendance {
+    background-color: #fff;
+    color: #2A2A2A;
+    font-weight: 400;
 }

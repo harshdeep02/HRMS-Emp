@@ -36,7 +36,12 @@ const FILTER_CONFIG = {
     label: "Filter",
     selector: () => [], // no redux needed, options will always come from parent
     map: (item) => item // parent already provides { value, label }
-  }
+  },
+   remark_type: {
+    label: "Remark Type",
+    selector: () => [], // no redux needed, options will always come from parent
+    map: (item) => item // parent already provides { value, label }
+  },
 };
 
 const DynamicFilter = ({

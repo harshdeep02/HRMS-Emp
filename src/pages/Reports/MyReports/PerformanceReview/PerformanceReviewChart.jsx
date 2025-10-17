@@ -68,6 +68,12 @@ const PerformanceReviewChart = ({ data, activeTab, setActiveTab, overallRating, 
                     },
                     tooltip: {
                         enabled: true,
+                         itemSort: (a, b) => {
+                            // Ensure "Achieved Value" appears first
+                            if (a.dataset.label === "Achieved Value") return -1;
+                            if (b.dataset.label === "Achieved Value") return 1;
+                            return 0;
+                        },
                     },
                 },
                 scales: {

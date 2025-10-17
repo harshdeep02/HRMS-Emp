@@ -347,7 +347,6 @@ const LeaveReport = () => {
                                                     <div className="department ">
                                                         <EllipsisSpan text={item?.reason} wordsToShow={5} />
                                                     </div>
-                                                    {/* <div className="department">{item?.reason}</div> */}
                                                 </td>
                                                 <td className="loadingtd">
                                                     <div className={`status-badge ${statusClassName}`}>

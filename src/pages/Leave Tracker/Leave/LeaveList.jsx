@@ -233,25 +233,11 @@ export const LeaveList = () => {
                             <Tooltips title='Add New Leave' placement="top" arrow>
                                 <button className="add-employee-btn" onClick={() => navigate('/add-new-leave')}><UserPlus size={16} /></button>
                             </Tooltips>
-                            <div className="relative" ref={menuRef}>
-                                <Tooltips title="Export" placement="top" arrow={true}>
-                                    <button
-                                        className="menu-btn"
-                                        onClick={() => setOpen((prev) => !prev)}
-                                    >
-                                        <MoreVertical size={24} />
-                                    </button>
-                                </Tooltips>
-                                {open && (
-                                    <div className="menu-popup">
-                                        <ExportList
-                                            data={leaveList}
-                                            headers={exportHeaders}
-                                            filename="leave.csv"
-                                        />
-                                    </div>
-                                )}
-                            </div>
+                            <ExportList
+                                data={leaveList}
+                                headers={exportHeaders}
+                                filename="leave.csv"
+                            />
                         </div>
                     </header>
                 </div>

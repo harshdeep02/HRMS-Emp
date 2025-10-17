@@ -9,7 +9,6 @@ const ConsumedLeaveTypes = () => {
       const myLeaveReport = useSelector((state) => state?.myLeaveReport);
       const LeaveReportLoading = myLeaveReport?.loading || false
       const leaveBalnceData = myLeaveReport?.data?.leave || []
-      console.log(leaveBalnceData)
 
     
 const fetchLeaveReport = useCallback(async () => {
@@ -38,7 +37,6 @@ const fetchLeaveReport = useCallback(async () => {
   ];
 
   const totalUsed = leaveData.reduce((sum, l) => sum + Number(l.used || 0), 0) || 0;
-  console.log(totalUsed)
   const totalAvailable = leaveData.reduce((sum, l) => sum + Number(l.total || 0), 0) || 0;
 
   const radius = 42;

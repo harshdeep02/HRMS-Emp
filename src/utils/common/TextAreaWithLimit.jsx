@@ -1,5 +1,6 @@
-const TextAreaWithLimit = ({ formsValues: { handleChange }, disabled, placeholder, name, value }) => {
+const TextAreaWithLimit = ({ formsValues, disabled, placeholder, name, value }) => {
     const charCount = value ? value?.trim()?.length : 0;
+    const handleChange = formsValues?.handleChange
 
     return (
         <div>

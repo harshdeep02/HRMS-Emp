@@ -1305,7 +1305,7 @@
 		}
 
 		.Dcumnet_forms {
-			width: 620px;
+			// width: 620px;
 		}
 
 		.isEditPage {
@@ -1749,4 +1749,101 @@ html {
 	// .employee-form form .from1 .form-group {
 	// 	gap: 12px;
 	// }
+}
+
+
+.expDisFlex{
+	display: flex;
+	align-items: center;
+}
+
+.item-CompanyName {
+    font-size: 13px;
+    font-weight: 400;
+    font-family: INTER;
+    color: #0f0f0f8f;
+    padding-bottom: 2px;
+}
+
+.item-CompanyProfile {
+    font-size: 15px;
+    font-weight: 500;
+    font-family: INTER;
+    color: #0F0F0F;
+}
+
+.compLogo {
+    border: 1px solid #d4d4d48c;
+    padding: 9px 10px;
+    border-radius: 7px;
+    margin-right: 14px;
+}
+.compLogo svg {
+    display: flex;
+}
+
+.employee-form .saved-experience-item .item-details .empExDate {
+	padding-left: 45px;
+	color: #1C1C1C;
+	font-weight: 500;
+}
+
+.employee-form .saved-experience-item .item-details .empExDate span {
+    color: #676767;
+    padding: 0 2px;
+}
+
+.employee-form .saved-experience-item .item-actions .action-btn.empViewBtn {
+    color: #4f46e5;
+    font-weight: 500;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-color: #4f46e5;
+    border-radius: 0;
+    padding: 0;
+}
+
+.employee-form .saved-experience-item .item-actions .action-btn.empViewBtn:hover {
+    background: unset;
+}
+.empExpDate{
+	    color: #1C1C1C;
+    font-weight: 500;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.empExpDate span{
+    color: #676767;
+    padding: 0 2px;
+}
+.doc-item-icon{
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid #E8E8E8;
+	    margin-right: 15px;
+
+}
+
+.doc-item-icon img{
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.remarkPage .form_box {
+    padding: 0;
+    border: 0;
+}
+.employee-form .remarkPage form .Dcumnet_forms {
+    width: 800px;
+}
+
+.remarkPage .detail-table-wrapper {
+    width: 800px;
 }

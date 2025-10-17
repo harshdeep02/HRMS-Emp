@@ -39,6 +39,24 @@ export const fetchEmployeeList = async (queryParams) => {
         console.log(error);
     }
 }
+export const fetchRemarkListApi = async (queryParams) => {
+    try {
+        const token = localStorage.getItem('AccessToken');
+        const query = queryParams ? objectToQueryString(queryParams) : '';
+        let config = {
+            method: 'post',
+            url: API_URL + `/employee/remarks/detail` + query,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        };
+        const request = apiController(config);
+        return request;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const fetchBirthdayList = async (queryParams) => {
     try {

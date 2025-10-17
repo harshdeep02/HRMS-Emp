@@ -233,9 +233,6 @@ export const LeaveSummaryReport = () => {
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 
                                     </button>
-                                    {/* <button className="nav-arrow" onClick={handleNextMonth} disabled={selectedMonth+1 > today.getMonth()}>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLincap="round" strokeLinejoin="round" /></svg>
-                        </button> */}
                                     <button className="nav-arrow" onClick={handleNextMonth}>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLincap="round" strokeLinejoin="round" /></svg>
                                     </button>
@@ -246,36 +243,11 @@ export const LeaveSummaryReport = () => {
                                 </div>
                             </div>
 
-                            {/* {showMonthYearPicker && (
-                    <div className="month-year-picker-dropdown">
-                        <select value={selectedMonth} onChange={(e) => handleSelectedMonth(e)}>
-                            {Array.from({ length: selectedYear < today.getFullYear()? 12 : today.getMonth()+1 }).map((_, i) => {
-                                return (<option key={i} value={i}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>)})}
-                        </select>
-                        <select value={selectedYear} onChange={(e) => handleSelectedYear(e)}>
-                            {Array.from({ length: 10 }).map((_, i) => {
-                                const year = today?.getFullYear() - 9 + i
-                            return (<option key={year} value={year}>{year}</option>)})}
-                        </select>
-                    </div>
-                )} */}
-
                             {showMonthYearPicker && (
                                 <div className="month-year-picker-dropdown">
-                                    {/* {loadingArea === "selectedMonth" ?
-                                <div className="monthLoader">
-                                    <LoadingButton loading={attendanceLoading} color={"#000"} />
-                                </div>
-                                : */}
                                     <select value={selectedMonth} onChange={(e) => handleSelectedMonth(e)}>
                                         {Array.from({ length: 12 }).map((_, i) => <option key={i} value={i}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>)}
                                     </select>
-                                    {/* } */}
-                                    {/* {loadingArea === "selectedYear" ?
-                                <div className="yearLoader">
-                                    <LoadingButton loading={attendanceLoading} color={"#000"} />
-                                </div>
-                                : */}
                                     <select value={selectedYear} onChange={(e) => handleSelectedYear(e)}>
                                         {Array.from({ length: 10 }).map((_, i) => <option key={2022 + i} value={2022 + i}>{2022 + i}</option>)}
                                     </select>

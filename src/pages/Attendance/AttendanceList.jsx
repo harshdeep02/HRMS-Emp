@@ -5,41 +5,28 @@ import {
     useCallback,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    MoreVertical,
-    X,
-    Clock,
-    TrendingUp,
-    Rows4,
-    CircleCheck,
-    ShieldX,
-    ShieldMinus,
-} from "lucide-react";
+import {X,Clock,TrendingUp,Rows4,CircleCheck,ShieldX,ShieldMinus, ChevronDown,} from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Tooltips from "../../../utils/common/Tooltip/Tooltips.jsx";
-import SearchBox from "../../../utils/common/SearchBox.jsx";
-import DynamicFilter from "../../../utils/common/DynamicFilter.jsx";
-import defaultImage from "../../../assets/default-user.png";
-import SortFilter from "../../../utils/common/SortFilter.jsx";
-import DatePicker from "../../../utils/common/DatePicker/DatePicker.jsx";
-import ImportList from "../../../utils/common/Import/ImportList.jsx";
-import ExportList from "../../../utils/common/Export/ExportList.jsx";
-import { getAttendanceList } from "../../../Redux/Actions/attendanceActions.js";
-import ListDataNotFound from "../../../utils/common/ListDataNotFound.jsx";
+import defaultImage from "../../assets/default-user.png";
+import ExportList from "../../utils/common/Export/ExportList.jsx";
+import { getAttendanceList } from "../../Redux/Actions/attendanceActions.js";
+import ListDataNotFound from "../../utils/common/ListDataNotFound.jsx";
 import './AttendanceList.scss'
-import { createAttendance } from "../../../services/attendance.js";
-import { formatDate, formatDate3 } from "../../../utils/common/DateTimeFormat.js";
-import LoadingDots from "../../../utils/common/LoadingDots/LoadingDots.jsx";
-const INITIAL_VISIBLE_COUNT = 10;
+import { createAttendance } from "../../services/attendance.js";
+import { formatDate } from "../../utils/common/DateTimeFormat.js";
+import LoadingDots from "../../utils/common/LoadingDots/LoadingDots.jsx";
+import { getUserData } from "../../services/login.js";
+const INITIAL_VISIBLE_COUNT = 5;
 
 const AttendanceList = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {id} = getUserData()
 
     // --- Redux ---
     const attendanceData = useSelector((state) => state?.attendanceList);
     const attendanceLists = attendanceData?.data?.result || [];
-    const totalItems = attendanceData?.data?.metadata?.today_all || 0;
+    const totalItems = attendanceData?.data?.metadata?.all || 0;
     const metaData = attendanceData?.data?.metadata || {};
     const loading = attendanceData?.loading || false;
 
@@ -47,14 +34,34 @@ const AttendanceList = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("All"); // Default is empty for "All"
     const [departmentFilter, setDepartmentFilter] = useState("All");
-    const [sortBy, setSortBy] = useState("today");
     const [dateFilter, setDateFilter] = useState(null);
     const [itemsPerPage, setItemsPerPage] = useState(INITIAL_VISIBLE_COUNT);
     const [currentPage, setCurrentPage] = useState(1);
-    const [open, setOpen] = useState(false);
     const [showMoreLess, setShowMoreLess] = useState(false);
-    const searchBoxRef = useRef();
-    const menuRef = useRef(null);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
+    const currDate = new Date();
+    const [getYear, setGetYear] = useState({ month: currDate.getMonth() + 1, year: currDate.getFullYear() })
+
+    const setYearData = useCallback((data) => {
+        setGetYear({ month: data.month, year: data.year });
+    }, []);
+
+    const dropdownRef = useRef(null);
+        const pickerRef = useRef(null);
+    
+        const selectedMonth = selectedDate.getMonth();
+        const selectedYear = selectedDate.getFullYear();
+    
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+                    setShowMonthYearPicker(false);
+                }
+            };
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => document.removeEventListener("mousedown", handleClickOutside);
+        }, []);
 
     const attendanceStatusOptions = [
         { id: 0, label: "All", key: "today_all", icon: Rows4 },
@@ -86,11 +93,11 @@ const AttendanceList = () => {
                 fy,
                 noofrec: itemsPerPage,
                 currentpage: currentPage,
+                user_id: id,
+                month: getYear.month,
+                year: getYear.year,
                 ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
-                ...(departmentFilter && departmentFilter !== "All" && { department_id: departmentFilter }),
-                ...(searchTerm && { search: searchTerm }),
-                ...(sortBy && { sort_by: sortBy }),
-                ...(dateFilter && { custom_date: formatDate3(new Date(dateFilter)) }),
+
             };
             const res = await dispatch(getAttendanceList(sendData));
             setShowMoreLess(false);
@@ -98,53 +105,47 @@ const AttendanceList = () => {
             console.error("Error fetching attendance list:", error);
             setShowMoreLess(false);
         }
-    }, [searchTerm, statusFilter, dateFilter, departmentFilter, sortBy, currentPage, itemsPerPage]);
+    }, [currentPage,statusFilter, itemsPerPage, getYear]);
 
     useEffect(() => {
         fetchAttendanceList();
     }, [fetchAttendanceList]);
 
-    // --- Handlers ---
-    const handleSearch = (query) => {
-        setCurrentPage(1);
-        setItemsPerPage(INITIAL_VISIBLE_COUNT);
-        setSearchTerm(query);
+        const handlePreviousMonth = async () => {
+
+        setSelectedDate(new Date(selectedYear, selectedMonth - 1, 1))
+        setYearData({ month: selectedMonth, year: selectedYear })
+
     };
+    const handleNextMonth = async () => {
+
+        setSelectedDate(new Date(selectedYear, selectedMonth + 1, 1))
+        setYearData({ month: selectedMonth + 2, year: selectedYear })
+    };
+
+    const handleSelectedMonth = (e) => {
+        setSelectedDate(new Date(selectedYear, parseInt(e.target.value), 1))
+
+        setYearData({ month: parseInt(e.target.value) + 1, year: selectedYear })
+    }
+    const handleSelectedYear = (e) => {
+        setSelectedDate(new Date(parseInt(e.target.value), selectedMonth, 1))
+        setYearData({ month: selectedMonth + 1, year: parseInt(e.target.value) })
+    }
+
+    // --- Handlers ---
     const handleStatusFilter = (newValue) => {
         setCurrentPage(1);
         setStatusFilter(newValue);
         setItemsPerPage(INITIAL_VISIBLE_COUNT);
     };
 
-    const handleSortChange = (newSort) => {
-        setCurrentPage(1);
-        setItemsPerPage(INITIAL_VISIBLE_COUNT)
-        setSortBy(newSort);
-    };
-
-    const handleDateFilter = (date) => {
-        setCurrentPage(1);
-        setDateFilter(date);
-        setItemsPerPage(INITIAL_VISIBLE_COUNT)
-    };
-
-    const handleDepartmentFilter = (newFilter) => {
-        setDepartmentFilter(newFilter);
-        setItemsPerPage(INITIAL_VISIBLE_COUNT); // reset count
-    };
-
     const clearFilters = () => {
-        setSearchTerm("");
         setStatusFilter("");
-        setDepartmentFilter("All");
-        setSortBy("recent");
-        setDateFilter(null);
         setCurrentPage(1);
         setShowMoreLess(false);
-        if (searchBoxRef.current) searchBoxRef.current.clearInput();
-        // Clear date input manually if needed
-        const dateInput = document.getElementById('date-filter-input');
-        if (dateInput) dateInput.value = '';
+        setSelectedDate(new Date())
+        setYearData({ month: currDate.getMonth() + 1, year: currDate.getFullYear() })
     };
 
     const handleLoadMore = () => {
@@ -205,6 +206,12 @@ const AttendanceList = () => {
         })()
         : defaultImage;
 
+    useEffect(() => {
+        if (!loading) {
+            setShowMonthYearPicker(false);
+        }
+    }, [loading]);
+
     const dummyData = Array.from({ length: 7 }, (_, i) => ({
         id: i,
         first_name: "",
@@ -215,7 +222,7 @@ const AttendanceList = () => {
         status: "",
         user_image: null,
     }));
-
+    
     const ListData = (loading && !showMoreLess) ? dummyData : attendanceLists;
 
     return (
@@ -227,7 +234,7 @@ const AttendanceList = () => {
                         <div className="header-left">
                             <div>
                                 <h1>
-                                    All Attendance List
+                                    Attendance History
                                     <span className="total-count">
                                         <TrendingUp size={16} className="TrendingUp" />
                                         {totalItems}
@@ -237,56 +244,49 @@ const AttendanceList = () => {
                             </div>
                         </div>
                         <div className="header-right header_rightMain">
-                            <div className="toolbar">
-                                <SearchBox
-                                    onSearch={handleSearch}
-                                    placeholder="Search employee..."
-                                    ref={searchBoxRef}
-                                />
+                            <div className="toolbar" style={{ padding: "13px 0"}}>
                                 <div className="toolbar-actions">
-                                    <DynamicFilter
-                                        filterBy="department"
-                                        filterValue={departmentFilter}
-                                        onChange={handleDepartmentFilter}
-                                    />
-                                    <SortFilter sortBy={sortBy} onChange={handleSortChange} options={sortOptions} />
-                                    <DatePicker
-                                        label=""
-                                        onDateChange={handleDateFilter}
-                                        initialDate={dateFilter}
-                                    />
-                                    <div className="relative" ref={menuRef}>
-                                        <Tooltips
-                                            title="Import & Export"
-                                            placement="top"
-                                            arrow={true}>
-                                            <button
-                                                className="menu-btn"
-                                                onClick={() => setOpen((prev) => !prev)}>
-                                                <MoreVertical size={24} />
-                                            </button>
-                                        </Tooltips>
-                                        {open && (
-                                            <div className="menu-popup">
-                                                <ImportList
-                                                    apiFunction={handleImportRow}
-                                                    onImportSuccess={() => {
-                                                        fetchDepartmentList();
-                                                        setOpen(false);
-                                                    }}
-                                                />
-                                                <ExportList
-                                                    data={attendanceLists}
-                                                    headers={exportHeaders}
-                                                    filename="attendence.csv"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
+                                   <div className="calendar-header-att">
+                        <div className="header-controls">
+                            {/* <h2>Attendance Summary</h2> */}
+                        </div>
+                        <div className="month-year-container" ref={pickerRef}>
+                            <div className="heade_right">
+                                <div className="arrow_l_r">
+                                    <button className="nav-arrow" onClick={handlePreviousMonth}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+
+                                    </button>
+                                    <button className="nav-arrow" onClick={handleNextMonth}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLincap="round" strokeLinejoin="round" /></svg>
+                                    </button>
+                                </div>
+                                <div className="month-year-selector" onClick={() => setShowMonthYearPicker(!showMonthYearPicker)}>
+                                    <span>{selectedDate.toLocaleString("default", { month: "long" })} {selectedYear}</span>
+                                    <ChevronDown size={20} />
                                 </div>
                             </div>
-                            <div className="relative" ref={menuRef}>
-                                {/* ... More options popup ... */}
+
+                            {showMonthYearPicker && (
+                                <div className="month-year-picker-dropdown">
+                                    <select value={selectedMonth} onChange={(e) => handleSelectedMonth(e)}>
+                                        {Array.from({ length: 12 }).map((_, i) => <option key={i} value={i}>{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>)}
+                                    </select>
+                                    <select value={selectedYear} onChange={(e) => handleSelectedYear(e)}>
+                                        {Array.from({ length: 10 }).map((_, i) => <option key={2022 + i} value={2022 + i}>{2022 + i}</option>)}
+                                    </select>
+                                    {/* } */}
+                                </div>
+                            )}
+
+                        </div>
+                    </div>
+                                      <ExportList
+                                        data={attendanceLists}
+                                        headers={exportHeaders}
+                                        filename="attendence.csv"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </header>
@@ -303,7 +303,7 @@ const AttendanceList = () => {
                                     if (status?.label === "All") {
                                         count = totalItems ?? 0;
                                     } else {
-                                        count = metaData?.[status?.key?.toLowerCase()?.replace(" ", "")] ?? 0;
+                                        count = metaData?.[status?.label?.toLowerCase()?.replace(" ", "")] ?? 0;
                                     }
                                     return (
                                         <li key={index} className={statusFilter == status?.id ? "active" : ""} onClick={() => handleStatusFilter(status?.id)}>
@@ -317,7 +317,7 @@ const AttendanceList = () => {
                                     );
                                 })}
                             </ul>
-                            {(statusFilter !== "All" || dateFilter !== null || departmentFilter !== "All") && (
+                            {(statusFilter !== "All") && (
                                 <div className="clearBTN">
                                     <button className="clear-filters-btn" onClick={clearFilters}>
                                         <span>Clear filter</span>
@@ -332,9 +332,9 @@ const AttendanceList = () => {
                             <table className="employee-table emp-t-5">
                                 <thead>
                                     <tr>
-                                        <th>EMPLOYEE NAME</th>
                                         <th>DATE</th>
                                         <th>SHIFT</th>
+                                        <th>TOTAL HOURS</th>
                                         <th>CHECK IN-CHECK-OUT</th>
                                         <th>STATUS</th>
                                     </tr>
@@ -351,28 +351,9 @@ const AttendanceList = () => {
                                                     onClick={() => navigate(`/attendance-details/${item?.user_id}`,
                                                         { state: { employee_name: item?.user_name } }
                                                     )}>
-                                                    <td>
-                                                        {loading ?
-                                                            <>
-                                                                <div className="loadingImg"></div>
-                                                                <div className="loadingtdsmall name"></div>
-                                                            </>
-                                                            :
-                                                            <>
-                                                                <div className="info_img loadingImg">
-                                                                    <img
-                                                                        src={employeeImage(item?.employee?.image)}
-                                                                        alt={[item?.employee?.first_name, item?.employee?.last_name].filter(Boolean).join(" ")}
-                                                                        className="avatar"
-                                                                    />
-                                                                    <div className="name loadingtdsmall Semi_Boldv ">{[item?.employee?.first_name, item?.employee?.last_name].filter(Boolean).join(" ")}</div>
-                                                                </div>
-                                                            </>
-                                                        }
-
-                                                    </td>
-                                                    <td className="loadingtd">{formatDate(item?.date)}</td>
+                                                    <td><div className="department loadingtd Semi_Bold">{formatDate(item?.date)}</div></td>
                                                     <td className="loadingtd">{item?.shift_name}</td>
+                                                    <td className="loadingtd">{item?.total_hours_worked}</td>
                                                     <td>
                                                         <div className="check-in-out">
                                                             <div className="loadingtdTOP">{item?.punch_in || "-"}</div>

@@ -295,7 +295,7 @@ export const AnnouncementList = () => {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div className="loadingtd department">{item?.created_by}</div>
+                                                            <div className="loadingtd department">{[item?.enteredby?.first_name, item?.enteredby?.last_name]?.filter(Boolean)?.join(" ")}</div>
                                                         </td>
                                                         <td className="loadingtd ">
                                                             <div className={`status-badge ${statusClassName}`}>

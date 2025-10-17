@@ -1,0 +1,88 @@
+.performanceDetailsMain .policy-container .policy-title {
+	align-items: flex-start;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.performancePolicyBody .policy-container .policy-title h2 {
+	font-size: 24px;
+	font-weight: 500;
+	color: #000;
+	line-height: 32px;
+}
+
+.performancePolicyBody .policy-container .edit-policy-btn {
+	color: #1c1c1c;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	font-family: "Inter";
+	padding: 0.6rem 1rem;
+}
+
+.performancePolicyBody .policy-container .policy-header {
+	border-bottom: 1px solid #e8e8e8;
+	padding-bottom: 25px;
+	margin-bottom: 1rem;
+}
+
+.performancePolicyHead {
+	font-size: 24px;
+	font-weight: 700;
+	color: #000;
+	line-height: 32px;
+	margin-bottom: 20px;
+}
+
+.performancePolicyBody .policy-title p {
+	font-size: 16px;
+	font-weight: 400;
+	color: #676767;
+	max-width: 545px;
+	text-transform: capitalize;
+	line-height: 24px;
+}
+
+.performancePolicyBody .policy-body h3 {
+	font-size: 17px;
+	font-weight: 500;
+	color: #1c1c1c;
+	line-height: 24px;
+	font-family: "Inter";
+	padding-bottom: 2px;
+}
+
+.performancePolicyBody ol {
+	padding-left: 20px;
+}
+
+.performancePolicyBody .policy-body > p:nth-child(6) {
+	padding-bottom: 0;
+}
+
+.performancePolicyBody div.policy-body li {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+.performancePolicyBody .policy-container .policy-body p,
+.performancePolicyBody .policy-body li {
+	font-weight: 400;
+	font-size: 16px;
+	color: #1c1c1c;
+	font-family: "Inter";
+	line-height: 24px;
+	text-transform: capitalize;
+	letter-spacing: -0.3px;
+	padding-bottom: 22px;
+}
+
+.performanceDetailsMain .policy-container .policy-body p strong {
+	font-weight: 700;
+	font-size: 16px;
+	color: #000;
+}
+
+.performanc_form_box {
+	max-width: 800px;
+	// padding-left: 100px;
+}

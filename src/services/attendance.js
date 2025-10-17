@@ -27,11 +27,12 @@ export const fetchAttendanceList = async (queryParams) => {
         const query = queryParams ? objectToQueryString(queryParams) : '';
         let config = {
             method: 'post',
-            url: API_URL + `/attendance/list` + query,
+            url: API_URL + `/employee/attendence/list`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
+            data: queryParams
         };
         const request = apiController(config);
         return request;

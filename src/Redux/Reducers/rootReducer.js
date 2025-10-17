@@ -74,6 +74,7 @@ import {
   employeeDetailReducer,
   employeeListReducer,
   importEmpReducer,
+  remarkListReducer,
   updateEmployeeStatusReducer,
 } from "./employeeReducer";
 
@@ -310,6 +311,7 @@ const reducer = combineReducers({
   deleteEmpDocument: deleteEmpDocReducer,
   deleteEmpRemark: deleteEmpRemarkReducer,
   importEmpData: importEmpReducer,
+  remarkList : remarkListReducer,
 
   //job
   createJob: createJobReducer,

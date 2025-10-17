@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 // Icons used in the component
 import {
     XCircle,
@@ -16,18 +16,21 @@ import { ProjectStatusOptions } from "../../../utils/Constant.js";
 import { getProjectList } from "../../../Redux/Actions/projectActions.js";
 import { showMasterData, showMastersValue } from "../../../utils/helper.js";
 import { formatDate } from "../../../utils/common/DateTimeFormat.js";
+import SearchBox from "../../../utils/common/SearchBox.jsx";
+import { getUserData } from "../../../services/login.js";
 
 export const EmpProject = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { id } = useParams();
+    const { id } = getUserData();
 
     // Data from redux
     const projectData = useSelector((state) => state?.projectList);
     const projectLists = projectData?.data?.result || [];
+    console.log(projectLists)
     const totalProjects = projectData?.data?.count || 0;
-    const projectListLoading = true//projectData?.loading || false;
+    const projectListLoading = projectData?.loading || false;
     const priority_options = showMasterData("20");
     const masterData = useSelector(state => state?.masterData?.data);
 
@@ -39,6 +42,9 @@ export const EmpProject = () => {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [dateFilter, setDateFilter] = useState(null);
     const [view, setView] = useState('list');
+    const [searchTerm, setSearchTerm] = useState("");
+    const searchBoxRef = useRef();
+
 
     const statusConfig = ProjectStatusOptions?.reduce((acc, status) => {
         if (!status?.id) return acc; // skip undefined values
@@ -53,11 +59,14 @@ export const EmpProject = () => {
     const fetchProjects = useCallback(async () => {
         try {
             const sendData = {
+                user_id :id,
                 noofrec: visibleCount,
                 currentpage: 1, // Assuming pagination is handled by 'noofrec' for now
                 user_id: id,
                 ...(statusFilter && statusFilter !== "All" && { status: statusFilter }),
                 ...(priorityFilter && priorityFilter !== "All" && { priority: priorityFilter }),
+                 ...(searchTerm && { search: searchTerm }),
+
             };
             const res = await dispatch(getProjectList(sendData));
 
@@ -66,12 +75,17 @@ export const EmpProject = () => {
         } finally {
             setIsLoadingMore(false);
         }
-    }, [statusFilter, visibleCount, priorityFilter]);
+    }, [statusFilter,searchTerm,  visibleCount, priorityFilter]);
 
     useEffect(() => {
         fetchProjects();
-    }, [statusFilter, visibleCount, priorityFilter]);
+    }, [statusFilter,searchTerm,  visibleCount, priorityFilter]);
 
+    
+    const handleSearch = (query) => {
+    setSearchTerm(query);
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+    };
 
     const handleStatusFilter = (value) => {
         setStatusFilter(value);
@@ -79,6 +93,7 @@ export const EmpProject = () => {
     };
 
     const resetFilters = () => {
+        setSearchTerm("")
         setStatusFilter('All');
         setVisibleCount(INITIAL_VISIBLE_COUNT);
         setPriorityFilter("All");
@@ -118,6 +133,8 @@ export const EmpProject = () => {
                         <div className="toolbar_d">
                             {/* --- THIS ENTIRE BLOCK IS UPDATED --- */}
                             <div className="toolbar-actions">
+                                <SearchBox onSearch={handleSearch} placeholder="Search Project Name..." ref={searchBoxRef} />
+
                                 <div className=" ">
                                     <DynamicFilter
                                         filterBy="priority"

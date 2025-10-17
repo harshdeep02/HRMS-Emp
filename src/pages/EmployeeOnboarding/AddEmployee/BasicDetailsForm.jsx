@@ -1,38 +1,17 @@
-import { useState, useRef } from 'react';
 import './AddEmloyee.scss';
 import './NavbarForm.scss';
 import FormDatePicker from '../../../utils/common/FormDatePicker.jsx';
-import { genderOptions, maritalStatus, employeeStatusOptions, metroOptions } from '../../../utils/Constant.js';
-import SelectDropdown from '../../../utils/common/SelectDropdown/SelectDropdown.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { handleFormError, showMasterData } from '../../../utils/helper.js';
+import {employeeStatusOptions } from '../../../utils/Constant.js';
+import { showMasterData } from '../../../utils/helper.js';
 import { AArrowUp, Accessibility, AppWindowMac, ArrowBigUp, Book, Calendar, FolderPen, IdCard, MapPinCheckInside, MapPinHouseIcon, MarsStroke, Pencil, Phone, SquareCode, SquaresExclude, TrainFront, User, UserRoundCheck } from 'lucide-react';
 import { UserProfileImageUpload } from '../../../utils/common/UserProfileImageUpload/UserProfileImageUpload.jsx';
-import { useNavigate } from 'react-router-dom';
 import StatusDropdown from '../../../utils/common/StatusDropdown/StatusDropdown.jsx';
-import SubmitButton from '../../../utils/common/SubmitButton.jsx';
-import { createNewEmployee, getEmployeeDetails, updateEmployeeStatus } from '../../../Redux/Actions/employeeActions.js';
-import { toast } from 'react-toastify';
-import dayjs from 'dayjs';
-import ConfirmPopup from '../../../utils/common/ConfirmPopup.jsx';
 
 const BasicDetailsForm = ({ formData}) => {
 
-    const departmentData = useSelector((state) => state?.departmentList);
-    const departmentLists = departmentData?.data?.department || [];
+    const employment_options = showMasterData("1");
+    const job_location_options = showMasterData("3");
 
-    const designationData = useSelector((state) => state?.designationList);
-    const designationLists = designationData?.data?.designation || [];
-
-    const employeeData = useSelector((state) => state?.employeeList);
-    const employeeLists = employeeData?.data?.result || [];
-
-    const shiftData = useSelector((state) => state?.shiftList);
-    const shiftLists = shiftData?.data?.result || [];
-
-    const workLocationData = useSelector((state) => state?.WorkLocList);
-    const workLocationLists = workLocationData?.data?.data || [];
-    const updateStatus = useSelector((state) => state?.updateEmployeeStatus);
 
     return (
         <>
@@ -175,7 +154,7 @@ const BasicDetailsForm = ({ formData}) => {
                             <input
                             type="text"
                             name="department"
-                            value={formData?.department}
+                            value={formData?.department_name}
                             disabled={true}
                         />
                         </>
@@ -186,7 +165,7 @@ const BasicDetailsForm = ({ formData}) => {
                          <input
                             type="text"
                             name="employment_type"
-                            value={formData?.employment_type}
+                            value={employment_options?.find(item => item?.id == formData?.employment_type)?.label || ""}
                             disabled={true}
                         />
                     </div>
@@ -195,7 +174,7 @@ const BasicDetailsForm = ({ formData}) => {
                          <input
                             type="text"
                             name="designation"
-                            value={formData?.designation}
+                            value={formData?.designation_name}
                             disabled={true}
                         />
                     </div>
@@ -216,7 +195,7 @@ const BasicDetailsForm = ({ formData}) => {
                              <input
                             type="text"
                             name="shift"
-                            value={formData?.shift}
+                            value={formData?.shift_name}
                             disabled={true}
                         />
                         </>
@@ -239,7 +218,7 @@ const BasicDetailsForm = ({ formData}) => {
                           <input
                             type="text"
                             name="job_location"
-                            value={formData?.job_location}
+                            value={job_location_options?.find(item => item?.id == formData?.job_location_id)?.label || ""}
                             disabled={true}
                             />
                     </div>

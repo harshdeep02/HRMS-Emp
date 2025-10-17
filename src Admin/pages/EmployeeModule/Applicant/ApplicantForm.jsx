@@ -457,7 +457,10 @@ const ApplicantForm = ({ viewMode, formData, setFormData, handleSearch, handleSt
             </div>
 
             {!isDetailView && (
-                <SaveBtn handleSubmit={handleSaveOrUpdate} viewMode={viewMode} loading={createUpdateApplicant?.loading} isDisabled={documentUpload} color='#fff' />
+                <SaveBtn handleSubmit={handleSaveOrUpdate}
+                 viewMode={viewMode}
+                  loading={createUpdateApplicant?.loading}
+                   isDisabled={documentUpload} color='#fff' />
             )}
         </>
     );

@@ -28,8 +28,8 @@ export const menuItems = [
     {
         id: 'organization', label: 'Organization', icon: Building2, path: '/department-list', submenu: [
             { label: 'Employee', path: '/employee-list', BreadL: 'All Employee list' },
-            { label: 'Department', path: '/department-list', BreadL: 'All Department list', detail: '/department-details', add: '/add-department', BreadA: "Add New Department", edit: '/edit-department' },
-            { label: 'Designation', path: '/designation-list', BreadL: 'All Designation list', detail: '/designation-details', add: '/add-designation', BreadA: "Add New Designation", edit: '/edit-designation' },
+            // { label: 'Department', path: '/department-list', BreadL: 'All Department list', detail: '/department-details', add: '/add-department', BreadA: "Add New Department", edit: '/edit-department' },
+            // { label: 'Designation', path: '/designation-list', BreadL: 'All Designation list', detail: '/designation-details', add: '/add-designation', BreadA: "Add New Designation", edit: '/edit-designation' },
             { label: 'Announcement', path: '/announcement-list', BreadL: 'All Announcement list', detail: '/announcement-details', add: '/add-new-announcement', BreadA: "Add New Announcement", edit: '/edit-announcement' },
             { label: 'Holiday', path: '/holiday-list', BreadL: 'All Holiday list', detail: '/holiday-details', add: '/add-holiday-details', BreadA: "Add New Holiday", edit: '/edit-holiday-details' },
         ]
@@ -38,15 +38,16 @@ export const menuItems = [
         id: 'leave', label: 'Leave Tracker', icon: CalendarMinus, path: '/leave-list', BreadL: 'All Leave list', detail: '/leave-details', add: '/add-new-leave',BreadA: "Add New Leave",
     },
     {
+        id: 'attendance', label: 'Attendance', icon: Calendar, path: '/attendance-list', BreadL: 'Attendance list', detail: '/attendance-details',
+        //  submenu: [
+        //     { label: 'Shift', path: '/shift-list', BreadL: 'All Shift list', detail: '/shift-details', add: '/add-shift', BreadA: "Add New Shift", edit: '/edit-shift' },
+        //     { label: 'Assign Shift', path: '/assign-shift-list', BreadL: 'All Assign Shift list', add: '/assign-shift', BreadA: "Add New Assign Shift" },
+        //     { label: 'Attendance', path: '/attendance-list', BreadL: 'All Attendance list', detail: '/attendance-details', add: '/add-attendance', BreadA: "Add New Attendance", edit: '/edit-attendance' },
+        // ]
+    },
+    {
         id: 'ticket', label: 'Ticket', icon: Ticket, path: '/ticket-list', BreadL: 'All Ticket list', detail: '/ticket-details', add: '/add-ticket',BreadA: "Add New Ticket",
     },
-    // {
-    //     id: 'attendance', label: 'Attendance', icon: Calendar, path: '/attendance-list', submenu: [
-    //         { label: 'Shift', path: '/shift-list', BreadL: 'All Shift list', detail: '/shift-details', add: '/add-shift', BreadA: "Add New Shift", edit: '/edit-shift' },
-    //         { label: 'Assign Shift', path: '/assign-shift-list', BreadL: 'All Assign Shift list', add: '/assign-shift', BreadA: "Add New Assign Shift" },
-    //         { label: 'Attendance', path: '/attendance-list', BreadL: 'All Attendance list', detail: '/attendance-details', add: '/add-attendance', BreadA: "Add New Attendance", edit: '/edit-attendance' },
-    //     ]
-    // },
     // {
     //     id: 'work', label: 'Work', icon: Briefcase, path: '/ticket-list', submenu: [
     //         { label: 'Ticket', path: '/ticket-list', BreadL: 'All Ticket list', detail: '/ticket-details', add: '/add-ticket', BreadA: "Add New Ticket", edit: '/edit-ticket' },

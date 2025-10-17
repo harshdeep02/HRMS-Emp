@@ -1,17 +1,12 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import { User, TrendingUp, Download, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import PerformanceReviewChart from './PerformanceReviewChart';
 import ExportList from '../../../../utils/common/Export/ExportList';
 import './PerformanceReview.scss';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import DynamicFilter from '../../../../utils/common/DynamicFilter';
 import { useNavigate } from 'react-router-dom';
 import { getPerformance } from '../../../../Redux/Actions/organizationActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../../../utils/common/Loader/Loader';
-import { DatePicker } from '@mui/x-date-pickers'; // DatePicker ki jagah YearPicker use karenge
 import { getUserData } from '../../../../services/login';
 
 // ------------------------------------------------------------------------------------------------
@@ -237,19 +232,6 @@ const MYPerformanceReview = () => {
                 </header>
             </div>
 
-            {/* <div className="filter-bar"> */}
-
-                {/* <div className=''>
-
-                    <DynamicFilter
-                        label="Filters"
-                        filterBy="filter"
-                        options={AppraisalStatusOptions}
-                        filterValue={statusFilter}
-                        onChange={(value) => handleStatusFilter(value)}
-                        rightSideDropdwon={true}
-                    />
-                </div> */}
                 {/* Year Navigation Logic Start */}
                <div className="calendar-header-att">
              <div className="month-year-container" ref={pickerRef}>

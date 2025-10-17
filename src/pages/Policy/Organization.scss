@@ -1,0 +1,220 @@
+// src/pages/Organization/Organization.scss
+
+/* --- Variables --- */
+$card-bg: #ffffff;
+$text-color: #333;
+$border-color: #e0e0e0;
+$primary-color: #6d28d9; // Purple for popup as per image
+$primary-text-color: #ffffff;
+$dialog-header-bg: #fdfcff; // Lighter purple for header
+$dialog-border-color: #e0e0e0;
+$border-radius: 8px;
+
+//================================================
+// POLICY TAB STYLES
+//================================================
+.policy-container {
+	background-color: $card-bg;
+
+	.policy-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid $border-color;
+		padding-bottom: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.policy-title {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		color: $text-color;
+		h2 {
+			font-size: 20px;
+			color: #1c1c1c;
+		}
+	}
+
+	.edit-policy-btn {
+		background-color: #fff;
+		border: 1px solid #a448ee;
+		color: #333;
+		padding: 0.5rem 1rem;
+		border-radius: $border-radius;
+		cursor: pointer;
+		font-weight: 500;
+		transition: background-color 0.2s;
+		&:hover {
+			background-color: #e5e5e5;
+		}
+	}
+
+	.policy-body {
+		color: #555;
+		overflow-y: auto;
+		height: calc(100vh - 200px);
+		-ms-overflow-style: none;
+		padding-bottom: 60px;
+        line-height: 1.8;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+		p {
+			font-weight: 400;
+			font-size: 16px;
+			color: #1c1c1c;
+			strong {
+				font-weight: 600;
+				font-size: 17px;
+				// color: #400f6f;
+			}
+			strong {
+				font-weight: 600;
+				// font-size: 16px;
+				// color: #400f6f;
+			}
+		}
+		h4 {
+			margin-top: 1.5rem;
+			margin-bottom: 0.5rem;
+			font-weight: 400;
+			font-size: 16px;
+			color: #400f6f;
+		}
+		ul {
+			padding-left: 20px;
+		}
+		li {
+			margin-bottom: 0.75rem;
+			strong {
+				font-weight: 600;
+				font-size: 17px;
+				// color: #400f6f;
+			}
+		}
+	}
+}
+
+//================================================
+// POPUP EDITOR STYLES
+//================================================
+.popup-editor-dialog {
+	.p-dialog-header {
+		background: $dialog-header-bg;
+		border-top-left-radius: $border-radius;
+		border-top-right-radius: $border-radius;
+		padding: 1rem 1.5rem;
+		border-bottom: 1px solid $dialog-border-color;
+
+		.p-dialog-title {
+			font-weight: 600;
+			font-size: 1.1rem;
+			color: #333;
+		}
+
+		.p-dialog-header-icon {
+			color: $primary-color;
+			&:hover {
+				background-color: #e9ecef;
+			}
+		}
+	}
+
+	.p-dialog-content {
+		padding: 0;
+		border: none;
+		background: #fff;
+	}
+
+	.p-editor-container {
+		border: none;
+		.p-editor-toolbar {
+			background-color: #ffffff;
+			border-bottom: 1px solid $dialog-border-color;
+		}
+		.p-editor-content {
+			border: none;
+		}
+	}
+
+	.p-dialog-footer {
+		padding: 1rem 1.5rem;
+		border-top: 1px solid $dialog-border-color;
+		text-align: center; // Center the button
+		background: #fff;
+		border-bottom-left-radius: $border-radius;
+		border-bottom-right-radius: $border-radius;
+
+		.p-button {
+			// Use .p-button for PrimeReact v7+
+			background-color: $primary-color;
+			border: 1px solid $primary-color;
+			color: $primary-text-color;
+			border-radius: $border-radius;
+			padding: 0.75rem 2rem;
+			font-weight: 600;
+			transition: background-color 0.2s;
+			width: auto;
+
+			&:hover,
+			&:focus {
+				background-color: darken($primary-color, 10%);
+				border-color: darken($primary-color, 10%);
+			}
+		}
+	}
+}
+
+.renderActiveComponent {
+	height: calc(100vh - 150px);
+	border-radius: 6px;
+	padding: 40px;
+	overflow-y: scroll;
+	scrollbar-width: none;
+	max-width: 800px;
+	-ms-overflow-style: none;
+	border: 1px solid var(--border-color);
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.add-dp-org-btn {
+	background: #a448ee;
+	border-radius: 8px;
+	box-shadow: 0px 0px 24px 0px #0000000f;
+	border: none;
+	height: 36px;
+	width: 189px;
+	color: #fff;
+	font-size: 14px;
+	letter-spacing: -2%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	cursor: pointer;
+	&:hover {
+		background: #952de9;
+	}
+}
+
+// .settingOrganizationListMain {
+// 	aside {
+// 		div:nth-child(2),
+// 		div:nth-child(3),
+// 		div:nth-child(4),
+// 		div:nth-child(5),
+// 		div:nth-child(6),
+// 		div:nth-child(7),
+// 		div:nth-child(8),
+// 		div:nth-child(9),
+// 		div:nth-child(10),
+// 		div:nth-child(11),
+// 		div:nth-child(12),
+// 		div:nth-child(13) {
+// 			display: none;
+// 		}
+// 	}
+// }

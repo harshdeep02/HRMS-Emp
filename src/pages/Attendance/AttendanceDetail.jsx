@@ -1,10 +1,10 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import bannerImg from '../../../assets/Document_3.svg';
+import bannerImg from '../../assets/Document_3.svg';
 import MonthlyAttendance from './MonthlyAttendance';
 import './AttendanceDetail.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useEffect, useState } from 'react';
-import { getAttendanceSummary } from '../../../Redux/Actions/attendanceActions';
+import { getAttendanceSummary } from '../../Redux/Actions/attendanceActions';
 
 const AttendanceDetail = () => {
     const { id } = useParams();
@@ -20,13 +20,9 @@ const AttendanceDetail = () => {
     const holidayData = attendanceDetails?.data?.holidays;
     const weeklyOff = attendanceDetails?.data?.weekly_off;
     const attendanceLoading = attendanceDetails?.loading || false;
-    console.log(attendanceDetails)
     const [attendanceList, setAttendanceList] = useState([]);
     const currDate = new Date();
     const [getYear, setGetYear] = useState({ month: currDate.getMonth() + 1, year: currDate.getFullYear() })
-
-    const currYear = currDate.getFullYear();
-    const currMonth = currDate.getMonth() + 1;
 
     const setYearData = useCallback((data) => {
         setGetYear({ month: data.month, year: data.year });
@@ -59,20 +55,20 @@ const AttendanceDetail = () => {
     // }
 
     return (
-        <div className="attendanceDetailMain otherDetailPageSroll calenMain">
+        <div className="attendanceDetailMain otherDetailPageSroll calenMain empDashAtt">
             <div className="dept-page-container">
                 <button onClick={() => navigate('/attendance-list')} className="close_nav header_close">Close</button>
 
-                <h2 className="dept-page-main-heading"><span>{employeeFirstName}</span>’s Attendance Summary</h2>
+                {/* <h2 className="dept-page-main-heading"><span>{employeeFirstName}</span>’s Attendance Summary</h2> */}
                 <div className="dept-page-content-wrapper">
 
-                    <div className="dept-page-left-panel">
+                    {/* <div className="dept-page-left-panel">
                         <h3 className="dept-page-mark-text">Provided Details</h3>
                         <p className="dept-page-info-text">See monthly attendance of {employee_name}</p>
                         <div className="dept-page-illustration-box">
                             <img className=' ' src={bannerImg} alt="Illustration" />
                         </div>
-                    </div>
+                    </div> */}
                     <div className="dept_page_table  ">
                         {/*  */}
                      

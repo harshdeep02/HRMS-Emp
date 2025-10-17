@@ -21,10 +21,18 @@ import { getEmployeeList } from '../../../Redux/Actions/employeeActions.js';
 import { getShiftList } from '../../../Redux/Actions/shiftActions.js';
 import { EmpProject } from '../EmpProject/EmpProject.jsx';
 import { getWorkLocList } from '../../../Redux/Actions/Settings/organizationActions.js';
+import { getUserData } from '../../../services/login.js';
+import AttendanceCalendar from '../Attendance/AttendanceCalendar.jsx';
+import { EmpTickets } from '../EmpTickets/EmpTickets.jsx';
+import { EmpPerformance } from '../Performance/EmpPerformance.jsx';
+import { LeaveSummary } from '../../Leave Tracker/Leave/LeaveSummary.jsx';
+
+
+
 
 const AddEmployee = () => {
 
-    const { id } = useParams();
+    const { id } = getUserData();
     const location = useLocation()
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -44,7 +52,11 @@ const AddEmployee = () => {
         { name: 'Education', icon: BookOpenText },
         { name: 'Documents', icon: Files },
         { name: 'Remarks', icon: SquarePen },
+        { name: 'Attendance', icon: List },
+        { name: 'Leaves', icon: Calendar },
+        { name: 'Performance', icon: Trophy },
         { name: 'Projects', icon: Folder },
+        { name: 'Tickets', icon: Ticket },
     ];
 
     const [activeFormIndex, setActiveFormIndex] = useState(0);
@@ -56,6 +68,11 @@ const AddEmployee = () => {
         'Documents': false,
         'Remarks': false,
         'Projects': false,
+        'Attendance': false,
+        'Leaves': false,
+        'Performance': false,
+        'Projects': false,
+        'Tickets': false,
     });
 
     const [errors, setErrors] = useState({
@@ -443,17 +460,21 @@ const AddEmployee = () => {
                             </div>
                         </div>
 
-                        <div className={` ${activeFormIndex === 0 ? 'BasicDetailsForm' : 'form-content'}`}>
-                            <div className={`form_box`}>
+                        <div className={`${activeFormIndex === 0 ? 'BasicDetailsForm' : 'form-content'}`}>
+                            <div className={`${activeFormIndex === 5 ||activeFormIndex === 6 || activeFormIndex === 10 || activeFormIndex === 9 || activeFormIndex === 8 || activeFormIndex === 7 ? '' : 'form_box'}`}>
                                 <form>
 
                                     {activeFormIndex === 0 && <BasicDetailsForm formData={formData}/>}
                                     {activeFormIndex === 1 && <ContactsForm formData={formData}/>}
-                                    {activeFormIndex === 2 && <ExperienceForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
-                                    {activeFormIndex === 3 && <EducationForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
-                                    {activeFormIndex === 4 && <DocumentsForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
-                                    {activeFormIndex === 5 && <RemarksForm isEditMode={isEditMode} setIsEditMode={setIsEditMode} formData={formData} setFormData={setFormData} id={id} isEditPage={isEditPage} />}
-                                    {activeFormIndex === 6 && <EmpProject />}
+                                    {activeFormIndex === 2 && <ExperienceForm formData={formData}/>}
+                                    {activeFormIndex === 3 && <EducationForm formData={formData} />}
+                                    {activeFormIndex === 4 && <DocumentsForm formData={formData} />}
+                                    {activeFormIndex === 5 && <RemarksForm formData={formData} />}
+                                    {activeFormIndex === 6 && <AttendanceCalendar />}
+                                    {activeFormIndex === 7 && <LeaveSummary/>}
+                                    {activeFormIndex === 8 && <EmpPerformance />}
+                                    {activeFormIndex === 9 && <EmpProject />}
+                                    {activeFormIndex === 10 && <EmpTickets />}
                                 </form>
                             </div>
                         </div>

@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import LoadingDots from '../../../../utils/common/LoadingDots/LoadingDots.jsx';
-import SearchBox from '../../../../utils/common/SearchBox.jsx';
 import ListDataNotFound from '../../../../utils/common/ListDataNotFound.jsx';
 import DynamicFilter from '../../../../utils/common/DynamicFilter.jsx';
-import DatePicker from '../../../../utils/common/DatePicker/DatePicker.jsx';
 import ExportList from '../../../../utils/common/Export/ExportList.jsx';
-import { Calendar, CheckCircle2, RefreshCcw, SquareMenu, X, XCircle } from "lucide-react";
+import {SquareMenu, X, XCircle } from "lucide-react";
 import './AppraisalHistory.scss';
 import { useNavigate } from 'react-router-dom';
 import { appraisalStatusOptions } from '../../../../utils/Constant.js';
