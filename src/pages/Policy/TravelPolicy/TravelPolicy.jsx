@@ -7,6 +7,7 @@ import { createOrgPolicy, getOrganizationDetails } from '../../../Redux/Actions/
 import Loader from '../../../utils/common/Loader/Loader';
 import { getOrgData } from '../../../utils/helper';
 import './TravelDetails.scss'
+import { useNavigate } from 'react-router-dom';
 
 const INITIAL_POLICY_HTML = `<h3>Business Travel Eligibility:</h3>
 <p>All full-time employees are eligible for business travel based on project or client requirements. Travel must be approved in advance by the reporting manager and/or department head.</p>
@@ -61,6 +62,7 @@ export const TravelPolicy = () => {
     
     const {id} = getOrgData()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const createPolicy = useSelector((state) => state?.addPolicy);
     const organizationDetails = useSelector((state) => state?.organizationDetail);
@@ -114,7 +116,7 @@ export const TravelPolicy = () => {
         <>
 
             <div className="performanceDetailsMain">
-      <button onClick={() => navigate(`/settings`)} className="close_nav header_close">Close</button>
+      <button onClick={() => navigate(`/employee-dashboard`)} className="close_nav header_close">Close</button>
 
       <div className='form_page_' style={{display:"flex", justifyContent:"center"}}>
 

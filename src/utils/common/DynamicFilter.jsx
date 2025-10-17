@@ -51,7 +51,7 @@ const DynamicFilter = ({
   rightSideDropdwon,
   options = []
 }) => {
-  console.log("options", options)
+  // console.log("options", options)
   const config = FILTER_CONFIG[filterBy] || FILTER_CONFIG.department;
 
   // Get redux data

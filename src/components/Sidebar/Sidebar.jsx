@@ -23,7 +23,8 @@ export const menuItems = [
         id: 'home', label: 'Home', icon: Home, path: '/employee-dashboard'
     },
     {
-        id: 'profile', label: 'Profile', icon: IdCardLanyard, path: '/profile'
+        id: 'profile', label: 'Profile', icon: IdCardLanyard, path: '/profile-detail',issubmenu : true,
+    submenu: [{main:'Profile', label: 'Profile Detail', path: '/profile-detail',list: '/profile-detail'}]
     },
     {
         id: 'organization', label: 'Organization', icon: Building2, path: '/department-list', submenu: [
@@ -73,6 +74,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         window.location.href = "/login";
     };
     const allItems = [...menuItems, ...moreItems, ...menuItemsReport];
+    // console.log("allItems", allItems)
 
     const [activeParentId, setActiveParentId] = useState(null);
     const [openSubmenuId, setOpenSubmenuId] = useState(null);
@@ -129,6 +131,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
         // console.log('currentPath',currentPath)
 
         const hasSubmenu = !!item.submenu;
+        const isSubmenu = item.issubmenu;
         const isActive =
             activeParentId === item.id ||
             (item.add && isPathMatch(item.add, currentPath)) ||
@@ -165,11 +168,11 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
                     <div className={`nav-link ${isActive ? 'active' : ''}`} onClick={handleParentClick}>
                         <item.icon size={20} className="nav-icon" />
                         {isExpanded && <span className="nav-text">{item.label}</span>}
-                        {hasSubmenu && isExpanded && <ChevronRight size={16} className={`chevron-icon ${isSubmenuOpen ? 'open' : ''}`} />}
+                        {!isSubmenu && hasSubmenu && isExpanded && <ChevronRight size={16} className={`chevron-icon ${isSubmenuOpen ? 'open' : ''}`} />}
                     </div>
                 </Tooltip>
 
-                {hasSubmenu && isExpanded && (
+                {!isSubmenu && hasSubmenu && isExpanded && (
                     <ul className={`submenu ${isSubmenuOpen ? 'open' : ''} submenu_${item.submenu.length}`}>
                         {item.submenu.map(subItem => {
                             const subIsActive =
@@ -264,10 +267,10 @@ const Sidebar = ({ isExpanded, setIsExpanded }) => {
 
             <div className={`settingTool ${showSetting ? 'showSettingPopup' : ''}`}>
                 <div className="settingToolFlex">
-                    <div className="sideAddbtn disFlex"><div className="settingToolIcon"><Plus size={20} /></div><div className="settingToolText">Add</div></div>
+                    {/* <div className="sideAddbtn disFlex"><div className="settingToolIcon"><Plus size={20} /></div><div className="settingToolText">Add</div></div> */}
                     <div className="sideNotifi disFlex"><div className="settingToolIcon"><Bell size={20} /></div><div className="settingToolText">Notification</div></div>
                     <div className="sidehelp disFlex"><div className="settingToolIcon"><CircleQuestionMark size={20} /></div><div className="settingToolText">Help</div></div>
-                    <div className="sideSetting disFlex" onClick={() => handleNavgation('settings')}><div className="settingToolIcon"><Settings size={20} /></div><div className="settingToolText">Settings</div></div>
+                    {/* <div className="sideSetting disFlex" onClick={() => handleNavgation('settings')}><div className="settingToolIcon"><Settings size={20} /></div><div className="settingToolText">Settings</div></div> */}
                     <div onClick={handleLogout} className="sideLogout disFlex"><div className="settingToolIcon"><LogOut size={20} /></div><div className="settingToolText">Logout</div></div>
                 </div>
             </div>

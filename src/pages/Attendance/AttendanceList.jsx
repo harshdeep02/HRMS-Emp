@@ -26,7 +26,7 @@ const AttendanceList = () => {
     // --- Redux ---
     const attendanceData = useSelector((state) => state?.attendanceList);
     const attendanceLists = attendanceData?.data?.result || [];
-    const totalItems = attendanceData?.data?.metadata?.all || 0;
+    const totalItems = attendanceData?.data?.count || 0;
     const metaData = attendanceData?.data?.metadata || {};
     const loading = attendanceData?.loading || false;
 
@@ -141,7 +141,7 @@ const AttendanceList = () => {
     };
 
     const clearFilters = () => {
-        setStatusFilter("");
+        setStatusFilter("All");
         setCurrentPage(1);
         setShowMoreLess(false);
         setSelectedDate(new Date())

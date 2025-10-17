@@ -110,7 +110,7 @@ export const PerformancePolicy = () => {
         <>
 
          <div className="performanceDetailsMain">
-      {/* <button onClick={() => navigate(`/settings`)} className="close_nav header_close">Close</button> */}
+      <button onClick={() => navigate(`/employee-dashboard`)} className="close_nav header_close">Close</button>
 
       <div className='form_page_' style={{display:"flex", justifyContent:"center"}}>
 

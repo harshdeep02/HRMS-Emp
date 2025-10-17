@@ -12,7 +12,7 @@ const formatDate = (date, months) => {
     return `${day} ${month.substring(0, 3)} ${year}`; // e.g., "22 Aug 2025"
 };
 
-const DatePicker = ({ onDateChange, initialDate }) => {
+const DatePicker = ({ onDateChange, initialDate, setIsDatePicker }) => {
     // Helper function to parse a string like "22 Aug 2025" into a Date object
     const parseInitialDate = (dateStr) => {
         if (dateStr && new Date(dateStr).toString() !== 'Invalid Date') {
@@ -24,6 +24,10 @@ const DatePicker = ({ onDateChange, initialDate }) => {
     const [showPicker, setShowPicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(parseInitialDate(initialDate));
     const [currentViewDate, setCurrentViewDate] = useState(parseInitialDate(initialDate) || new Date());
+
+   useEffect(() => {
+  setIsDatePicker && setIsDatePicker(showPicker);
+}, [showPicker]);
 
     const dropdownRef = useRef(null);
     useOutsideClick(dropdownRef, () => setShowPicker(false));

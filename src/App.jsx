@@ -144,7 +144,7 @@ function App() {
                 <Route path="/employee-dashboard" element={<AdminDashboard />} />
 
                 {/* ================= Profile Module ================= */}
-                <Route path="/profile" element={<AddEmployee />} />
+                <Route path="/profile-detail" element={<AddEmployee />} />
 
                 {/* ================= Organization Module ================= */}
                 <Route path="/employee-list" element={<EmployeeList />} />

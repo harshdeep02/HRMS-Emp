@@ -4,7 +4,7 @@ import PopUpEditor from '../../../utils/common/PopUpEditor/PopUpEditor';
 import { getUserData } from '../../../services/login';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrgPolicy, getOrganizationDetails } from '../../../Redux/Actions/Settings/organizationActions';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../../../utils/common/Loader/Loader';
 import { getOrgData } from '../../../utils/helper';
 import './ShiftsDetails.scss'
@@ -46,6 +46,8 @@ export const ShiftPolicy = () => {
     
     const {id} = getOrgData()
     const dispatch = useDispatch()
+        const navigate = useNavigate()
+
 
     const createPolicy = useSelector((state) => state?.addPolicy);
     const organizationDetails = useSelector((state) => state?.organizationDetail);
@@ -99,7 +101,7 @@ export const ShiftPolicy = () => {
     return (
         <>
             <div className="performanceDetailsMain">
-      <button onClick={() => navigate(`/settings`)} className="close_nav header_close">Close</button>
+      <button onClick={() => navigate(`/employee-dashboard`)} className="close_nav header_close">Close</button>
 
       <div className='form_page_' style={{display:"flex", justifyContent:"center"}}>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../Organization.scss'
 import PopUpEditor from '../../../utils/common/PopUpEditor/PopUpEditor';
 import { getUserData } from '../../../services/login';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrgPolicy, getOrganizationDetails } from '../../../Redux/Actions/Settings/organizationActions';
 import { getOrgData } from '../../../utils/helper';
@@ -35,6 +35,7 @@ export const LeavePolicy = () => {
     
     const {id} = getOrgData()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const createPolicy = useSelector((state) => state?.addPolicy);
     const organizationDetails = useSelector((state) => state?.organizationDetail);
@@ -89,7 +90,7 @@ export const LeavePolicy = () => {
         <>
 
             <div className="performanceDetailsMain">
-      <button onClick={() => navigate(`/settings`)} className="close_nav header_close">Close</button>
+      <button onClick={() => navigate(`/employee-dashboard`)} className="close_nav header_close">Close</button>
 
       <div className='form_page_' style={{display:"flex", justifyContent:"center"}}>
 

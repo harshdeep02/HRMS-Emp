@@ -46,6 +46,7 @@ export const LeaveSummary = () => {
     }, [])
 
     const INITIAL_VISIBLE_COUNT = 5;
+        const [isDatePicker, setIsDatePicker] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [leaveTypeFilter, setLeaveTypeFilter] = useState("All");
     const [dateFilter, setDateFilter] = useState(null); // State for date filter
@@ -179,7 +180,7 @@ export const LeaveSummary = () => {
 
     // ❗ 2 new loding
     const ListData = (leaveLoading && (!isLoadingMore || leaveList?.length === 0)) ? dummData : leaveList;
-
+// console.log(leaveList?.length)
 
     return (
         <div className="otherDetailPageSroll leavesummPageSroll">
@@ -205,7 +206,7 @@ export const LeaveSummary = () => {
                         ))}
                 </div>
             </div>
-            <div className="detail-table-wrapper">
+            <div className="detail-table-wrapper" style={isDatePicker?{height:"500px"}:{height:"auto"}}>
                 <div className="box_head">
                     <h2>Leave History</h2>
                     <div className="toolbar_d">
@@ -222,6 +223,7 @@ export const LeaveSummary = () => {
                                 label=""
                                 onDateChange={handleDateFilter}
                                 initialDate={dateFilter}
+                                setIsDatePicker={setIsDatePicker}
                             />
                             <DynamicFilter
                                 filterBy="status"

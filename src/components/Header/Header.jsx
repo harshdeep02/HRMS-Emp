@@ -5,6 +5,8 @@ import { getBreadcrumbs } from '../../utils/getBreadcrumbs';
 import { menuItems } from '../Sidebar/Sidebar';
 import { BookCheck, ChevronRight, CircleX, ClipboardCheck, FileChartColumnIncreasing, FilesIcon, Home, SquareCheck } from 'lucide-react';
 
+
+
 export const moreItems = [
  {
     id: 'reports',
@@ -12,8 +14,10 @@ export const moreItems = [
     icon: FileChartColumnIncreasing,
     path: '/my-reports', // parent link
     BreadL: 'My Reports',
+    issubmenu : true,
     submenu: [
       { main: 'My Reports', label: 'Leave Balance', path: '/my-reports', list: '/my-reports/leave-balance' },
+    //   { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
     //   { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
     //   { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
     //   { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/performance-review' },
@@ -68,15 +72,24 @@ export const menuItemsExtra = (id, Id, id2) => [
 ]
 
 export const menuItemsReport = [
-    // {
-    //     id: 'reports', submenu: [
-    //         { main: 'My Reports', label: 'Leave Balance', path: '/my-reports/leave-balance', list: '/my-reports/leave-balance' },
-    //         { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
-    //         { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
-    //         { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/rerformance-review' },
-    //         { main: 'My Reports', label: 'Appraisal History', path: '/my-reports', list: '/my-reports/appraisal-history' },
-    //     ],
-    // },
+    {
+        id: 'reports',  submenu: [
+            { main: 'My Reports', label: 'Leave Balance', path: '/my-reports', list: '/my-reports/leave-balance' },
+            { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
+        //   { main: 'My Reports', label: 'Leave Summary', path: '/my-reports', list: '/my-reports/leave-summary' },
+          { main: 'My Reports', label: 'Daily Attendance Report', path: '/my-reports', list: '/my-reports/attendance-report' },
+          { main: 'My Reports', label: 'Performance Review', path: '/my-reports', list: '/my-reports/rerformance-review' },
+          { main: 'My Reports', label: 'Appraisal History', path: '/my-reports', list: '/my-reports/appraisal-history' },
+    ]
+    },{
+        id: 'policy',  submenu: [
+            { main: 'Policy', label: 'Attendance Policy', path: '/attendance-policy', list: '/attendance-policy' },
+            { main: 'Policy', label: 'Leaves', path: '/leaves-policy', list: '/leaves-policy' },
+            { main: 'Policy', label: 'Shift', path: '/shift-policy', list: '/shift-policy' },
+            { main: 'Policy', label: 'Performance', path: '/performance-policy', list: '/performance-policy' },
+            { main: 'Policy', label: 'Travel', path: '/travel-policy', list: '/travel-policy'},
+    ]
+    },
 
 
 ]
@@ -104,6 +117,7 @@ const Header = () => {
     const allMenuItems = [...menuItems, ...menuItemsExtra(id, Id, id2), ...moreItems, ...menuItemsReport];
 
     const breadcrumbs = getBreadcrumbs(allMenuItems, location.pathname);
+
 
     useEffect(() => {
         if (breadcrumbs.length < 2) {

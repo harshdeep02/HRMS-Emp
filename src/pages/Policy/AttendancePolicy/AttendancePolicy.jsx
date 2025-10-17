@@ -9,6 +9,7 @@ import { getOrgData } from '../../../utils/helper';
 import '../../EmployeeOnboarding/AddEmployee/AddEmloyee.scss'
 import './AttendanceDetails.scss'
 import '../LeavesPolicy/LeaveDetails.scss'
+import { useNavigate } from 'react-router-dom';
 
 // const INITIAL_POLICY_HTML = `
 //     <h3>1. Purpose</h3>
@@ -31,6 +32,7 @@ export const AttendancePolicy = () => {
 
     const {id} = getOrgData()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const createPolicy = useSelector((state) => state?.addPolicy);
     const organizationDetails = useSelector((state) => state?.organizationDetail);
@@ -85,7 +87,7 @@ export const AttendancePolicy = () => {
     return (
         <>
             <div className="performanceDetailsMain">
-      <button onClick={() => navigate(`/settings`)} className="close_nav header_close">Close</button>
+      <button onClick={() => navigate(`/employee-dashboard`)} className="close_nav header_close">Close</button>
 
       <div className='form_page_' style={{display:"flex", justifyContent:"center"}}>
 
