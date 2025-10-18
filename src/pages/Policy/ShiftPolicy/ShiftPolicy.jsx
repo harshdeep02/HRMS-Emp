@@ -116,13 +116,10 @@ export const ShiftPolicy = () => {
                 <div className="policy-container">
                     <div className="policy-header">
                         <div className="policy-title">
-                            <h2>Shift Policy</h2>
-                            <p>Select the methods that you commonly use in your organization to track your employee shift times</p>
+                            <h2 className='policyH'>Shift Policy</h2>
+                            {/* <p>Select the methods that you commonly use in your organization to track your employee shift times</p> */}
                         </div>
                         {/* Button to open the popup */}
-                        <button className="edit-policy-btn" onClick={() => setIsEditorVisible(true)}>
-                            Edit Policy
-                        </button>
                     </div>
 
                     {/* Display the policy content from the state */}

@@ -26,8 +26,8 @@ const DatePicker = ({ onDateChange, initialDate, setIsDatePicker }) => {
     const [currentViewDate, setCurrentViewDate] = useState(parseInitialDate(initialDate) || new Date());
 
    useEffect(() => {
-  setIsDatePicker && setIsDatePicker(showPicker);
-}, [showPicker]);
+    setIsDatePicker && setIsDatePicker(showPicker);
+    }, [showPicker]);
 
     const dropdownRef = useRef(null);
     useOutsideClick(dropdownRef, () => setShowPicker(false));

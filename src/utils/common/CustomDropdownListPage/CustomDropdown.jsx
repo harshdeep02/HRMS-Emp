@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import useOutsideClick from "../../../components/common/hooks/useOutsideClick";
 import { ChevronDown, Search } from "lucide-react";
 import Tooltips from "../Tooltip/Tooltips";
@@ -14,12 +14,17 @@ export const CustomDropdown = ({
     renderButton,
     rightSideDropdwon,
     cl,
-    cls
+    cls,
+    setIsDynamicFilter
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const dropdownRef = useRef(null);
     useOutsideClick(dropdownRef, () => setIsOpen(false));
+
+     useEffect(() => {
+    setIsDynamicFilter && setIsDynamicFilter(isOpen);
+    }, [isOpen]);
 
     const handleSelect = (value) => {
         onValueChange(value);

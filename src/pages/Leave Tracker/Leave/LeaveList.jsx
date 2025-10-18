@@ -297,7 +297,7 @@ export const LeaveList = () => {
                                             const statusClassName = statusConfig[item?.status]?.className;
                                             return (
                                                 <tr key={item?.id} className="employee-row" onClick={() => navigate(`/leave-details/${item?.id}`)}>
-                                                    <td className="loadingtd"><div className="department">{item?.leave_master?.leave_name}</div></td>
+                                                    <td className="samllTD loadingtd"><div className="    Semi_Bold">{item?.leave_master?.leave_name}</div></td>
                                                     <td className="loadingtd samllTD"><div className="department">{formatDate(item?.from_date) || '-'} To {formatDate(item?.to_date) || '-'}</div></td>
                                                     <td className="loadingtd samllTD" style={{ maxWidth: '80px' }}><div className="department">{formatDate(item?.created_at) || '-'}</div></td>
                                                      <td style={{ minWidth: '160px' }}>

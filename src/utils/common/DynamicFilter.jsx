@@ -49,7 +49,8 @@ const DynamicFilter = ({
   onChange,
   filterBy = "filter",
   rightSideDropdwon,
-  options = []
+  options = [],
+  setIsDynamicFilter
 }) => {
   // console.log("options", options)
   const config = FILTER_CONFIG[filterBy] || FILTER_CONFIG.department;
@@ -68,6 +69,7 @@ const DynamicFilter = ({
 
   return (
     <CustomDropdown
+    setIsDynamicFilter={setIsDynamicFilter}
       options={finalOptions}
       selectedValue={filterValue}
       onValueChange={onChange}

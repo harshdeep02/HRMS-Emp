@@ -21,7 +21,7 @@ $border-radius: 8px;
 		justify-content: space-between;
 		align-items: center;
 		border-bottom: 1px solid $border-color;
-		padding-bottom: 1rem;
+		padding-bottom: 2rem;
 		margin-bottom: 1.5rem;
 	}
 
@@ -218,3 +218,10 @@ $border-radius: 8px;
 // 		}
 // 	}
 // }
+
+
+.policy-container .policy-title h2.policyH {
+    font-size: 24px;
+    color: #000;
+    font-weight: 500;
+}

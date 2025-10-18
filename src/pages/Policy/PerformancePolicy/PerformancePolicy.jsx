@@ -122,18 +122,14 @@ export const PerformancePolicy = () => {
           {/* <div className='form-content'> */}
           <div>
              <div className="performancePolicyMain">
-                <div className="performancePolicyHead">Performance</div>
+                {/* <div className="performancePolicyHead">Performance</div> */}
                 <div className="performancePolicyBody">
                     <div className="policy-container">
-                        <div className="policy-header">
+                        <div className="policy-header" >
                             <div className="policy-title">
-                                {/* <h2>Performance Policy</h2> */}
-                                <p>Select the methods that you commonly use in your organization to track your employee performance</p>
+                                <h2 className='policyH'>Performance Policy</h2>
+                                {/* <p>Select the methods that you commonly use in your organization to track your employee performance</p> */}
                             </div>
-                            {/* Button to open the popup */}
-                            <button className="edit-policy-btn" onClick={() => setIsEditorVisible(true)}>
-                                Edit Policy
-                            </button>
                         </div>
 
                         {/* Display the policy content from the state */}

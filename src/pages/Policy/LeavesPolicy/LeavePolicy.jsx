@@ -105,12 +105,8 @@ export const LeavePolicy = () => {
                 <div className="policy-container">
                     <div className="policy-header">
                         <div className="policy-title">
-                            <h2>Leaves Policy</h2>
+                            <h2 className='policyH'>Leaves Policy</h2>
                         </div>
-                        {/* Button to open the popup */}
-                        <button className="edit-policy-btn" onClick={() => setIsEditorVisible(true)}>
-                            Edit Policy
-                        </button>
                     </div>
 
                     {/* Display the policy content from the state */}

@@ -337,6 +337,7 @@ export const LeaveForm = ({ viewMode, formData, setFormData, handleSearch }) => 
                     viewMode={viewMode}
                     loading={createLeave?.loading}
                     color="#fff"
+                    btntype='buttom_fix_btn'
                 />
             )}
 

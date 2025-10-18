@@ -329,7 +329,7 @@ const AttendanceList = () => {
                     </aside>
                     <div className="content_box_auto">
                         <div className="employee-table-wrapper">
-                            <table className="employee-table emp-t-5">
+                            <table className="employee-table emp-t-6">
                                 <thead>
                                     <tr>
                                         <th>DATE</th>

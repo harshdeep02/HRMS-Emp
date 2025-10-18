@@ -292,8 +292,8 @@ export const TicketList = () => {
                                                         className="employee-row"
                                                         onClick={() => navigate(`/ticket-details/${item.id}`)}
                                                     >
-                                                        <td className="loadingtd">
-                                                            <div className="department">{item?.subject}</div>
+                                                        <td>
+                                                            <div className="department loadingtd Semi_Bold">{item?.subject}</div>
                                                         </td>
                                                         <td className="loadingtd">
                                                             <div className="department">{[item?.requested_to?.first_name, item?.requested_to?.last_name].filter(Boolean).join(" ")}</div>

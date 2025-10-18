@@ -128,18 +128,13 @@ export const TravelPolicy = () => {
           {/* <div className='form-content'> */}
           <div>
             <div className="travelPolicyMain">
-                <div className="travelPolicyHead">Travel</div>
+                {/* <div className="travelPolicyHead">Travel</div> */}
                 <div className="travelePolicyBody">
                     <div className="policy-container">
                         <div className="policy-header">
-                            <div className="policy-title">
-                                {/* <h2>Travel Policy</h2> */}
-                                <p>Select the methods that you commonly use in your organization to track your employee performance</p>
+                             <div className="policy-title">
+                                <h2 className='policyH'>Travel</h2>
                             </div>
-                            {/* Button to open the popup */}
-                            <button className="edit-policy-btn" onClick={() => setIsEditorVisible(true)}>
-                                Edit Policy
-                            </button>
                         </div>
 
                         {/* Display the policy content from the state */}
